@@ -15,6 +15,8 @@ import {
   FolderAddIcon,
   MenuIcon,
   DotsVerticalIcon,
+  InboxIcon,
+  ArchiveIcon,
 } from "@heroicons/react/outline";
 
 interface AppContextState {
@@ -40,7 +42,7 @@ interface TreeEntryProps {
   entry: FileEntry;
 }
 
-function TreeEntry({ entry }: TreeEntryProps) {
+function TreeEntry({ entry, root }: TreeEntryProps) {
   const [expanded, setExpanded] = useState(true);
   const toggle = useCallback(() => setExpanded(!expanded), [expanded]);
 
@@ -52,8 +54,41 @@ function TreeEntry({ entry }: TreeEntryProps) {
 
   const isSelected = selectedEntry?.path === entry.path;
 
+  const isInbox = entry.children && entry.name === "Inbox";
+  const isArchive = entry.children && entry.name === "Archive";
+
+  const children = entry.children && expanded && (
+    <ul className="pl-4">
+      {entry.children
+        .sort((a, b) => {
+          if (a.children) {
+            return -1;
+          } else if (b.children) {
+            return 1;
+          }
+
+          if (a.name && b.name) {
+            if (a.name > b.name) {
+              return 1;
+            }
+            if (a.name < b.name) {
+              return -1;
+            }
+          }
+          return 0;
+        })
+        .map((e) => (
+          <TreeEntry key={e.path} entry={e} />
+        ))}
+    </ul>
+  );
+
+  if (root) {
+    return <>{children}</>;
+  }
+
   return (
-    <li>
+    <li className={classNames((isInbox || isArchive) && "mb-3")}>
       <button
         className={classNames(
           "relative flex items-center gap-1 text-xs p-1",
@@ -67,7 +102,11 @@ function TreeEntry({ entry }: TreeEntryProps) {
           <div className="absolute bg-current w-1 h-1 -left-2 rounded-lg" />
         )}
         {entry.children ? (
-          expanded ? (
+          isInbox ? (
+            <InboxIcon className="w-4 h-4 text-current" />
+          ) : isArchive ? (
+            <ArchiveIcon className="w-4 h-4 text-current" />
+          ) : expanded ? (
             <FolderOpenIcon className="w-4 h-4 text-current" />
           ) : (
             <FolderIcon className="w-4 h-4 text-current" />
@@ -78,31 +117,7 @@ function TreeEntry({ entry }: TreeEntryProps) {
         <span>{entry.name || entry.path}</span>
       </button>
 
-      {entry.children && expanded && (
-        <ul className="pl-4">
-          {entry.children
-            .sort((a, b) => {
-              if (a.children) {
-                return -1;
-              } else if (b.children) {
-                return 1;
-              }
-
-              if (a.name && b.name) {
-                if (a.name > b.name) {
-                  return 1;
-                }
-                if (a.name < b.name) {
-                  return -1;
-                }
-              }
-              return 0;
-            })
-            .map((e) => (
-              <TreeEntry key={e.path} entry={e} />
-            ))}
-        </ul>
-      )}
+      {children}
     </li>
   );
 }
