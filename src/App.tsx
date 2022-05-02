@@ -53,12 +53,12 @@ function TreeEntry({ entry, root }: TreeEntryProps) {
   }, [entry]);
 
   const isSelected = selectedEntry?.path === entry.path;
-
-  const isInbox = entry.children && entry.name === "Inbox";
-  const isArchive = entry.children && entry.name === "Archive";
+  const isFolder = !!entry.children;
+  const isInbox = isFolder && entry.name === "Inbox";
+  const isArchive = isFolder && entry.name === "Archive";
 
   const children = entry.children && expanded && (
-    <ul className="pl-4">
+    <ul className={classNames(!root && "pl-4")}>
       {entry.children
         .sort((a, b) => {
           if (a.children) {
@@ -88,19 +88,19 @@ function TreeEntry({ entry, root }: TreeEntryProps) {
   }
 
   return (
-    <li className={classNames((isInbox || isArchive) && "mb-3")}>
+    <li>
       <button
         className={classNames(
-          "relative flex items-center gap-1 text-xs p-1",
+          "relative group flex items-center gap-1 text-xs p-1",
           isSelected
             ? "text-stone-900 dark:text-stone-100 font-bold"
             : "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
         )}
-        onClick={click}
+        onClick={isFolder ? toggle : click}
       >
-        {isSelected && (
+        {/* {isSelected && !isFolder && (
           <div className="absolute bg-current w-1 h-1 -left-2 rounded-lg" />
-        )}
+        )} */}
         {entry.children ? (
           isInbox ? (
             <InboxIcon className="w-4 h-4 text-current" />
@@ -115,6 +115,16 @@ function TreeEntry({ entry, root }: TreeEntryProps) {
           <DocumentTextIcon className="w-4 h-4 text-current" />
         )}
         <span>{entry.name || entry.path}</span>
+        {/* {isFolder && (
+          <div className="invisible group-hover:visible flex flex-row gap-1 ml-2">
+            <button className="text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
+              <FolderAddIcon className="w-4 h-4 text-current" />
+            </button>
+            <button className="text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
+              <DocumentAddIcon className="w-4 h-4 text-current" />
+            </button>
+          </div>
+        )} */}
       </button>
 
       {children}
@@ -183,16 +193,37 @@ function App() {
     >
       <div className="w-screen h-screen overflow-hidden flex flex-row">
         {sidebarOpen ? (
-          <div className="flex flex-col w-[220px]">
-            <div className="flex-grow overflow-y-auto">
+          <div className="flex flex-col min-w-[220px]">
+            <div className="flex-grow overflow-auto">
               <div className="p-2">
                 {path && entries && (
-                  <ul>
-                    <TreeEntry
-                      root
-                      entry={{ name: "/", path: path, children: entries }}
-                    />
-                  </ul>
+                  <>
+                    <ul className="mb-2">
+                      <TreeEntry
+                        root
+                        entry={{
+                          name: "/",
+                          path: path,
+                          children: entries.filter(
+                            ({ name }) => name === "Inbox" || name === "Archive"
+                          ),
+                        }}
+                      />
+                    </ul>
+
+                    <ul>
+                      <TreeEntry
+                        root
+                        entry={{
+                          name: "/",
+                          path: path,
+                          children: entries.filter(
+                            ({ name }) => name !== "Inbox" && name !== "Archive"
+                          ),
+                        }}
+                      />
+                    </ul>
+                  </>
                 )}
               </div>
             </div>
@@ -205,15 +236,16 @@ function App() {
                 <MenuIcon className="w-4 h-4 text-current" />
               </button>
 
+              {/*
               <div className="flex-grow" />
-
+              
               <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
                 <FolderAddIcon className="w-4 h-4 text-current" />
               </button>
 
               <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
                 <DocumentAddIcon className="w-4 h-4 text-current" />
-              </button>
+              </button> */}
             </div>
           </div>
         ) : (
@@ -232,7 +264,7 @@ function App() {
             </button>
           </div>
 
-          {selectedEntry && (
+          {selectedEntry ? (
             <>
               {selectedEntry.children ? (
                 <div className="container mx-auto px-8 py-16">
@@ -251,11 +283,11 @@ function App() {
                 </div>
               ) : (
                 <div className="container mx-auto max-w-2xl px-2 py-8">
-                  <h1 className="pt-8 pb-2 text-4xl font-bold">
+                  <h1 className="my-8 pb-2 text-4xl font-bold">
                     {selectedEntry.name}
                   </h1>
                   <div
-                    className="text-md leading-8 focus:outline-none"
+                    className="mt-8 text-md leading-8 focus:outline-none"
                     contentEditable="true"
                   >
                     {text}
@@ -263,6 +295,13 @@ function App() {
                 </div>
               )}
             </>
+          ) : (
+            <div className="h-full flex flex-col justify-center items-center">
+              <button className="flex gap-2 text-stone-700 text-lg">
+                <DocumentAddIcon className="w-6 h-6 text-current" />
+                <span>Create New Note</span>
+              </button>
+            </div>
           )}
         </div>
       </div>
