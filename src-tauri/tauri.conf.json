@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "playground-tauri-app",
+    "productName": "extt",
     "version": "0.1.0"
   },
   "build": {
@@ -54,7 +54,7 @@
     },
     "windows": [
       {
-        "title": "Playground Tauri App",
+        "title": "extt",
         "width": 800,
         "height": 600,
         "resizable": true,

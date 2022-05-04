@@ -132,6 +132,17 @@ function TreeEntry({ entry, root }: TreeEntryProps) {
   );
 }
 
+function useDebounce(fn: any, time: number) {
+  let timeout: number;
+
+  return (...args: any) => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => fn(...args), time);
+  };
+}
+
 function App() {
   const [path, setPath] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -144,6 +155,22 @@ function App() {
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
 
   const [text, setText] = useState("");
+
+  const debouncedSave = useDebounce(async (content: string) => {
+    if (selectedEntry) {
+      console.log("test", content);
+      setText(content);
+
+      await fs.writeFile({
+        path: selectedEntry.path,
+        contents: content,
+      });
+    }
+  }, 500);
+
+  useEffect(() => {
+    debouncedSave(text);
+  }, [text]);
 
   useEffect(() => {
     async function readDirectory(p: string) {
@@ -289,6 +316,11 @@ function App() {
                   <div
                     className="mt-8 text-md leading-8 focus:outline-none"
                     contentEditable="true"
+                    key={selectedEntry.path}
+                    onInput={(e) => {
+                      const content = e.target as HTMLDivElement;
+                      debouncedSave(content.innerText);
+                    }}
                   >
                     {text}
                   </div>
