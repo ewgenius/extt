@@ -66,7 +66,7 @@ function App() {
       <div className="w-screen h-screen overflow-hidden flex flex-row">
         <Sidebar />
 
-        <div className="relative flex-grow overflow-y-auto">
+        <div className="relative flex flex-col flex-grow">
           <div className="fixed top-0 right-0 p-2 pr-4">
             <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
               <DotsVerticalIcon className="w-4 h-4 text-current" />

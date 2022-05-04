@@ -12,7 +12,10 @@
     "@heroicons/react": "^1.0.6",
     "@tauri-apps/api": "^1.0.0-rc.3",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "slate": "^0.78.0",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.78.1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-rc.8",
