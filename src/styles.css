@@ -9,3 +9,26 @@
   src: local("IBM Plex Mono"), local("IBMPlexMono"),
     url("/public/fonts/IBMPlexMono-Regular.otf") format("otf");
 }
+
+.decorator::before {
+  text-align: end;
+  position: absolute;
+  left: -58px;
+  width: 50px;
+  opacity: 0.5;
+}
+
+.decorator-h1::before {
+  content: "#";
+}
+
+.decorator-h2::before {
+  content: "##";
+}
+
+.decorator-h3::before {
+  content: "###";
+}
+.decorator-h4::before {
+  content: "####";
+}

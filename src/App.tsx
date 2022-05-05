@@ -6,7 +6,7 @@ import { AppContext } from "./AppContext";
 import { Sidebar } from "./components/Sidebar";
 import { Editor } from "./components/Editor";
 
-function App() {
+export function App() {
   const [path, setPath] = useState<string | null>(null);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -88,5 +88,3 @@ function App() {
     </AppContext.Provider>
   );
 }
-
-export default App;

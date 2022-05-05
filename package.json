@@ -19,6 +19,7 @@
     "slate-react": "^0.78.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
     "@tauri-apps/cli": "^1.0.0-rc.8",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.0",
