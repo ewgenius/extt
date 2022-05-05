@@ -1,92 +1,13 @@
 import { useEffect, useState } from "react";
 import { fs } from "@tauri-apps/api";
 import { Descendant } from "slate";
-
 import { useAppContext } from "../AppContext";
 import { useDebouncedCallback } from "../utils/useDebouncedCallback";
-import { Node } from "slate";
 import { SlateEditor } from "./SlateEditor";
+import { serialize } from "../lib/serialize";
+import { deserialize } from "../lib/deserialize";
 
-// Define a serializing function that takes a value and returns a string.
-const serialize = (value: any[]) => {
-  return (
-    value
-      // Return the string content of each paragraph in the value's children.
-      .map((n) => Node.string(n))
-      // Join them all with line breaks denoting paragraphs.
-      .join("\n")
-  );
-};
-
-// Define a deserializing function that takes a string and returns a value.
-const deserialize = (str: string) => {
-  return str.split("\n").map((line) => {
-    const item: Descendant = {
-      type: "paragraph",
-      children: [{ text: line }],
-    };
-    return item;
-  });
-};
-
-const initialValue: Descendant[] = [
-  {
-    type: "heading-one",
-    children: [
-      {
-        text: "Heading 1",
-      },
-    ],
-  },
-  {
-    type: "heading-two",
-    children: [
-      {
-        text: "Heading 2",
-      },
-    ],
-  },
-  {
-    type: "heading-three",
-    children: [
-      {
-        text: "Heading 3",
-      },
-    ],
-  },
-  {
-    type: "heading-four",
-    children: [
-      {
-        text: "Heading 4",
-      },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "paragraph",
-      },
-    ],
-  },
-  {
-    type: "blockquote",
-    children: [
-      {
-        text: "test blockquote",
-      },
-    ],
-  },
-  {
-    type: "code",
-    children: [
-      {
-        text: `const a = Test`,
-      },
-    ],
-  },
-];
+const initialValue: Descendant[] = [];
 
 export function Editor() {
   const { selectedEntry } = useAppContext();
@@ -98,7 +19,7 @@ export function Editor() {
       if (selectedEntry && !selectedEntry.children) {
         setLoaded(false);
         const text = await fs.readTextFile(selectedEntry.path);
-        // setValue(deserialize(text));
+        setValue(deserialize(text));
         setTimeout(() => setLoaded(true), 100);
       } else {
         setLoaded(false);
@@ -110,10 +31,11 @@ export function Editor() {
   const save = useDebouncedCallback(
     async (value: Descendant[]) => {
       if (selectedEntry) {
-        await fs.writeFile({
-          path: selectedEntry.path,
-          contents: serialize(value),
-        });
+        console.log(serialize(value));
+        // await fs.writeFile({
+        //   path: selectedEntry.path,
+        //   contents: serialize(value),
+        // });
       }
     },
     500,

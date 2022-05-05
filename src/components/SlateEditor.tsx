@@ -1,8 +1,19 @@
 import { useCallback, useState } from "react";
 import { createEditor, Descendant } from "slate";
-import { Slate, Editable, withReact, RenderElementProps } from "slate-react";
+import {
+  Slate,
+  Editable,
+  withReact,
+  RenderElementProps,
+  RenderLeafProps,
+} from "slate-react";
 import { withHistory } from "slate-history";
 import { Element } from "./Element";
+import { Leaf } from "./Leaf";
+
+const renderElement = (props: RenderElementProps) => <Element {...props} />;
+
+const renderLeaf = (props: RenderLeafProps) => <Leaf {...props} />;
 
 export function SlateEditor({
   value,
@@ -11,10 +22,6 @@ export function SlateEditor({
   value: Descendant[];
   onSave: (value: Descendant[]) => void;
 }) {
-  const renderElement = useCallback(
-    (props: RenderElementProps) => <Element {...props} />,
-    []
-  );
   const [editor] = useState(() => withHistory(withReact(createEditor())));
 
   return (
@@ -33,6 +40,7 @@ export function SlateEditor({
       <Editable
         className="container mx-auto max-w-2xl flex-grow p-8 prose prose-stone dark:prose-invert"
         renderElement={renderElement}
+        renderLeaf={renderLeaf}
         onKeyDown={(e) => {
           // console.log(e);
         }}

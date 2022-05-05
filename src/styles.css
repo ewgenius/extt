@@ -10,6 +10,14 @@
     url("/public/fonts/IBMPlexMono-Regular.otf") format("otf");
 }
 
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  src: local("JetBrains Mono"), local("JetBrains Mono"),
+    url("/public/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
 .decorator::before {
   text-align: end;
   position: absolute;
