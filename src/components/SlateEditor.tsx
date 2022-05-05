@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { createEditor, Descendant } from "slate";
+import { createEditor, Descendant, Editor, Transforms } from "slate";
 import {
   Slate,
   Editable,
@@ -42,7 +42,62 @@ export function SlateEditor({
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onKeyDown={(e) => {
-          // console.log(e);
+          console.log(e);
+
+          if (e.key === "Enter") {
+            if (e.shiftKey) {
+              e.preventDefault();
+              editor.insertSoftBreak();
+              // Transforms.setNodes(
+              //   editor,
+              //   {
+              //     type: "paragraph",
+              //   },
+              //   { match: (n) => Editor.isBlock(editor, n) }
+              // );
+            }
+          }
+
+          if (e.key === "/") {
+          }
+
+          if (e.metaKey && e.key === "a") {
+            Transforms.select(editor, {
+              anchor: Editor.start(editor, []),
+              focus: Editor.end(editor, []),
+            });
+          }
+
+          if (e.key === "Escape") {
+            Transforms.deselect(editor);
+          }
+
+          if (e.ctrlKey) {
+            switch (e.key) {
+              case "`": {
+                e.preventDefault();
+                const [match] = Editor.nodes(editor, {
+                  match: (n) => (n as any).type === "code",
+                });
+                Transforms.setNodes(
+                  editor,
+                  { type: match ? null : "code" } as any,
+                  { match: (n) => Editor.isBlock(editor, n) }
+                );
+                break;
+              }
+
+              // case 'b': {
+              //   e.preventDefault()
+              //   Transforms.setNodes(
+              //     editor,
+              //     { bold: true },
+              //     { match: n => Text.(n), split: true }
+              //   )
+              //   break
+              // }
+            }
+          }
         }}
       />
     </Slate>

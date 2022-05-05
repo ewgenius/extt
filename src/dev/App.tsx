@@ -66,7 +66,7 @@ export function App() {
     <div className="w-screen h-screen overflow-hidden flex flex-row">
       <div className="relative flex flex-col flex-grow">
         <div className="flex flex-col flex-grow overflow-y-auto">
-          <SlateEditor value={value} onSave={(e) => console.log(e)} />
+          <SlateEditor value={value} onSave={(e) => {}} />
         </div>
       </div>
     </div>
