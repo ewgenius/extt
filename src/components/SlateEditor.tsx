@@ -47,14 +47,7 @@ export function SlateEditor({
           if (e.key === "Enter") {
             if (e.shiftKey) {
               e.preventDefault();
-              editor.insertSoftBreak();
-              // Transforms.setNodes(
-              //   editor,
-              //   {
-              //     type: "paragraph",
-              //   },
-              //   { match: (n) => Editor.isBlock(editor, n) }
-              // );
+              editor.insertText("\n");
             }
           }
 
