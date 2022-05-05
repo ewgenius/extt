@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "extt",
+    "productName": "Extt",
     "version": "0.1.0"
   },
   "build": {
@@ -54,7 +54,7 @@
     },
     "windows": [
       {
-        "title": "extt",
+        "title": "Extt",
         "width": 800,
         "height": 600,
         "resizable": true,
