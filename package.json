@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
-    "@tauri-apps/api": "^1.0.0-rc.3",
+    "@tauri-apps/api": "^1.0.0-rc.4",
     "marked": "^4.0.15",
     "prismjs": "^1.28.0",
     "react": "^18.0.0",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
-    "@tauri-apps/cli": "^1.0.0-rc.8",
+    "@tauri-apps/cli": "^1.0.0-rc.9",
     "@types/marked": "^4.0.3",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.0",
