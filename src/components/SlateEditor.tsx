@@ -42,12 +42,16 @@ export function SlateEditor({
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onKeyDown={(e) => {
-          console.log(e);
-
           if (e.key === "Enter") {
             if (e.shiftKey) {
               e.preventDefault();
               editor.insertText("\n");
+            } else {
+              e.preventDefault();
+              editor.insertNode({
+                type: "paragraph",
+                children: [{ text: "" }],
+              });
             }
           }
 
