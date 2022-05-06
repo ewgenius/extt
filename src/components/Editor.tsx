@@ -31,11 +31,11 @@ export function Editor() {
   const save = useDebouncedCallback(
     async (value: Descendant[]) => {
       if (selectedEntry) {
-        console.log(serialize(value));
-        // await fs.writeFile({
-        //   path: selectedEntry.path,
-        //   contents: serialize(value),
-        // });
+        // console.log(serialize(value));
+        await fs.writeFile({
+          path: selectedEntry.path,
+          contents: serialize(value),
+        });
       }
     },
     500,

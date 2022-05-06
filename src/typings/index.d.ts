@@ -3,7 +3,7 @@ import type { ReactEditor } from "slate-react";
 import type { HistoryEditor } from "slate-history";
 
 type CustomText = {
-  type?: string;
+  // type?: string;
   text: string;
   bold?: true;
   italic?: true;
