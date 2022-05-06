@@ -5,7 +5,7 @@ export function useDebouncedCallback<T extends Function>(
   time: number,
   deps: React.DependencyList
 ): T {
-  let timeout: number;
+  let timeout: NodeJS.Timeout;
 
   return useCallback((...args: any) => {
     if (timeout) {

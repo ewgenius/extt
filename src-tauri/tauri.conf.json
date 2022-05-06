@@ -47,7 +47,17 @@
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": true,
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$DATA/com.tauri.dev/*",
+          "$HOME/*"
+        ]
+      }
     },
     "windows": [
       {
