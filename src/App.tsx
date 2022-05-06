@@ -1,68 +1,55 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DocumentAddIcon, DotsVerticalIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
 import { AppContext } from "#/AppContext";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
-import { useStore } from "#/StoreContext";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
+import { useStoredState } from "#/hooks/useStoredState";
+import { useSidebarState } from "#/hooks/useSidebarState";
 
 export function App() {
-  const { set, get } = useStore();
-  const [path, setPath] = useState<string | null>(null);
-
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const toggleSidebar = useCallback(
-    () => setSidebarOpen(!sidebarOpen),
-    [sidebarOpen]
-  );
-
+  const [path, setPath] = useStoredState<string | null>("path", null);
   const [entries, setEntries] = useState<FileEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
-
-  useAsyncEffect(async () => {
-    const storedPath = await get("path");
-    if (storedPath) {
-      console.log(storedPath);
-      setPath(storedPath as string);
-    }
-  }, []);
-
-  useAsyncEffect(async () => {
-    if (path) {
-      const e = await fs.readDir(path, {
-        recursive: true,
-      });
-
-      const filtered =
-        e && e.filter((e) => e.children || e.path.endsWith(".md"));
-
-      setEntries(filtered);
-
-      if (filtered) {
-        const selectedPath = await get<string>("selectedPath");
-        if (selectedPath) {
-          selectEntry({
-            path: selectedPath,
-          });
-        }
-      }
-    }
-  }, [path]);
+  const { sidebarOpen, toggleSidebar } = useSidebarState();
+  const [selectedFilePath, setSelectedFilePath] = useStoredState<string | null>(
+    "selectedFile",
+    null
+  );
 
   const selectEntry = async (entry: FileEntry) => {
     setSelectedEntry(entry);
-    set("selectedPath", entry.path);
+    setSelectedFilePath(entry.path);
   };
 
   const open = async () => {
     const p = await dialog.open({
       directory: true,
     });
-    set("path", p as string);
     setPath(p as string);
   };
+
+  useAsyncEffect(async () => {
+    if (path) {
+      const tree = await fs.readDir(path, {
+        recursive: true,
+      });
+
+      setEntries(
+        tree && tree.filter((e) => e.children || e.path.endsWith(".md"))
+      );
+    }
+  }, [path]);
+
+  useEffect(() => {
+    if (selectedFilePath) {
+      selectEntry({
+        path: selectedFilePath,
+      });
+    }
+  }, [selectedFilePath]);
 
   if (!path) {
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Store } from "tauri-plugin-store-api";
+// import { Store } from "tauri-plugin-store-api";
 
 import { App } from "#/App";
 import { App as DevApp } from "#/dev/App";
@@ -18,9 +18,10 @@ if (window.hasOwnProperty("__TAURI__")) {
         value={{
           set: (key, value) =>
             new Promise((r) => {
-              localStorage.setItem(key, String(value));
+              localStorage.setItem(key, value as string);
               r();
             }),
+
           get: (key) =>
             new Promise((r) => {
               const v = localStorage.getItem(key);
@@ -32,6 +33,7 @@ if (window.hasOwnProperty("__TAURI__")) {
             }),
 
           has: (key) => new Promise((r) => r(!!localStorage.getItem(key))),
+
           // set: store.set,
           // get: store.get,
           // has: store.has,
