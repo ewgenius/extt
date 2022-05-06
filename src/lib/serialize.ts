@@ -11,7 +11,6 @@ export function serializeNode(node: Descendant): string {
       return `*${node.text}*`;
     }
     if (node.code) {
-      console.log(node);
       return "`" + node.text + "`";
     }
     if (node.href) {
@@ -45,8 +44,6 @@ export function serializeNode(node: Descendant): string {
         return `*${children}*`;
 
       case "code":
-        return children;
-
       case "paragraph":
       default:
         return children;
