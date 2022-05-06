@@ -42,6 +42,13 @@ function processLeafs(tokens: marked.Token[]): CustomText[] {
         };
       }
 
+      case "image": {
+        return {
+          text: t.text,
+          image: t.href,
+        };
+      }
+
       default:
         return {
           text: t.raw,
@@ -101,6 +108,20 @@ export function deserialize(str: string): Descendant[] {
             children: [
               {
                 text: token.text,
+              },
+            ],
+          },
+        ];
+
+      case "image":
+        return [
+          ...arr,
+          {
+            type: "image",
+            children: [
+              {
+                text: "",
+                image: token.href,
               },
             ],
           },

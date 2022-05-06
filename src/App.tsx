@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  DocumentAddIcon,
-  DotsVerticalIcon,
-  FolderAddIcon,
-  FolderIcon,
-  FolderOpenIcon,
-  HomeIcon,
-} from "@heroicons/react/outline";
+import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
 import { AppContext } from "#/AppContext";
@@ -15,6 +8,23 @@ import { Editor } from "#/components/Editor";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
 import { useStoredState } from "#/hooks/useStoredState";
 import { useSidebarState } from "#/hooks/useSidebarState";
+
+const welcomeTemplate = `# Welcome to Extt!
+
+## What it can do?
+
+> to be done...
+
+\`\`\`scala
+
+Monada([]>=:)
+
+\`\`\`
+
+_Ivag preved!_
+
+![alt text](https://c.tenor.com/CHc0B6gKHqUAAAAj/deadserver.gif)
+`;
 
 export function App() {
   const [path, setPath] = useStoredState<string | null>("path", null);
@@ -54,8 +64,7 @@ export function App() {
       ]);
       await fs.writeFile({
         path: `${p}/Inbox/welcome.md`,
-        contents: `# Welcome to Extt!
-`,
+        contents: welcomeTemplate,
       });
 
       selectEntry({

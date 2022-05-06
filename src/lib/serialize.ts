@@ -16,6 +16,9 @@ export function serializeNode(node: Descendant): string {
     if (node.href) {
       return `[${node.text}](${node.href})`;
     }
+    if (node.image) {
+      return `![${node.text}](${node.image})`;
+    }
 
     return node.text;
   } else {

@@ -9,6 +9,7 @@ type CustomText = {
   italic?: true;
   code?: true;
   href?: string;
+  image?: string;
 };
 type ElementType =
   | "heading-one"
@@ -19,7 +20,8 @@ type ElementType =
   | "strong"
   | "italic"
   | "blockquote"
-  | "code";
+  | "code"
+  | "image";
 
 type CustomElement = {
   type: ElementType;

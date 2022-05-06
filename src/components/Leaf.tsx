@@ -3,6 +3,14 @@ import { RenderLeafProps } from "slate-react";
 import { classNames } from "#/utils/classNames";
 
 export const Leaf: FC<RenderLeafProps> = ({ attributes, leaf, children }) => {
+  if (leaf.image) {
+    return (
+      <div className="flex justify-center">
+        <img src={leaf.image} alt={leaf.text} className="rounded-sm" />
+      </div>
+    );
+  }
+
   if (leaf.href) {
     return (
       <a
