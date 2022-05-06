@@ -1,0 +1,11 @@
+import { deserialize } from "../../src/lib/deserialize";
+
+describe("deserialize", () => {
+  it.skip("should work", () => {
+    expect(
+      deserialize(`> test
+> line 2
+> line 3`)
+    ).toBe("");
+  });
+});
