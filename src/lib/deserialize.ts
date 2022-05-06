@@ -12,7 +12,7 @@ function getHeadingType(
 
 function processLeafs(tokens: marked.Token[]): CustomText[] {
   return tokens.map((t) => {
-    console.log(t);
+    // console.log(t);
     switch (t.type) {
       case "strong": {
         return {

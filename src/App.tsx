@@ -5,8 +5,11 @@ import { FileEntry } from "@tauri-apps/api/fs";
 import { AppContext } from "./AppContext";
 import { Sidebar } from "./components/Sidebar";
 import { Editor } from "./components/Editor";
+import { useStore } from "./StoreContext";
+import { useAsyncEffect } from "./hooks/useAsyncEffect";
 
 export function App() {
+  const { set, get } = useStore();
   const [path, setPath] = useState<string | null>(null);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -18,13 +21,32 @@ export function App() {
   const [entries, setEntries] = useState<FileEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
 
+  useAsyncEffect(async () => {
+    const storedPath = await get("path");
+    if (storedPath) {
+      console.log(storedPath);
+      setPath(storedPath as string);
+    }
+  }, []);
+
   useEffect(() => {
     async function readDirectory(p: string) {
       const e = await fs.readDir(p, {
         recursive: true,
       });
 
-      setEntries(e && e.filter((e) => e.children || e.path.endsWith(".md")));
+      const filtered =
+        e && e.filter((e) => e.children || e.path.endsWith(".md"));
+      setEntries(filtered);
+
+      if (filtered) {
+        const selectedPath = await get<string>("selectedPath");
+        if (selectedPath) {
+          selectEntry({
+            path: selectedPath,
+          });
+        }
+      }
     }
 
     if (path) {
@@ -34,12 +56,14 @@ export function App() {
 
   const selectEntry = async (entry: FileEntry) => {
     setSelectedEntry(entry);
+    set("selectedPath", entry.path);
   };
 
   const open = async () => {
     const p = await dialog.open({
       directory: true,
     });
+    set("path", p as string);
     setPath(p as string);
   };
 

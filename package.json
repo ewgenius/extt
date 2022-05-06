@@ -17,7 +17,8 @@
     "react-dom": "^18.0.0",
     "slate": "^0.78.0",
     "slate-history": "^0.66.0",
-    "slate-react": "^0.78.1"
+    "slate-react": "^0.78.1",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
