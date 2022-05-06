@@ -8,7 +8,7 @@ export function serializeNode(node: Descendant): string {
       return `**${node.text}**`;
     }
     if (node.italic) {
-      return `*${node.text}*`;
+      return `_${node.text}_`;
     }
     if (node.code) {
       return "`" + node.text + "`";
@@ -35,13 +35,16 @@ export function serializeNode(node: Descendant): string {
         return `#### ${children}`;
 
       case "blockquote":
-        return `> ${children}`;
+        return children
+          .split("\n")
+          .map((l) => `> ${l}`)
+          .join("\n");
 
       case "strong":
         return `**${children}**`;
 
       case "italic":
-        return `*${children}*`;
+        return `_${children}_`;
 
       case "code":
       case "paragraph":
@@ -52,5 +55,5 @@ export function serializeNode(node: Descendant): string {
 }
 
 export function serialize(nodes: Descendant[]): string {
-  return nodes.map((node) => serializeNode(node)).join("\n");
+  return nodes.map((node) => serializeNode(node)).join("\n\n");
 }
