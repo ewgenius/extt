@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { fs } from "@tauri-apps/api";
 import { Descendant } from "slate";
-import { useAppContext } from "../AppContext";
-import { useDebouncedCallback } from "../utils/useDebouncedCallback";
-import { SlateEditor } from "./SlateEditor";
-import { serialize } from "../lib/serialize";
-import { deserialize } from "../lib/deserialize";
+import { useAppContext } from "#/AppContext";
+import { useDebouncedCallback } from "#/utils/useDebouncedCallback";
+import { SlateEditor } from "#/components/SlateEditor";
+import { serialize } from "#/lib/serialize";
+import { deserialize } from "#/lib/deserialize";
 
 const initialValue: Descendant[] = [];
 

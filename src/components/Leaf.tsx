@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { RenderLeafProps } from "slate-react";
-import { classNames } from "../utils/classNames";
+import { classNames } from "#/utils/classNames";
 
 export const Leaf: FC<RenderLeafProps> = ({ attributes, leaf, children }) => {
   if (leaf.href) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Descendant } from "slate";
-import { SlateEditor } from "../components/SlateEditor";
+import { SlateEditor } from "#/components/SlateEditor";
 
 const value: Descendant[] = [
   {

@@ -7,8 +7,8 @@ import {
   InboxIcon,
   ArchiveIcon,
 } from "@heroicons/react/outline";
-import { classNames } from "../utils/classNames";
-import { useAppContext } from "../AppContext";
+import { classNames } from "#/utils/classNames";
+import { useAppContext } from "#/AppContext";
 
 interface TreeEntryProps {
   root?: boolean;

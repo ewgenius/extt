@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { DocumentAddIcon, DotsVerticalIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
-import { AppContext } from "./AppContext";
-import { Sidebar } from "./components/Sidebar";
-import { Editor } from "./components/Editor";
-import { useStore } from "./StoreContext";
-import { useAsyncEffect } from "./hooks/useAsyncEffect";
+import { AppContext } from "#/AppContext";
+import { Sidebar } from "#/components/Sidebar";
+import { Editor } from "#/components/Editor";
+import { useStore } from "#/StoreContext";
+import { useAsyncEffect } from "#/hooks/useAsyncEffect";
 
 export function App() {
   const { set, get } = useStore();
@@ -29,14 +29,15 @@ export function App() {
     }
   }, []);
 
-  useEffect(() => {
-    async function readDirectory(p: string) {
-      const e = await fs.readDir(p, {
+  useAsyncEffect(async () => {
+    if (path) {
+      const e = await fs.readDir(path, {
         recursive: true,
       });
 
       const filtered =
         e && e.filter((e) => e.children || e.path.endsWith(".md"));
+
       setEntries(filtered);
 
       if (filtered) {
@@ -47,10 +48,6 @@ export function App() {
           });
         }
       }
-    }
-
-    if (path) {
-      readDirectory(path);
     }
   }, [path]);
 

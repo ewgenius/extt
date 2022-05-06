@@ -1,6 +1,6 @@
-import { useAppContext } from "../AppContext";
+import { useAppContext } from "#/AppContext";
 import { MenuIcon } from "@heroicons/react/outline";
-import { TreeEntry } from "./TreeEntry";
+import { TreeEntry } from "#/components/TreeEntry";
 
 export function Sidebar({}) {
   const { path, entries, toggleSidebar, sidebarOpen } = useAppContext();

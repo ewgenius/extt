@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Store } from "tauri-plugin-store-api";
 
-import { App } from "./App";
-import { App as DevApp } from "./dev/App";
-import { StoreContext } from "./StoreContext";
+import { App } from "#/App";
+import { App as DevApp } from "#/dev/App";
+import { StoreContext } from "#/StoreContext";
 
 import "./styles.css";
 

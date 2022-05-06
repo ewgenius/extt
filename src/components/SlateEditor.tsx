@@ -8,8 +8,8 @@ import {
   RenderLeafProps,
 } from "slate-react";
 import { withHistory } from "slate-history";
-import { Element } from "./Element";
-import { Leaf } from "./Leaf";
+import { Element } from "#/components/Element";
+import { Leaf } from "#/components/Leaf";
 
 const renderElement = (props: RenderElementProps) => <Element {...props} />;
 

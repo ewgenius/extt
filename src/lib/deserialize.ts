@@ -1,6 +1,6 @@
 import { Descendant } from "slate";
 import { marked } from "marked";
-import { CustomText } from "../typings";
+import { CustomText } from "#/typings";
 
 function getHeadingType(
   token: marked.Tokens.Heading
