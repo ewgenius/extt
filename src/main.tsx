@@ -34,6 +34,12 @@ if (window.hasOwnProperty("__TAURI__")) {
 
           has: (key) => new Promise((r) => r(!!localStorage.getItem(key))),
 
+          remove: (key) =>
+            new Promise((r) => {
+              localStorage.removeItem(key);
+              r(true);
+            }),
+
           // set: store.set,
           // get: store.get,
           // has: store.has,

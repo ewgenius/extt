@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { FileEntry } from "@tauri-apps/api/fs";
 
 export interface AppContextState {
+  goHome: () => void;
   path: string;
   sidebarOpen: boolean;
   toggleSidebar: () => void;
@@ -12,6 +13,7 @@ export interface AppContextState {
 }
 
 export const AppContext = createContext<AppContextState>({
+  goHome: () => {},
   path: "",
   sidebarOpen: true,
   toggleSidebar: () => {},

@@ -1,5 +1,12 @@
-import { useEffect, useState } from "react";
-import { DocumentAddIcon, DotsVerticalIcon } from "@heroicons/react/outline";
+import { useCallback, useEffect, useState } from "react";
+import {
+  DocumentAddIcon,
+  DotsVerticalIcon,
+  FolderAddIcon,
+  FolderIcon,
+  FolderOpenIcon,
+  HomeIcon,
+} from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
 import { AppContext } from "#/AppContext";
@@ -24,15 +31,64 @@ export function App() {
     setSelectedFilePath(entry.path);
   };
 
-  const open = async () => {
+  const openFolderDialog = async () => {
     const p = await dialog.open({
       directory: true,
     });
-    setPath(p as string);
+
+    if (p) {
+      setSelectedEntry(null);
+      setSelectedFilePath(null);
+      setPath(p as string);
+    }
   };
 
+  const createFolderDialog = async () => {
+    const p = await dialog.save();
+
+    if (p) {
+      await fs.createDir(p);
+      await Promise.all([
+        fs.createDir(`${p}/Inbox`),
+        fs.createDir(`${p}/Archive`),
+      ]);
+      await fs.writeFile({
+        path: `${p}/Inbox/welcome.md`,
+        contents: `# Welcome to Extt!
+`,
+      });
+
+      selectEntry({
+        path: `${p}/Inbox/welcome.md`,
+      });
+      setPath(p as string);
+    }
+  };
+
+  const createNewNote = useCallback(async () => {}, [path]);
+
+  const goHome = () => {
+    setSelectedEntry(null);
+    setSelectedFilePath(null);
+    setPath(null);
+  };
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey && e.key === "o") {
+        openFolderDialog();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  });
+
   useAsyncEffect(async () => {
-    if (path) {
+    if (path && path !== "null") {
+      console.log(path);
       const tree = await fs.readDir(path, {
         recursive: true,
       });
@@ -51,10 +107,26 @@ export function App() {
     }
   }, [selectedFilePath]);
 
-  if (!path) {
+  if (!path || path === null) {
     return (
       <div className="w-screen h-screen overflow-hidden flex flex-col justify-center items-center">
-        <button onClick={open}>open</button>
+        <div className="flex gap-4 items-center">
+          <button
+            className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs"
+            onClick={createFolderDialog}
+          >
+            <FolderAddIcon className="text-current w-4 h-4" />
+            Bootstrap notes folder
+          </button>
+          or
+          <button
+            className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs"
+            onClick={openFolderDialog}
+          >
+            <FolderOpenIcon className="text-current w-4 h-4" />
+            Select notes folder
+          </button>
+        </div>
       </div>
     );
   }
@@ -62,6 +134,7 @@ export function App() {
   return (
     <AppContext.Provider
       value={{
+        goHome,
         path,
         sidebarOpen,
         toggleSidebar,
@@ -75,20 +148,14 @@ export function App() {
         <Sidebar />
 
         <div className="relative flex flex-col flex-grow">
-          <div className="fixed top-0 right-0 p-2 pr-4">
-            <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
-              <DotsVerticalIcon className="w-4 h-4 text-current" />
-            </button>
-          </div>
-
           {selectedEntry ? (
             <Editor />
           ) : (
             <div className="h-full flex flex-col justify-center items-center">
-              <button className="flex gap-2 text-stone-700 text-lg">
-                <DocumentAddIcon className="w-6 h-6 text-current" />
+              {/* <button className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs">
+                <DocumentAddIcon className="w-4 h-4 text-current" />
                 <span>Create New Note</span>
-              </button>
+              </button> */}
             </div>
           )}
         </div>

@@ -58,11 +58,13 @@ export function SlateEditor({
           if (e.key === "/") {
           }
 
-          if (e.metaKey && e.key === "a") {
-            Transforms.select(editor, {
-              anchor: Editor.start(editor, []),
-              focus: Editor.end(editor, []),
-            });
+          if (e.metaKey) {
+            if (e.key === "a") {
+              Transforms.select(editor, {
+                anchor: Editor.start(editor, []),
+                focus: Editor.end(editor, []),
+              });
+            }
           }
 
           if (e.key === "Escape") {

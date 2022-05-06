@@ -8,7 +8,7 @@ export function useStoredState<S>(
   serialize: (value: S) => string = (value) => value as any as string,
   deserialize: (value: string) => S = (value) => value as any as S
 ): [S, Dispatch<SetStateAction<S>>] {
-  const { set, get } = useStore();
+  const { set, get, remove } = useStore();
   const [state, setState] = useState<S>(initialState);
 
   useAsyncEffect(async () => {
@@ -22,11 +22,19 @@ export function useStoredState<S>(
     if (typeof s === "function") {
       setState((p) => {
         const newValue = (s as Function)(p);
-        set(key, serialize(newValue));
+        if (newValue === null) {
+          remove(key);
+        } else {
+          set(key, serialize(newValue));
+        }
         return newValue;
       });
     } else {
-      set(key, serialize(s));
+      if (s === null) {
+        remove(key);
+      } else {
+        set(key, serialize(s));
+      }
       setState(s);
     }
   };

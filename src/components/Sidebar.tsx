@@ -1,9 +1,27 @@
 import { useAppContext } from "#/AppContext";
-import { MenuIcon } from "@heroicons/react/outline";
+import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { TreeEntry } from "#/components/TreeEntry";
 
 export function Sidebar({}) {
-  const { path, entries, toggleSidebar, sidebarOpen } = useAppContext();
+  const { path, entries, goHome, toggleSidebar, sidebarOpen } = useAppContext();
+
+  const buttons = (
+    <div className="flex p-1">
+      <button
+        onClick={toggleSidebar}
+        className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
+      >
+        <MenuIcon className="w-4 h-4 text-current" />
+      </button>
+
+      <button
+        onClick={goHome}
+        className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
+      >
+        <HomeIcon className="w-4 h-4 text-current" />
+      </button>
+    </div>
+  );
 
   return sidebarOpen ? (
     <div className="flex flex-col min-w-[220px]">
@@ -41,15 +59,9 @@ export function Sidebar({}) {
         </div>
       </div>
 
-      <div className="p-2 flex flex-row gap-1">
-        <button
-          onClick={toggleSidebar}
-          className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
-        >
-          <MenuIcon className="w-4 h-4 text-current" />
-        </button>
+      {buttons}
 
-        {/*
+      {/*
         <div className="flex-grow" />
         
         <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
@@ -59,14 +71,8 @@ export function Sidebar({}) {
         <button className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100">
           <DocumentAddIcon className="w-4 h-4 text-current" />
         </button> */}
-      </div>
     </div>
   ) : (
-    <button
-      onClick={toggleSidebar}
-      className="fixed bottom-2 z-10 left-2 p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
-    >
-      <MenuIcon className="w-4 h-4 text-current" />
-    </button>
+    <div className="fixed left-0 bottom-0 z-10">{buttons}</div>
   );
 }
