@@ -38,7 +38,7 @@ export function SlateEditor({
       }}
     >
       <Editable
-        className="container mx-auto max-w-4xl flex-grow p-8 prose prose-stone dark:prose-invert"
+        className="container mx-auto max-w-4xl flex-grow p-8 prose prose-stone dark:prose-invert select-text"
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onKeyDown={(e) => {

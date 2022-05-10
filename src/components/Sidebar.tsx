@@ -25,7 +25,7 @@ export function Sidebar() {
   );
 
   return sidebarOpen ? (
-    <div className="h-full max-h-full flex flex-col min-w-[220px]">
+    <div className="h-full max-h-full flex flex-col min-w-[220px] shrink-0">
       <div className="h-full">
         <Scroller>
           <div className="p-2 pb-[32px]">

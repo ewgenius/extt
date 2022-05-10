@@ -153,7 +153,7 @@ export function App() {
         selectEntry,
       }}
     >
-      <div className="w-screen h-screen overflow-hidden flex flex-row">
+      <div className="w-screen h-screen overflow-hidden flex flex-row select-none">
         <Sidebar />
 
         <div className="h-full relative flex flex-col flex-grow">
