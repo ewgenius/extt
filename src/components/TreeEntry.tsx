@@ -34,10 +34,18 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
     <ul className={classNames(!root && "pl-4")}>
       {entry.children
         .sort((a, b) => {
-          if (a.children) {
+          if (a.name === "Inbox") {
             return -1;
-          } else if (b.children) {
+          }
+          if (b.name === "Inbox") {
             return 1;
+          }
+          if (!a.children || !b.children) {
+            if (a.children) {
+              return -1;
+            } else if (b.children) {
+              return 1;
+            }
           }
 
           if (a.name && b.name) {

@@ -2,9 +2,8 @@ import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { useAppContext } from "#/AppContext";
 import { Scroller } from "#/components/Scroller";
 import { TreeEntry } from "#/components/TreeEntry";
-import classes from "./Sidebar.module.css";
 
-export function Sidebar({}) {
+export function Sidebar() {
   const { path, entries, goHome, toggleSidebar, sidebarOpen } = useAppContext();
 
   const buttons = (
