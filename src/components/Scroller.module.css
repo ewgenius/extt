@@ -1,0 +1,39 @@
+.content {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.thumb {
+  position: absolute;
+  width: 8px;
+  height: 64px;
+  border-radius: 4px;
+  top: 6px;
+  right: 6px;
+  background-color: #fff;
+  opacity: 0.25;
+  cursor: pointer;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+
+.thumb:hover {
+  opacity: 0.4;
+}

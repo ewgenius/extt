@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Descendant } from "slate";
 import { SlateEditor } from "#/components/SlateEditor";
+import { Scroller } from "#/components/Scroller";
 
 const value: Descendant[] = [
   {
@@ -39,7 +39,7 @@ const value: Descendant[] = [
     type: "paragraph",
     children: [
       {
-        text: "paragraph",
+        text: "paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph ",
       },
     ],
   },
@@ -64,9 +64,11 @@ const value: Descendant[] = [
 export function App() {
   return (
     <div className="w-screen h-screen overflow-hidden flex flex-row">
-      <div className="relative flex flex-col flex-grow">
-        <div className="flex flex-col flex-grow overflow-y-auto">
-          <SlateEditor value={value} onSave={(e) => {}} />
+      <div className="h-full relative flex flex-col flex-grow">
+        <div className="h-full flex flex-col flex-grow">
+          <Scroller>
+            <SlateEditor value={value} onSave={(e) => {}} />
+          </Scroller>
         </div>
       </div>
     </div>

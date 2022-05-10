@@ -156,7 +156,7 @@ export function App() {
       <div className="w-screen h-screen overflow-hidden flex flex-row">
         <Sidebar />
 
-        <div className="relative flex flex-col flex-grow">
+        <div className="h-full relative flex flex-col flex-grow">
           {selectedEntry ? (
             <Editor />
           ) : (

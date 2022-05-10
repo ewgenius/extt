@@ -1,12 +1,14 @@
-import { useAppContext } from "#/AppContext";
 import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
+import { useAppContext } from "#/AppContext";
+import { Scroller } from "#/components/Scroller";
 import { TreeEntry } from "#/components/TreeEntry";
+import classes from "./Sidebar.module.css";
 
 export function Sidebar({}) {
   const { path, entries, goHome, toggleSidebar, sidebarOpen } = useAppContext();
 
   const buttons = (
-    <div className="flex p-1">
+    <div className="flex px-2 py-1 h-[32px] absolute bottom-0 backdrop-blur-lg w-full">
       <button
         onClick={toggleSidebar}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
@@ -24,39 +26,41 @@ export function Sidebar({}) {
   );
 
   return sidebarOpen ? (
-    <div className="flex flex-col min-w-[220px]">
-      <div className="flex-grow overflow-auto">
-        <div className="p-2">
-          {path && entries && (
-            <>
-              <ul className="mb-2">
-                <TreeEntry
-                  root
-                  entry={{
-                    name: "/",
-                    path: path,
-                    children: entries.filter(
-                      ({ name }) => name === "Inbox" || name === "Archive"
-                    ),
-                  }}
-                />
-              </ul>
+    <div className="h-full max-h-full flex flex-col min-w-[220px]">
+      <div className="h-full">
+        <Scroller>
+          <div className="p-2 pb-[32px]">
+            {path && entries && (
+              <>
+                <ul className="mb-2">
+                  <TreeEntry
+                    root
+                    entry={{
+                      name: "/",
+                      path: path,
+                      children: entries.filter(
+                        ({ name }) => name === "Inbox" || name === "Archive"
+                      ),
+                    }}
+                  />
+                </ul>
 
-              <ul>
-                <TreeEntry
-                  root
-                  entry={{
-                    name: "/",
-                    path: path,
-                    children: entries.filter(
-                      ({ name }) => name !== "Inbox" && name !== "Archive"
-                    ),
-                  }}
-                />
-              </ul>
-            </>
-          )}
-        </div>
+                <ul>
+                  <TreeEntry
+                    root
+                    entry={{
+                      name: "/",
+                      path: path,
+                      children: entries.filter(
+                        ({ name }) => name !== "Inbox" && name !== "Archive"
+                      ),
+                    }}
+                  />
+                </ul>
+              </>
+            )}
+          </div>
+        </Scroller>
       </div>
 
       {buttons}
