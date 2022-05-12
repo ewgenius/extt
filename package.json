@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
     "@tauri-apps/api": "^1.0.0-rc.5",
     "marked": "^4.0.15",

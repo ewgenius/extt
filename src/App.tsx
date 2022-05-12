@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
-import { AppContext } from "#/AppContext";
+import { AppContext, RootEntry } from "#/AppContext";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
@@ -28,7 +28,7 @@ _Ivag preved!_
 
 export function App() {
   const [path, setPath] = useStoredState<string | null>("path", null);
-  const [entries, setEntries] = useState<FileEntry[]>([]);
+  const [entries, setEntries] = useState<RootEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
   const { sidebarOpen, toggleSidebar } = useSidebarState();
   const [selectedFilePath, setSelectedFilePath] = useStoredState<string | null>(
@@ -60,10 +60,16 @@ export function App() {
       await fs.createDir(p);
       await Promise.all([
         fs.createDir(`${p}/Inbox`),
+        fs.createDir(`${p}/Daily`),
         fs.createDir(`${p}/Archive`),
       ]);
+
       await fs.writeFile({
         path: `${p}/Inbox/welcome.md`,
+        contents: welcomeTemplate,
+      });
+      await fs.writeFile({
+        path: `${p}/Daily/welcome.md`,
         contents: welcomeTemplate,
       });
 
@@ -103,7 +109,32 @@ export function App() {
       });
 
       setEntries(
-        tree && tree.filter((e) => e.children || e.path.endsWith(".md"))
+        tree &&
+          tree
+            .filter((e) => e.children || e.path.endsWith(".md"))
+            .map((e) => {
+              const relativePath = e.path.slice(path.length);
+              const isFolder = !!e.children;
+
+              const rootEntry: RootEntry = {
+                ...e,
+                relativePath,
+              };
+
+              if (isFolder) {
+                if (relativePath === "/Inbox") {
+                  rootEntry.type = "Inbox";
+                }
+                if (relativePath === "/Archive") {
+                  rootEntry.type = "Archive";
+                }
+                if (relativePath === "/Daily") {
+                  rootEntry.type = "Daily";
+                }
+              }
+
+              return rootEntry;
+            })
       );
     }
   }, [path]);

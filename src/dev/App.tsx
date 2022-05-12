@@ -65,11 +65,7 @@ export function App() {
   return (
     <div className="w-screen h-screen overflow-hidden flex flex-row">
       <div className="h-full relative flex flex-col flex-grow">
-        <div className="h-full flex flex-col flex-grow">
-          <Scroller>
-            <SlateEditor value={value} onSave={(e) => {}} />
-          </Scroller>
-        </div>
+        <SlateEditor value={value} onSave={(e) => {}} />
       </div>
     </div>
   );

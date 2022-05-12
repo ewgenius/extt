@@ -6,9 +6,10 @@ import {
   DocumentTextIcon,
   InboxIcon,
   ArchiveIcon,
+  CalendarIcon,
 } from "@heroicons/react/outline";
 import { classNames } from "#/utils/classNames";
-import { useAppContext } from "#/AppContext";
+import { RootEntry, useAppContext } from "#/AppContext";
 
 interface TreeEntryProps {
   root?: boolean;
@@ -19,7 +20,7 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
   const [expanded, setExpanded] = useState(true);
   const toggle = useCallback(() => setExpanded(!expanded), [expanded]);
 
-  const { selectedEntry, selectEntry } = useAppContext();
+  const { path, selectedEntry, selectEntry } = useAppContext();
 
   const click = useCallback(() => {
     selectEntry(entry);
@@ -27,19 +28,45 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
 
   const isSelected = selectedEntry?.path === entry.path;
   const isFolder = !!entry.children;
-  const isInbox = isFolder && entry.name === "Inbox";
-  const isArchive = isFolder && entry.name === "Archive";
 
+  const relativePath = entry.path.slice(path.length);
+  const isInbox = isFolder && relativePath === "/Inbox";
+  const isArchive = isFolder && relativePath === "/Archive";
+  const isDaily = isFolder && relativePath === "/Daily";
+  const isInsideDaily = relativePath.startsWith("/Daily");
+
+  const Order: Record<string, number> = {
+    Inbox: -3,
+    Daily: -2,
+    Archive: -1,
+  };
+
+  function getOrder(e: FileEntry): number {
+    if (e.name && e.name in Order) {
+      return Order[e.name];
+    }
+
+    return 0;
+  }
+
+  const direction = isInsideDaily ? -1 : 1;
   const children = entry.children && expanded && (
     <ul className={classNames(!root && "pl-4")}>
       {entry.children
         .sort((a, b) => {
-          if (a.name === "Inbox") {
+          const orderA = getOrder(a);
+          const orderB = getOrder(b);
+
+          if (orderA && orderB) {
+            return orderA - orderB;
+          }
+          if (orderA && !orderB) {
             return -1;
           }
-          if (b.name === "Inbox") {
+          if (orderB && !orderA) {
             return 1;
           }
+
           if (!a.children || !b.children) {
             if (a.children) {
               return -1;
@@ -50,10 +77,10 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
 
           if (a.name && b.name) {
             if (a.name > b.name) {
-              return 1;
+              return direction * 1;
             }
             if (a.name < b.name) {
-              return -1;
+              return direction * -1;
             }
           }
           return 0;
@@ -87,6 +114,8 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
             <InboxIcon className="w-4 h-4 text-current" />
           ) : isArchive ? (
             <ArchiveIcon className="w-4 h-4 text-current" />
+          ) : isDaily ? (
+            <CalendarIcon className="w-4 h-4 text-current" />
           ) : expanded ? (
             <FolderOpenIcon className="w-4 h-4 text-current" />
           ) : (

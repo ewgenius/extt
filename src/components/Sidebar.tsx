@@ -38,7 +38,10 @@ export function Sidebar() {
                       name: "/",
                       path: path,
                       children: entries.filter(
-                        ({ name }) => name === "Inbox" || name === "Archive"
+                        ({ name }) =>
+                          name === "Inbox" ||
+                          name === "Archive" ||
+                          name === "Daily"
                       ),
                     }}
                   />
@@ -51,7 +54,10 @@ export function Sidebar() {
                       name: "/",
                       path: path,
                       children: entries.filter(
-                        ({ name }) => name !== "Inbox" && name !== "Archive"
+                        ({ name }) =>
+                          name !== "Inbox" &&
+                          name !== "Archive" &&
+                          name !== "Daily"
                       ),
                     }}
                   />

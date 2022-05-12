@@ -21,7 +21,8 @@ type ElementType =
   | "italic"
   | "blockquote"
   | "code"
-  | "image";
+  | "image"
+  | "command";
 
 type CustomElement = {
   type: ElementType;

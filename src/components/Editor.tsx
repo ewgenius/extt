@@ -3,7 +3,6 @@ import { fs } from "@tauri-apps/api";
 import { Descendant } from "slate";
 import { useAppContext } from "#/AppContext";
 import { useDebouncedCallback } from "#/utils/useDebouncedCallback";
-import { Scroller } from "#/components/Scroller";
 import { SlateEditor } from "#/components/SlateEditor";
 import { serialize } from "#/lib/serialize";
 import { deserialize } from "#/lib/deserialize";
@@ -46,9 +45,7 @@ export function Editor() {
   if (selectedEntry && loaded) {
     return (
       <div className="h-full flex flex-col flex-grow">
-        <Scroller>
-          <SlateEditor key={selectedEntry.path} value={value} onSave={save} />
-        </Scroller>
+        <SlateEditor key={selectedEntry.path} value={value} onSave={save} />
       </div>
     );
   }
