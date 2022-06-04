@@ -30,65 +30,6 @@ const Logo = () => {
   return <span className="text-4xl mt-8">{States[frame]}</span>;
 };
 
-const value = [
-  {
-    type: "heading-one",
-    children: [
-      {
-        text: "Heading 1",
-      },
-    ],
-  },
-  {
-    type: "heading-two",
-    children: [
-      {
-        text: "Heading 2",
-      },
-    ],
-  },
-  {
-    type: "heading-three",
-    children: [
-      {
-        text: "Heading 3",
-      },
-    ],
-  },
-  {
-    type: "heading-four",
-    children: [
-      {
-        text: "Heading 4",
-      },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph ",
-      },
-    ],
-  },
-  {
-    type: "blockquote",
-    children: [
-      {
-        text: "test blockquote",
-      },
-    ],
-  },
-  {
-    type: "code",
-    children: [
-      {
-        text: `const a = Test`,
-      },
-    ],
-  },
-];
-
 const Home: NextPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
