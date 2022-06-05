@@ -7,34 +7,38 @@ const ThumbOffset = 6;
 
 export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
   const content = useRef<HTMLDivElement>(null);
+  const contentWrapper = useRef<HTMLDivElement>(null);
   const thumb = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    onScoll();
-
-    const resizeObserver = new ResizeObserver(() => {
-      if (content.current && thumb.current) {
-        const { offsetHeight, scrollHeight } = content.current;
-        if (scrollHeight <= offsetHeight) {
-          thumb.current.style.visibility = "hidden";
-        } else {
-          thumb.current.style.visibility = "visible";
-        }
-      }
-
-      onScoll();
-    });
-
+    const resizeObserver = new ResizeObserver(onResize);
+    contentWrapper.current && resizeObserver.observe(contentWrapper.current);
     content.current && resizeObserver.observe(content.current);
 
     return () => {
+      contentWrapper.current &&
+        resizeObserver.unobserve(contentWrapper.current);
       content.current && resizeObserver.unobserve(content.current);
     };
   }, []);
 
+  const onResize = useCallback(() => {
+    console.log("on resize");
+    if (contentWrapper.current && thumb.current) {
+      const { offsetHeight, scrollHeight } = contentWrapper.current;
+      if (scrollHeight <= offsetHeight) {
+        thumb.current.style.visibility = "hidden";
+      } else {
+        thumb.current.style.visibility = "visible";
+      }
+    }
+
+    onScoll();
+  }, []);
+
   const onScoll = useCallback(() => {
-    if (content.current && thumb.current) {
-      const { offsetHeight, scrollHeight, scrollTop } = content.current;
+    if (contentWrapper.current && thumb.current) {
+      const { offsetHeight, scrollHeight, scrollTop } = contentWrapper.current;
       const calculatedThumbHeight =
         offsetHeight * (offsetHeight / scrollHeight);
       const thumbHeight =
@@ -56,8 +60,12 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   return (
     <div className="w-full h-full flex-grow relative">
-      <div ref={content} onScroll={onScoll} className={classes.content}>
-        {children}
+      <div
+        ref={contentWrapper}
+        onScroll={onScoll}
+        className={classes.contentWrapper}
+      >
+        <div ref={content}>{children}</div>
       </div>
       <div className={classes.scrollbar}>
         <div

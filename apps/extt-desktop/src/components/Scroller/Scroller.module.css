@@ -1,4 +1,4 @@
-.content {
+.contentWrapper {
   height: 100%;
   width: 100%;
   overflow: auto;
@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.content::-webkit-scrollbar {
+.contentWrapper::-webkit-scrollbar {
   display: none;
 }
 
@@ -23,7 +23,7 @@
   position: absolute;
   width: 8px;
   border-radius: 4px;
-  opacity: 0.2;
+  opacity: 0.05;
   cursor: pointer;
   transition-property: opacity;
   transition-timing-function: ease-in-out;
