@@ -3,9 +3,17 @@ import { classNames } from "#/utils/classNames";
 import classes from "./Scroller.module.css";
 
 const ThumbHeightMin = 64;
+const ThumbWidth = 8;
 const ThumbOffset = 6;
 
-export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
+export interface ScrollerProps {
+  padded?: boolean;
+}
+
+export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
+  children,
+  padded,
+}) => {
   const content = useRef<HTMLDivElement>(null);
   const contentWrapper = useRef<HTMLDivElement>(null);
   const thumb = useRef<HTMLDivElement>(null);
@@ -69,7 +77,14 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
         onScroll={onScoll}
         className={classes.contentWrapper}
       >
-        <div ref={content}>{children}</div>
+        <div
+          ref={content}
+          style={{
+            paddingRight: padded ? ThumbWidth + ThumbOffset * 2 : 0,
+          }}
+        >
+          {children}
+        </div>
       </div>
       <div className={classes.scrollbar}>
         <div
@@ -78,6 +93,8 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
           style={{
             top: ThumbOffset,
             right: ThumbOffset,
+            width: ThumbWidth,
+            borderRadius: ThumbWidth / 2,
           }}
         />
       </div>
