@@ -1,19 +1,21 @@
 import { useSelector } from "react-redux";
 import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
-import { useAppContext } from "#/AppContext";
 import { Scroller } from "#/components/Scroller";
-import { TreeEntry } from "#/components/TreeEntry";
 import { useAppDispatch } from "#/store";
 import { toggleSidebar } from "#/store/app/appReducer";
 import { sidebarOpenSelector } from "#/store/app/appSelectors";
-import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
+import {
+  workingFolderPathSelector,
+  workingFolderRootSelector,
+} from "#/store/workingFolder/workingFolderSelectors";
+import { Tree } from "./Tree";
+import { Entry } from "#/store/workingFolder/workingFolderReducer";
 
 export const Sidebar = () => {
-  const { entries, goHome } = useAppContext();
-
   const dispatch = useAppDispatch();
   const path = useSelector(workingFolderPathSelector);
   const sidebarOpen = useSelector(sidebarOpenSelector);
+  const root = useSelector(workingFolderRootSelector);
   const onToggle = () => dispatch(toggleSidebar());
 
   const buttons = (
@@ -26,7 +28,7 @@ export const Sidebar = () => {
       </button>
 
       <button
-        onClick={goHome}
+        // onClick={goHome}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       >
         <HomeIcon className="w-4 h-4 text-current" />
@@ -39,6 +41,9 @@ export const Sidebar = () => {
       <div className="h-full">
         <Scroller padded>
           <div className="p-2 pb-[32px]">
+            <Tree root entry={root as Entry} />
+          </div>
+          {/* <div className="p-2 pb-[32px]">
             {path && entries && (
               <>
                 <ul className="mb-2">
@@ -74,7 +79,7 @@ export const Sidebar = () => {
                 </ul>
               </>
             )}
-          </div>
+          </div> */}
         </Scroller>
       </div>
 

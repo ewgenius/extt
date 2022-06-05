@@ -7,7 +7,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("IBM Plex Mono"), local("IBMPlexMono"),
-    url("/public/fonts/IBMPlexMono-Regular.otf") format("otf");
+    url("/fonts/IBMPlexMono-Regular.otf") format("otf");
 }
 
 @font-face {
@@ -15,7 +15,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("JetBrains Mono"), local("JetBrains Mono"),
-    url("/public/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+    url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 
 .decorator::before {
