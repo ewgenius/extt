@@ -1,4 +1,5 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
@@ -7,8 +8,9 @@ import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
 import { useStoredState } from "#/hooks/useStoredState";
-import { connect } from "react-redux";
-import { RootState } from "#/store";
+import { useAppDispatch } from "#/store";
+import { setPath } from "#/store/workingFolder/workingFolderReducer";
+import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
 
 const welcomeTemplate = `# Welcome to Extt!
 
@@ -27,10 +29,10 @@ _Ivag preved!_
 ![alt text](https://c.tenor.com/CHc0B6gKHqUAAAAj/deadserver.gif)
 `;
 
-export interface AppComponentProps {}
+export const App = () => {
+  const dispatch = useAppDispatch();
+  const path = useSelector(workingFolderPathSelector);
 
-export const AppComponent: FC<AppComponentProps> = () => {
-  const [path, setPath] = useStoredState<string | null>("path", null);
   const [entries, setEntries] = useState<RootEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
   const [selectedFilePath, setSelectedFilePath] = useStoredState<string | null>(
@@ -51,7 +53,7 @@ export const AppComponent: FC<AppComponentProps> = () => {
     if (p) {
       setSelectedEntry(null);
       setSelectedFilePath(null);
-      setPath(p as string);
+      dispatch(setPath(p as string));
     }
   };
 
@@ -78,7 +80,7 @@ export const AppComponent: FC<AppComponentProps> = () => {
       selectEntry({
         path: `${p}/Inbox/welcome.md`,
       });
-      setPath(p as string);
+      dispatch(setPath(p as string));
     }
   };
 
@@ -87,7 +89,7 @@ export const AppComponent: FC<AppComponentProps> = () => {
   const goHome = () => {
     setSelectedEntry(null);
     setSelectedFilePath(null);
-    setPath(null);
+    dispatch(setPath(null));
   };
 
   useEffect(() => {
@@ -177,7 +179,6 @@ export const AppComponent: FC<AppComponentProps> = () => {
     <AppContext.Provider
       value={{
         goHome,
-        path,
         entries,
         setEntries,
         selectedEntry,
@@ -203,5 +204,3 @@ export const AppComponent: FC<AppComponentProps> = () => {
     </AppContext.Provider>
   );
 };
-
-export const App = connect((state: RootState) => ({}))(AppComponent);

@@ -12,7 +12,6 @@ export function isRootEntry(e: RootEntry): e is RootEntry {
 
 export interface AppContextState {
   goHome: () => void;
-  path: string;
   entries: RootEntry[];
   setEntries: (entries: RootEntry[]) => any;
   selectedEntry: FileEntry | null;
@@ -21,7 +20,6 @@ export interface AppContextState {
 
 export const AppContext = createContext<AppContextState>({
   goHome: () => {},
-  path: "",
   entries: [],
   setEntries: (e) => {},
   selectedEntry: null,
