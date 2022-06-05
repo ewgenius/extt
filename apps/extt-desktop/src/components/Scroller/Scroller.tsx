@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useCallback, useEffect, useRef } from "react";
 import { classNames } from "#/utils/classNames";
 import classes from "./Scroller.module.css";
 
-const ThumbHeightMax = 64;
+const ThumbHeightMin = 64;
 const ThumbOffset = 6;
 
 export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
@@ -29,6 +29,14 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
         thumb.current.style.visibility = "hidden";
       } else {
         thumb.current.style.visibility = "visible";
+
+        const calculatedThumbHeight =
+          offsetHeight * (offsetHeight / scrollHeight);
+        const thumbHeight = Math.min(
+          Math.max(ThumbHeightMin, calculatedThumbHeight),
+          offsetHeight - ThumbOffset * 2
+        );
+        thumb.current.style.height = `${thumbHeight}px`;
       }
     }
 
@@ -38,22 +46,19 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
   const onScoll = useCallback(() => {
     if (contentWrapper.current && thumb.current) {
       const { offsetHeight, scrollHeight, scrollTop } = contentWrapper.current;
-      const calculatedThumbHeight =
-        offsetHeight * (offsetHeight / scrollHeight);
-      const thumbHeight =
-        calculatedThumbHeight < ThumbHeightMax
-          ? ThumbHeightMax
-          : calculatedThumbHeight;
-      const scrollSize = scrollHeight - offsetHeight;
-      const scrollPercent = scrollTop / scrollSize;
+      if (scrollHeight > offsetHeight) {
+        const { offsetHeight: thumbHeight } = thumb.current;
 
-      const scrollValue =
-        scrollPercent < 0 ? 0 : scrollPercent > 1 ? 1 : scrollPercent;
+        const scrollSize = scrollHeight - offsetHeight;
+        const scrollPercent = scrollTop / scrollSize;
 
-      thumb.current.style.height = `${thumbHeight}px`;
-      thumb.current.style.transform = `translateY(${
-        (offsetHeight - thumbHeight - ThumbOffset * 2) * scrollValue
-      }px)`;
+        const scrollValue =
+          scrollPercent < 0 ? 0 : scrollPercent > 1 ? 1 : scrollPercent;
+
+        thumb.current.style.transform = `translateY(${
+          (offsetHeight - thumbHeight - ThumbOffset * 2) * scrollValue
+        }px)`;
+      }
     }
   }, []);
 
