@@ -1,8 +1,9 @@
+import type { Immutable } from "immer";
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface AppState {
+export type AppState = Immutable<{
   sidebarOpen: boolean;
-}
+}>;
 
 const initialState: AppState = {
   sidebarOpen: false,

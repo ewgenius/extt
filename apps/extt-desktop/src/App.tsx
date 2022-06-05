@@ -7,7 +7,6 @@ import { AppContext, RootEntry } from "#/AppContext";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
-import { useStoredState } from "#/hooks/useStoredState";
 import { useAppDispatch } from "#/store";
 import { setPath } from "#/store/workingFolder/workingFolderReducer";
 import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
@@ -35,10 +34,7 @@ export const App = () => {
 
   const [entries, setEntries] = useState<RootEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
-  const [selectedFilePath, setSelectedFilePath] = useStoredState<string | null>(
-    "selectedFile",
-    null
-  );
+  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
 
   const selectEntry = async (entry: FileEntry) => {
     setSelectedEntry(entry);
@@ -107,7 +103,6 @@ export const App = () => {
 
   useAsyncEffect(async () => {
     if (path && path !== "null") {
-      console.log(path);
       const tree = await fs.readDir(path, {
         recursive: true,
       });
