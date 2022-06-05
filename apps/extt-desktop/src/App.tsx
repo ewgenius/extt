@@ -1,15 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
-import { AppContext, RootEntry } from "#/AppContext";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
-import { useAsyncEffect } from "#/hooks/useAsyncEffect";
 import { useAppDispatch } from "#/store";
 import { setPath } from "#/store/workingFolder/workingFolderReducer";
-import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
+import {
+  workingFolderPathSelector,
+  workingFolderSelectedEntrySelector,
+} from "#/store/workingFolder/workingFolderSelectors";
 
 const welcomeTemplate = `# Welcome to Extt!
 
@@ -31,15 +32,7 @@ _Ivag preved!_
 export const App = () => {
   const dispatch = useAppDispatch();
   const path = useSelector(workingFolderPathSelector);
-
-  const [entries, setEntries] = useState<RootEntry[]>([]);
-  const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
-  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
-
-  const selectEntry = async (entry: FileEntry) => {
-    setSelectedEntry(entry);
-    setSelectedFilePath(entry.path);
-  };
+  const selectedEntry = useSelector(workingFolderSelectedEntrySelector);
 
   const openFolderDialog = async () => {
     const p = await dialog.open({
@@ -47,8 +40,8 @@ export const App = () => {
     });
 
     if (p) {
-      setSelectedEntry(null);
-      setSelectedFilePath(null);
+      // setSelectedEntry(null);
+      // setSelectedFilePath(null);
       dispatch(setPath(p as string));
     }
   };
@@ -73,20 +66,14 @@ export const App = () => {
         contents: welcomeTemplate,
       });
 
-      selectEntry({
-        path: `${p}/Inbox/welcome.md`,
-      });
+      // selectEntry({
+      //   path: `${p}/Inbox/welcome.md`,
+      // });
       dispatch(setPath(p as string));
     }
   };
 
-  const createNewNote = useCallback(async () => {}, [path]);
-
-  const goHome = () => {
-    setSelectedEntry(null);
-    setSelectedFilePath(null);
-    dispatch(setPath(null));
-  };
+  // const createNewNote = useCallback(async () => {}, [path]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -100,51 +87,6 @@ export const App = () => {
       document.removeEventListener("keydown", onKeyDown);
     };
   });
-
-  useAsyncEffect(async () => {
-    if (path && path !== "null") {
-      const tree = await fs.readDir(path, {
-        recursive: true,
-      });
-
-      setEntries(
-        tree &&
-          tree
-            .filter((e) => e.children || e.path.endsWith(".md"))
-            .map((e) => {
-              const relativePath = e.path.slice(path.length);
-              const isFolder = !!e.children;
-
-              const rootEntry: RootEntry = {
-                ...e,
-                relativePath,
-              };
-
-              if (isFolder) {
-                if (relativePath === "/Inbox") {
-                  rootEntry.type = "Inbox";
-                }
-                if (relativePath === "/Archive") {
-                  rootEntry.type = "Archive";
-                }
-                if (relativePath === "/Daily") {
-                  rootEntry.type = "Daily";
-                }
-              }
-
-              return rootEntry;
-            })
-      );
-    }
-  }, [path]);
-
-  useEffect(() => {
-    if (selectedFilePath) {
-      selectEntry({
-        path: selectedFilePath,
-      });
-    }
-  }, [selectedFilePath]);
 
   if (!path || path === null) {
     return (
@@ -171,31 +113,21 @@ export const App = () => {
   }
 
   return (
-    <AppContext.Provider
-      value={{
-        goHome,
-        entries,
-        setEntries,
-        selectedEntry,
-        selectEntry,
-      }}
-    >
-      <div className="w-screen h-screen overflow-hidden flex flex-row select-none">
-        <Sidebar />
+    <div className="w-screen h-screen overflow-hidden flex flex-row select-none">
+      <Sidebar />
 
-        <div className="h-full relative flex flex-col flex-grow">
-          {selectedEntry ? (
-            <Editor />
-          ) : (
-            <div className="h-full flex flex-col justify-center items-center">
-              {/* <button className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs">
+      <div className="h-full relative flex flex-col flex-grow">
+        {selectedEntry ? (
+          <Editor />
+        ) : (
+          <div className="h-full flex flex-col justify-center items-center">
+            {/* <button className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs">
                 <DocumentAddIcon className="w-4 h-4 text-current" />
                 <span>Create New Note</span>
               </button> */}
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </AppContext.Provider>
+    </div>
   );
 };

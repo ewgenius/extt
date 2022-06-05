@@ -9,7 +9,7 @@ import {
   CalendarIcon,
 } from "@heroicons/react/outline";
 import { classNames } from "#/utils/classNames";
-import { useAppContext } from "#/AppContext";
+// import { useAppContext } from "#/AppContext";
 import { useSelector } from "react-redux";
 import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
 
@@ -22,7 +22,7 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
   const [expanded, setExpanded] = useState(true);
   const toggle = useCallback(() => setExpanded(!expanded), [expanded]);
 
-  const { selectedEntry, selectEntry } = useAppContext();
+  // const { selectedEntry, selectEntry } = useAppContext();
   const path = useSelector(workingFolderPathSelector) || "";
 
   const click = useCallback(() => {

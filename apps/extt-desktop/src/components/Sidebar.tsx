@@ -13,7 +13,6 @@ import { Entry } from "#/store/workingFolder/workingFolderReducer";
 
 export const Sidebar = () => {
   const dispatch = useAppDispatch();
-  const path = useSelector(workingFolderPathSelector);
   const sidebarOpen = useSelector(sidebarOpenSelector);
   const root = useSelector(workingFolderRootSelector);
   const onToggle = () => dispatch(toggleSidebar());
