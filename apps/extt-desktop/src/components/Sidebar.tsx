@@ -2,14 +2,28 @@ import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { useAppContext } from "#/AppContext";
 import { Scroller } from "#/components/Scroller";
 import { TreeEntry } from "#/components/TreeEntry";
+import { RootState, useAppDispatch } from "#/store";
+import { toggleSidebar } from "#/store/app/appReducer";
+import { FC } from "react";
+import { connect } from "react-redux";
+import { sidebarOpenSelector } from "#/store/app/appSelectors";
 
-export function Sidebar() {
-  const { path, entries, goHome, toggleSidebar, sidebarOpen } = useAppContext();
+export interface SidebarComponentProps {
+  sidebarOpen: boolean;
+}
+
+export const SidebarComponent: FC<SidebarComponentProps> = ({
+  sidebarOpen,
+}) => {
+  const { path, entries, goHome } = useAppContext();
+
+  const dispatch = useAppDispatch();
+  const onToggle = () => dispatch(toggleSidebar());
 
   const buttons = (
     <div className="flex px-2 py-1 h-[32px] absolute bottom-0 backdrop-blur-lg w-full">
       <button
-        onClick={toggleSidebar}
+        onClick={onToggle}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       >
         <MenuIcon className="w-4 h-4 text-current" />
@@ -84,4 +98,8 @@ export function Sidebar() {
   ) : (
     <div className="fixed left-0 bottom-0 z-10">{buttons}</div>
   );
-}
+};
+
+export const Sidebar = connect((state: RootState) => ({
+  sidebarOpen: sidebarOpenSelector(state),
+}))(SidebarComponent);

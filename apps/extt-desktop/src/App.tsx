@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { FileEntry } from "@tauri-apps/api/fs";
@@ -7,7 +7,8 @@ import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
 import { useAsyncEffect } from "#/hooks/useAsyncEffect";
 import { useStoredState } from "#/hooks/useStoredState";
-import { useSidebarState } from "#/hooks/useSidebarState";
+import { connect } from "react-redux";
+import { RootState } from "#/store";
 
 const welcomeTemplate = `# Welcome to Extt!
 
@@ -26,11 +27,12 @@ _Ivag preved!_
 ![alt text](https://c.tenor.com/CHc0B6gKHqUAAAAj/deadserver.gif)
 `;
 
-export function App() {
+export interface AppComponentProps {}
+
+export const AppComponent: FC<AppComponentProps> = () => {
   const [path, setPath] = useStoredState<string | null>("path", null);
   const [entries, setEntries] = useState<RootEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<FileEntry | null>(null);
-  const { sidebarOpen, toggleSidebar } = useSidebarState();
   const [selectedFilePath, setSelectedFilePath] = useStoredState<string | null>(
     "selectedFile",
     null
@@ -176,8 +178,6 @@ export function App() {
       value={{
         goHome,
         path,
-        sidebarOpen,
-        toggleSidebar,
         entries,
         setEntries,
         selectedEntry,
@@ -202,4 +202,6 @@ export function App() {
       </div>
     </AppContext.Provider>
   );
-}
+};
+
+export const App = connect((state: RootState) => ({}))(AppComponent);

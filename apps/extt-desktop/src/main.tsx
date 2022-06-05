@@ -4,9 +4,11 @@ import ReactDOM from "react-dom/client";
 
 import { App } from "#/App";
 import { App as DevApp } from "#/dev/App";
-import { StoreContext } from "#/StoreContext";
+import { store } from "#/store";
+import { StoreContext } from "#//StoreContext";
 
 import "./styles.css";
+import { Provider } from "react-redux";
 
 if (window.hasOwnProperty("__TAURI__")) {
   // TODO
@@ -14,40 +16,42 @@ if (window.hasOwnProperty("__TAURI__")) {
 
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <StoreContext.Provider
-        value={{
-          set: (key, value) =>
-            new Promise((r) => {
-              localStorage.setItem(key, value as string);
-              r();
-            }),
+      <Provider store={store}>
+        <StoreContext.Provider
+          value={{
+            set: (key, value) =>
+              new Promise((r) => {
+                localStorage.setItem(key, value as string);
+                r();
+              }),
 
-          get: (key) =>
-            new Promise((r) => {
-              const v = localStorage.getItem(key);
-              if (v) {
-                r(v as any);
-              } else {
-                r(null);
-              }
-            }),
+            get: (key) =>
+              new Promise((r) => {
+                const v = localStorage.getItem(key);
+                if (v) {
+                  r(v as any);
+                } else {
+                  r(null);
+                }
+              }),
 
-          has: (key) => new Promise((r) => r(!!localStorage.getItem(key))),
+            has: (key) => new Promise((r) => r(!!localStorage.getItem(key))),
 
-          remove: (key) =>
-            new Promise((r) => {
-              localStorage.removeItem(key);
-              r(true);
-            }),
+            remove: (key) =>
+              new Promise((r) => {
+                localStorage.removeItem(key);
+                r(true);
+              }),
 
-          // set: store.set,
-          // get: store.get,
-          // has: store.has,
-          // delete: store.delete,
-        }}
-      >
-        <App />
-      </StoreContext.Provider>
+            // set: store.set,
+            // get: store.get,
+            // has: store.has,
+            // delete: store.delete,
+          }}
+        >
+          <App />
+        </StoreContext.Provider>
+      </Provider>
     </React.StrictMode>
   );
 } else {
