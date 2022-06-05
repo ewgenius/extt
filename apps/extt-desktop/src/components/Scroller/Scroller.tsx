@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useCallback, useEffect, useRef } from "react";
 import { classNames } from "#/utils/classNames";
 import classes from "./Scroller.module.css";
 
-const ThumbHeight = 64;
+const ThumbHeightMax = 64;
 const ThumbOffset = 6;
 
 export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
@@ -23,7 +23,6 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
   }, []);
 
   const onResize = useCallback(() => {
-    console.log("on resize");
     if (contentWrapper.current && thumb.current) {
       const { offsetHeight, scrollHeight } = contentWrapper.current;
       if (scrollHeight <= offsetHeight) {
@@ -42,8 +41,8 @@ export const Scroller: FC<PropsWithChildren<{}>> = ({ children }) => {
       const calculatedThumbHeight =
         offsetHeight * (offsetHeight / scrollHeight);
       const thumbHeight =
-        calculatedThumbHeight < ThumbHeight
-          ? ThumbHeight
+        calculatedThumbHeight < ThumbHeightMax
+          ? ThumbHeightMax
           : calculatedThumbHeight;
       const scrollSize = scrollHeight - offsetHeight;
       const scrollPercent = scrollTop / scrollSize;
