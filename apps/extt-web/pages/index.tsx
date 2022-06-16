@@ -123,7 +123,7 @@ const Home: NextPage = () => {
       <main className="container prose prose-stone mx-auto flex max-w-2xl flex-grow flex-col items-center justify-center px-4 py-16 dark:prose-invert">
         <Image alt="logo" width={128} height={128} src="/icon.png" />
         <Logo />
-        <p className="text-xs opacity-50">coming soon...</p>
+        <p className="text-sm opacity-50">coming soon...</p>
 
         <SubscribeForm />
       </main>
