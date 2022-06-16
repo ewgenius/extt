@@ -9,7 +9,13 @@ import {
   workingFolderEntriesSelector,
 } from "#/store/workingFolder/workingFolderSelectors";
 import { classNames } from "#/utils/classNames";
-import { DocumentTextIcon, FolderIcon } from "@heroicons/react/outline";
+import {
+  ArchiveIcon,
+  CalendarIcon,
+  DocumentTextIcon,
+  FolderIcon,
+  InboxInIcon,
+} from "@heroicons/react/outline";
 import { FC, useCallback } from "react";
 import { useSelector } from "react-redux";
 
@@ -45,7 +51,15 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
               "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
             )}
           >
-            <FolderIcon className="h-4 w-4 text-current" />
+            {entry.name === "Inbox" ? (
+              <InboxInIcon className="h-4 w-4 text-current" />
+            ) : entry.name === "Archive" ? (
+              <ArchiveIcon className="h-4 w-4 text-current" />
+            ) : entry.name === "Daily" || entry.path.includes("Daily/") ? (
+              <CalendarIcon className="h-4 w-4 text-current" />
+            ) : (
+              <FolderIcon className="h-4 w-4 text-current" />
+            )}
             <span>{entry.name}</span>
           </button>
         )}
