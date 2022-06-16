@@ -139,7 +139,7 @@ const Home: NextPage = () => {
         <SubscribeForm />
       </main>
 
-      <footer className="container mx-auto max-w-2xl p-4 text-xs opacity-50">
+      <footer className="container p-4 text-xs opacity-25">
         Copyright © 2022 extt.app
       </footer>
     </div>
