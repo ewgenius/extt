@@ -116,7 +116,11 @@ const Home: NextPage = () => {
     <div className="flex min-h-screen flex-col">
       <Head>
         <title>Extt</title>
-        <meta name="description" content="Simple note editor app" />
+        <meta name="description" content="Extt - simple text editor app" />
+        <meta
+          name="keywords"
+          content="Extt, notes, text editor, notest editor, text"
+        ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
