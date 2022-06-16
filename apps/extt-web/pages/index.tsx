@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -128,6 +129,12 @@ const Home: NextPage = () => {
         <Image alt="logo" width={128} height={128} src="/icon.png" />
         <Logo />
         <p className="text-sm opacity-50">coming soon...</p>
+
+        <img
+          alt="screenshot"
+          className="invisible absolute left-[65%] h-[700px] lg:visible"
+          src="/screenshot.png"
+        />
 
         <SubscribeForm />
       </main>
