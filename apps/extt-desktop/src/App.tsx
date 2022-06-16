@@ -90,21 +90,21 @@ export const App = () => {
 
   if (!path || path === null) {
     return (
-      <div className="w-screen h-screen overflow-hidden flex flex-col justify-center items-center">
-        <div className="flex gap-4 items-center">
+      <div className="flex h-screen w-screen flex-col items-center justify-center overflow-hidden">
+        <div className="flex items-center gap-4">
           <button
-            className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs"
+            className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
             onClick={createFolderDialog}
           >
-            <FolderAddIcon className="text-current w-4 h-4" />
+            <FolderAddIcon className="h-4 w-4 text-current" />
             Bootstrap notes folder
           </button>
           or
           <button
-            className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs"
+            className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
             onClick={openFolderDialog}
           >
-            <FolderOpenIcon className="text-current w-4 h-4" />
+            <FolderOpenIcon className="h-4 w-4 text-current" />
             Select notes folder
           </button>
         </div>
@@ -113,14 +113,14 @@ export const App = () => {
   }
 
   return (
-    <div className="w-screen h-screen overflow-hidden flex flex-row select-none">
+    <div className="flex h-screen w-screen select-none flex-row overflow-hidden">
       <Sidebar />
 
-      <div className="h-full relative flex flex-col flex-grow">
+      <div className="relative flex h-full flex-grow flex-col">
         {selectedEntry ? (
           <Editor />
         ) : (
-          <div className="h-full flex flex-col justify-center items-center">
+          <div className="flex h-full flex-col items-center justify-center">
             {/* <button className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs">
                 <DocumentAddIcon className="w-4 h-4 text-current" />
                 <span>Create New Note</span>

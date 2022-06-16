@@ -41,11 +41,11 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
           <button
             onClick={onToggle}
             className={classNames(
-              "relative group flex items-center gap-1 text-xs p-1",
+              "group relative flex items-center gap-1 p-1 text-xs",
               "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
             )}
           >
-            <FolderIcon className="w-4 h-4 text-current" />
+            <FolderIcon className="h-4 w-4 text-current" />
             <span>{entry.name}</span>
           </button>
         )}
@@ -69,13 +69,13 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
     <button
       onClick={onSelect}
       className={classNames(
-        "relative group flex items-center gap-1 text-xs p-1",
+        "group relative flex items-center gap-1 p-1 text-xs",
         isSelected
-          ? "text-stone-900 dark:text-stone-100 font-bold"
+          ? "font-bold text-stone-900 dark:text-stone-100"
           : "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       )}
     >
-      <DocumentTextIcon className="w-4 h-4 text-current" />
+      <DocumentTextIcon className="h-4 w-4 text-current" />
       <span>{entry.name}</span>
     </button>
   );

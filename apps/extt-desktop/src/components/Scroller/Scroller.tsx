@@ -71,7 +71,7 @@ export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
   }, []);
 
   return (
-    <div className="w-full h-full flex-grow relative">
+    <div className="relative h-full w-full flex-grow">
       <div
         ref={contentWrapper}
         onScroll={onScoll}

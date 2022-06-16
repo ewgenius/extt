@@ -20,7 +20,7 @@ export const Leaf: FC<RenderLeafProps> = ({ attributes, leaf, children }) => {
           leaf.bold && "font-bold",
           leaf.italic && "italic",
           leaf.code &&
-            "font-mono bg-stone-200 dark:bg-stone-700 -m-1 p-1 rounded-lg"
+            "-m-1 rounded-lg bg-stone-200 p-1 font-mono dark:bg-stone-700"
         )}
       >
         {children}
@@ -35,7 +35,7 @@ export const Leaf: FC<RenderLeafProps> = ({ attributes, leaf, children }) => {
         leaf.bold && "font-bold",
         leaf.italic && "italic",
         leaf.code &&
-          "font-mono bg-stone-200 dark:bg-stone-700 -m-1 p-1 rounded-lg"
+          "-m-1 rounded-lg bg-stone-200 p-1 font-mono dark:bg-stone-700"
       )}
     >
       {children}

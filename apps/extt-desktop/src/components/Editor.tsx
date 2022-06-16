@@ -45,7 +45,7 @@ export function Editor() {
 
   if (selectedEntry && loaded) {
     return (
-      <div className="h-full flex flex-col flex-grow">
+      <div className="flex h-full flex-grow flex-col">
         <SlateEditor key={selectedEntry.path} value={value} onSave={save} />
       </div>
     );

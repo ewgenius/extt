@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html className="bg-white text-stone-900 dark:bg-stone-900 dark:text-white font-ibm">
+    <Html className="bg-white font-ibm text-stone-900 dark:bg-stone-900 dark:text-white">
       <Head>
         <script
           async

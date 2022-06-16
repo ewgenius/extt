@@ -63,8 +63,8 @@ const value: Descendant[] = [
 
 export function App() {
   return (
-    <div className="w-screen h-screen overflow-hidden flex flex-row">
-      <div className="h-full relative flex flex-col flex-grow">
+    <div className="flex h-screen w-screen flex-row overflow-hidden">
+      <div className="relative flex h-full flex-grow flex-col">
         <SlateEditor value={value} onSave={(e) => {}} />
       </div>
     </div>

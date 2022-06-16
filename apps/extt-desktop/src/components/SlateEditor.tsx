@@ -80,7 +80,7 @@ export function SlateEditor({
           }}
         >
           <Editable
-            className="relative container mx-auto max-w-4xl py-8 px-16 prose prose-stone dark:prose-invert select-text"
+            className="container prose prose-stone relative mx-auto max-w-4xl select-text py-8 px-16 dark:prose-invert"
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             onBlur={(e) => {

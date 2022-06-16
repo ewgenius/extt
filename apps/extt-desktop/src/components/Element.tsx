@@ -19,68 +19,68 @@ function CommandMenu() {
   }, []);
 
   return (
-    <div className="absolute -left-10 top-0 select-none z-10">
+    <div className="absolute -left-10 top-0 z-10 select-none">
       <Menu>
         {() => (
           <>
             <Menu.Button
               ref={button}
-              className="outline-none p-2 opacity-0 group-hover:opacity-80 transition-opacity duration-300"
+              className="p-2 opacity-0 outline-none transition-opacity duration-300 group-hover:opacity-80"
             >
-              <MenuIcon className="w-4 h-4" />
+              <MenuIcon className="h-4 w-4" />
             </Menu.Button>
 
             <Portal>
               <Menu.Items
-                className="ml-2 py-1 max-w-xs outline-none bg-stone-100 dark:bg-stone-800 rounded-md shadow-md z-10 flex flex-col text-xs overflow-hidden"
+                className="z-10 ml-2 flex max-w-xs flex-col overflow-hidden rounded-md bg-stone-100 py-1 text-xs shadow-md outline-none dark:bg-stone-800"
                 style={{
                   marginTop: 40 + offset.y,
                   marginLeft: offset.x,
                 }}
               >
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <div className="w-3 h-3 flex justify-center items-center text-md font-bold">
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <div className="text-md flex h-3 w-3 items-center justify-center font-bold">
                       H
                     </div>
                     heading 1
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <div className="w-3 h-3 flex justify-center items-center text-xs font-bold">
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <div className="flex h-3 w-3 items-center justify-center text-xs font-bold">
                       H
                     </div>
                     heading 2
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <div className="w-3 h-3 flex justify-center items-center font-bold">
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <div className="flex h-3 w-3 items-center justify-center font-bold">
                       T
                     </div>
                     text
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <div className="w-3 h-3 flex justify-center items-center font-bold">
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <div className="flex h-3 w-3 items-center justify-center font-bold">
                       B
                     </div>
                     bold
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <div className="w-3 h-3 flex justify-center items-center italic font-bold">
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <div className="flex h-3 w-3 items-center justify-center font-bold italic">
                       I
                     </div>
                     italic
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="px-3 py-2 flex gap-2 items-center hover:bg-stone-200 dark:hover:bg-stone-700">
-                    <ViewListIcon className="w-3 h-3 text-current" />
+                  <button className="flex items-center gap-2 px-3 py-2 hover:bg-stone-200 dark:hover:bg-stone-700">
+                    <ViewListIcon className="h-3 w-3 text-current" />
                     list
                   </button>
                 </Menu.Item>
@@ -137,7 +137,7 @@ export const Element: FC<RenderElementProps> = ({
 
 export const ElementWithMenu: FC<RenderElementProps> = (props) => {
   return (
-    <div className="relative group z-0">
+    <div className="group relative z-0">
       <Element {...props} />
       <CommandMenu />
     </div>
