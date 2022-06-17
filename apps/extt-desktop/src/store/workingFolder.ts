@@ -1,5 +1,6 @@
 import { fs } from "@tauri-apps/api";
 import create from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface Entry {
   path: string;
@@ -68,55 +69,63 @@ export interface WorkingFolderState {
   selectEntry: (key: string) => void;
 }
 
-export const useWorkingFolder = create<WorkingFolderState>((set) => ({
-  initialized: false,
-  path: null,
-  root: null,
-  entries: {},
-  selected: null,
+export const useWorkingFolder = create(
+  persist<WorkingFolderState>(
+    (set) => ({
+      initialized: false,
+      path: null,
+      root: null,
+      entries: {},
+      selected: null,
 
-  setPath: async (path) => {
-    set((s) => ({
-      ...s,
-      path,
-    }));
+      setPath: async (path) => {
+        set((s) => ({
+          ...s,
+          path,
+        }));
 
-    const entries = await loadPath(path);
+        const entries = await loadPath(path);
 
-    set((s) => ({
-      ...s,
-      ...entries,
-      initialized: true,
-    }));
-  },
+        set((s) => ({
+          ...s,
+          ...entries,
+          initialized: true,
+        }));
+      },
 
-  setEntries: (root, entries) =>
-    set((s) => ({
-      ...s,
-      root,
-      entries,
-      initialized: true,
-    })),
+      setEntries: (root, entries) =>
+        set((s) => ({
+          ...s,
+          root,
+          entries,
+          initialized: true,
+        })),
 
-  toggleEntry: (key) =>
-    set((s) =>
-      s.entries[key]
-        ? {
-            ...s,
-            entries: {
-              ...s.entries,
-              [key]: {
-                ...s.entries[key],
-                expanded: !s.entries[key].expanded,
-              },
-            },
-          }
-        : s
-    ),
+      toggleEntry: (key) =>
+        set((s) =>
+          s.entries[key]
+            ? {
+                ...s,
+                entries: {
+                  ...s.entries,
+                  [key]: {
+                    ...s.entries[key],
+                    expanded: !s.entries[key].expanded,
+                  },
+                },
+              }
+            : s
+        ),
 
-  selectEntry: (key) =>
-    set((s) => ({
-      ...s,
-      selected: key,
-    })),
-}));
+      selectEntry: (key) =>
+        set((s) => ({
+          ...s,
+          selected: key,
+        })),
+    }),
+    {
+      name: "extt-working-folder",
+      getStorage: () => localStorage,
+    }
+  )
+);
