@@ -4,6 +4,7 @@ import { Tree } from "./Tree";
 import { Entry } from "#/store/workingFolder";
 import { useApp } from "#/store/app";
 import { useWorkingFolder } from "#/store/workingFolder";
+import { ThemeSelector } from "./ThemeSelector";
 
 export const Sidebar = () => {
   const sidebarOpen = useApp((s) => s.sidebarOpen);
@@ -32,6 +33,8 @@ export const Sidebar = () => {
     <div className="flex h-full max-h-full min-w-[220px] shrink-0 flex-col">
       <div className="h-full">
         <Scroller padded>
+          <ThemeSelector />
+
           <div className="p-2 pb-[32px]">
             <Tree root entry={root as Entry} />
           </div>

@@ -10,6 +10,7 @@ export interface AppState {
   openSidebar: () => void;
   closeSidebar: () => void;
   toggleSidebar: () => void;
+  setTheme: (theme: Theme) => void;
 }
 
 export const useApp = create(

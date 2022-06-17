@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
-import { useWorkingFolder } from "./store/workingFolder";
-import { useApp } from "./store/app";
+import { useWorkingFolder } from "#/store/workingFolder";
+import { useTheme } from "#/hooks/useTheme";
 
 const welcomeTemplate = `# Welcome to Extt!
 
@@ -24,7 +24,8 @@ _Ivag preved!_
 `;
 
 export const App = () => {
-  const theme = useApp((s) => s.theme);
+  useTheme();
+
   const path = useWorkingFolder((s) => s.path);
   const selectedEntry = useWorkingFolder((s) =>
     s.selected ? s.entries[s.selected] : null
@@ -72,18 +73,6 @@ export const App = () => {
   };
 
   // const createNewNote = useCallback(async () => {}, [path]);
-
-  useEffect(() => {
-    if (
-      theme === "dark" ||
-      (theme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
