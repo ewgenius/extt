@@ -22,11 +22,17 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
   const selectEntry = useWorkingFolder((s) => s.selectEntry);
   const isSelected = entry && entry.path === selected;
 
-  const onToggle = useCallback(() => toggleEntry(entry.path), [entry.path]);
+  const onToggle = useCallback(
+    () => entry && toggleEntry(entry.path),
+    [entry && entry.path]
+  );
 
-  const onSelect = useCallback(() => selectEntry(entry.path), [entry.path]);
+  const onSelect = useCallback(
+    () => entry && selectEntry(entry.path),
+    [entry && entry.path]
+  );
 
-  if (entry.children) {
+  if (entry && entry.children) {
     return (
       <>
         {!root && (
@@ -76,7 +82,7 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
       )}
     >
       <DocumentTextIcon className="h-4 w-4 text-current" />
-      <span>{entry.name}</span>
+      <span>{entry && entry.name}</span>
     </button>
   );
 };

@@ -2,13 +2,13 @@ import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { Scroller } from "#/components/Scroller";
 import { Tree } from "./Tree";
 import { Entry } from "#/store/workingFolder";
-import { useAppStore } from "#/store/appStore";
+import { useApp } from "#/store/app";
 import { useWorkingFolder } from "#/store/workingFolder";
 
 export const Sidebar = () => {
-  const sidebarOpen = useAppStore((s) => s.sidebarOpen);
+  const sidebarOpen = useApp((s) => s.sidebarOpen);
   const root = useWorkingFolder((s) => s.root);
-  const toggle = useAppStore((s) => s.toggleSidebar);
+  const toggle = useApp((s) => s.toggleSidebar);
 
   const buttons = (
     <div className="absolute bottom-0 flex h-[32px] w-full px-2 py-1 backdrop-blur-lg">
