@@ -9,9 +9,6 @@ import {
   CalendarIcon,
 } from "@heroicons/react/outline";
 import { classNames } from "#/utils/classNames";
-// import { useAppContext } from "#/AppContext";
-import { useSelector } from "react-redux";
-import { workingFolderPathSelector } from "#/store/workingFolder/workingFolderSelectors";
 
 interface TreeEntryProps {
   root?: boolean;
@@ -23,7 +20,7 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
   const toggle = useCallback(() => setExpanded(!expanded), [expanded]);
 
   // const { selectedEntry, selectEntry } = useAppContext();
-  const path = useSelector(workingFolderPathSelector) || "";
+  // const path = useSelector(workingFolderPathSelector) || "";
 
   // const click = useCallback(() => {
   //   selectEntry(entry);
@@ -32,11 +29,11 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
   const isSelected = false; //selectedEntry?.path === entry.path;
   const isFolder = !!entry.children;
 
-  const relativePath = entry.path.slice(path.length);
-  const isInbox = isFolder && relativePath === "/Inbox";
-  const isArchive = isFolder && relativePath === "/Archive";
-  const isDaily = isFolder && relativePath === "/Daily";
-  const isInsideDaily = relativePath.startsWith("/Daily");
+  // const relativePath = entry.path.slice(path.length);
+  // const isInbox = isFolder && relativePath === "/Inbox";
+  // const isArchive = isFolder && relativePath === "/Archive";
+  // const isDaily = isFolder && relativePath === "/Daily";
+  // const isInsideDaily = relativePath.startsWith("/Daily");
 
   const Order: Record<string, number> = {
     Inbox: -3,
@@ -52,7 +49,7 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
     return 0;
   }
 
-  const direction = isInsideDaily ? -1 : 1;
+  const direction = 1; //isInsideDaily ? -1 : 1;
   const children = entry.children && expanded && (
     <ul className={classNames(!root && "pl-4")}>
       {entry.children
@@ -113,11 +110,11 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
           <div className="absolute bg-current w-1 h-1 -left-2 rounded-lg" />
         )} */}
         {entry.children ? (
-          isInbox ? (
+          true ? (
             <InboxIcon className="h-4 w-4 text-current" />
-          ) : isArchive ? (
+          ) : false ? (
             <ArchiveIcon className="h-4 w-4 text-current" />
-          ) : isDaily ? (
+          ) : false ? (
             <CalendarIcon className="h-4 w-4 text-current" />
           ) : expanded ? (
             <FolderOpenIcon className="h-4 w-4 text-current" />

@@ -1,13 +1,6 @@
-import { useAppDispatch } from "#/store";
-import {
-  Entry,
-  selectEntry,
-  toggleEntry,
-} from "#/store/workingFolder/workingFolderReducer";
-import {
-  workingFolderSelectedSelector,
-  workingFolderEntriesSelector,
-} from "#/store/workingFolder/workingFolderSelectors";
+import { FC, useCallback } from "react";
+import { useWorkingFolder } from "#/store/workingFolder";
+import { Entry } from "#/store/workingFolder";
 import { classNames } from "#/utils/classNames";
 import {
   ArchiveIcon,
@@ -16,8 +9,6 @@ import {
   FolderIcon,
   InboxInIcon,
 } from "@heroicons/react/outline";
-import { FC, useCallback } from "react";
-import { useSelector } from "react-redux";
 
 export interface TreeProps {
   root?: boolean;
@@ -25,20 +16,15 @@ export interface TreeProps {
 }
 
 export const Tree: FC<TreeProps> = ({ entry, root }) => {
-  const dispatch = useAppDispatch();
-  const entries = useSelector(workingFolderEntriesSelector);
-  const selected = useSelector(workingFolderSelectedSelector);
-  const isSelected = entry.path === selected;
+  const entries = useWorkingFolder((s) => s.entries);
+  const selected = useWorkingFolder((s) => s.selected);
+  const toggleEntry = useWorkingFolder((s) => s.toggleEntry);
+  const selectEntry = useWorkingFolder((s) => s.selectEntry);
+  const isSelected = entry && entry.path === selected;
 
-  const onToggle = useCallback(
-    () => dispatch(toggleEntry(entry.path)),
-    [entry.path]
-  );
+  const onToggle = useCallback(() => toggleEntry(entry.path), [entry.path]);
 
-  const onSelect = useCallback(
-    () => dispatch(selectEntry(entry.path)),
-    [entry.path]
-  );
+  const onSelect = useCallback(() => selectEntry(entry.path), [entry.path]);
 
   if (entry.children) {
     return (

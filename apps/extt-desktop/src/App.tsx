@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
-import { FileEntry } from "@tauri-apps/api/fs";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
-import { useAppDispatch } from "#/store";
-import { setPath } from "#/store/workingFolder/workingFolderReducer";
-import {
-  workingFolderPathSelector,
-  workingFolderSelectedEntrySelector,
-} from "#/store/workingFolder/workingFolderSelectors";
+import { useWorkingFolder } from "./store/workingFolder";
 
 const welcomeTemplate = `# Welcome to Extt!
 
@@ -30,9 +23,12 @@ _Ivag preved!_
 `;
 
 export const App = () => {
-  const dispatch = useAppDispatch();
-  const path = useSelector(workingFolderPathSelector);
-  const selectedEntry = useSelector(workingFolderSelectedEntrySelector);
+  const path = useWorkingFolder((s) => s.path);
+  const selectedEntry = useWorkingFolder((s) =>
+    s.selected ? s.entries[s.selected] : null
+  );
+
+  const setPath = useWorkingFolder((s) => s.setPath);
 
   const openFolderDialog = async () => {
     const p = await dialog.open({
@@ -42,7 +38,7 @@ export const App = () => {
     if (p) {
       // setSelectedEntry(null);
       // setSelectedFilePath(null);
-      dispatch(setPath(p as string));
+      setPath(p as string);
     }
   };
 
@@ -69,7 +65,7 @@ export const App = () => {
       // selectEntry({
       //   path: `${p}/Inbox/welcome.md`,
       // });
-      dispatch(setPath(p as string));
+      setPath(p as string);
     }
   };
 
