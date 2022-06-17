@@ -1,6 +1,7 @@
 import { fs } from "@tauri-apps/api";
 import create from "zustand";
 import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 export interface Entry {
   path: string;
@@ -56,7 +57,7 @@ export async function loadPath(path: string) {
   return { root, entries };
 }
 
-export interface WorkingFolderState {
+export type WorkingFolderState = {
   initialized: boolean;
   path: string | null;
   root: Entry | null;
@@ -67,11 +68,11 @@ export interface WorkingFolderState {
   setEntries: (root: Entry, entries: Record<string, Entry>) => void;
   toggleEntry: (key: string) => void;
   selectEntry: (key: string) => void;
-}
+};
 
-export const useWorkingFolder = create(
-  persist<WorkingFolderState>(
-    (set) => ({
+export const useWorkingFolder = create<WorkingFolderState>()(
+  persist(
+    immer((set) => ({
       initialized: false,
       path: null,
       root: null,
@@ -79,50 +80,38 @@ export const useWorkingFolder = create(
       selected: null,
 
       setPath: async (path) => {
-        set((s) => ({
-          ...s,
-          path,
-        }));
+        set((s) => {
+          s.path = path;
+        });
 
-        const entries = await loadPath(path);
+        const { root, entries } = await loadPath(path);
 
-        set((s) => ({
-          ...s,
-          ...entries,
-          initialized: true,
-        }));
+        set((s) => {
+          s.entries = entries;
+          s.root = root;
+          s.initialized = true;
+        });
       },
 
       setEntries: (root, entries) =>
-        set((s) => ({
-          ...s,
-          root,
-          entries,
-          initialized: true,
-        })),
+        set((s) => {
+          s.entries = entries;
+          s.root = root;
+          s.initialized = true;
+        }),
 
       toggleEntry: (key) =>
-        set((s) =>
-          s.entries[key]
-            ? {
-                ...s,
-                entries: {
-                  ...s.entries,
-                  [key]: {
-                    ...s.entries[key],
-                    expanded: !s.entries[key].expanded,
-                  },
-                },
-              }
-            : s
-        ),
+        set((s) => {
+          if (s.entries[key]) {
+            s.entries[key].expanded = !s.entries[key].expanded;
+          }
+        }),
 
       selectEntry: (key) =>
-        set((s) => ({
-          ...s,
-          selected: key,
-        })),
-    }),
+        set((s) => {
+          s.selected = key;
+        }),
+    })),
     {
       name: "extt-working-folder",
       getStorage: () => localStorage,

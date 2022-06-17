@@ -1,9 +1,10 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 export type Theme = "system" | "dark" | "light";
 
-export interface AppState {
+export type AppState = {
   sidebarOpen: boolean;
   theme: Theme;
 
@@ -11,38 +12,34 @@ export interface AppState {
   closeSidebar: () => void;
   toggleSidebar: () => void;
   setTheme: (theme: Theme) => void;
-}
+};
 
-export const useApp = create(
-  persist<AppState>(
-    (set) => ({
+export const useApp = create<AppState>()(
+  persist(
+    immer((set) => ({
       sidebarOpen: false,
       theme: "system",
 
       openSidebar: () =>
-        set((s) => ({
-          ...s,
-          sidebarOpen: true,
-        })),
+        set((s) => {
+          s.sidebarOpen = true;
+        }),
 
       closeSidebar: () =>
-        set((s) => ({
-          ...s,
-          sidebarOpen: false,
-        })),
+        set((s) => {
+          s.sidebarOpen = false;
+        }),
 
       toggleSidebar: () =>
-        set((s) => ({
-          ...s,
-          sidebarOpen: !s.sidebarOpen,
-        })),
+        set((s) => {
+          s.sidebarOpen = s.sidebarOpen;
+        }),
 
       setTheme: (theme: Theme) =>
-        set((s) => ({
-          ...s,
-          theme,
-        })),
-    }),
+        set((s) => {
+          s.theme = theme;
+        }),
+    })),
     {
       name: "extt-app",
       getStorage: () => localStorage,
