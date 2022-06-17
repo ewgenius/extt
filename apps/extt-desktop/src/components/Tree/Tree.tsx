@@ -54,7 +54,7 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
             {entry.children.map((p) => {
               const childEntry = entries[p] as Entry;
               return (
-                <li>
+                <li key={childEntry.path}>
                   <Tree entry={childEntry} />
                 </li>
               );
