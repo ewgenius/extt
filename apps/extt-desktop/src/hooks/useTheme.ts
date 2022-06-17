@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useApp } from "#/store/app";
+import { useSettings } from "#/store/settings";
 
 export function useTheme() {
-  const theme = useApp((s) => s.theme);
+  const theme = useSettings((s) => s.theme);
 
   useEffect(() => {
     const matcher = window.matchMedia("(prefers-color-scheme: dark)");

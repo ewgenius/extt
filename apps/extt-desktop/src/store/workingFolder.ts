@@ -2,6 +2,7 @@ import { fs } from "@tauri-apps/api";
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { getStorage } from "#/lib/storage";
 
 export interface Entry {
   path: string;
@@ -114,7 +115,7 @@ export const useWorkingFolder = create<WorkingFolderState>()(
     })),
     {
       name: "extt-working-folder",
-      getStorage: () => localStorage,
+      getStorage,
     }
   )
 );

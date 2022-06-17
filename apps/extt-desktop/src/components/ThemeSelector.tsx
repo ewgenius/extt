@@ -1,12 +1,12 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { Theme, useApp } from "#/store/app";
+import { useSettings, Theme } from "#/store/settings";
 
 const themes: Theme[] = ["system", "dark", "light"];
 
 export const ThemeSelector = () => {
-  const theme = useApp((s) => s.theme);
-  const setTheme = useApp((s) => s.setTheme);
+  const theme = useSettings((s) => s.theme);
+  const setTheme = useSettings((s) => s.setTheme);
 
   return (
     <Listbox value={theme} onChange={setTheme}>
