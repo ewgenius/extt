@@ -32,7 +32,7 @@ export const useApp = create<AppState>()(
 
       toggleSidebar: () =>
         set((s) => {
-          s.sidebarOpen = s.sidebarOpen;
+          s.sidebarOpen = !s.sidebarOpen;
         }),
 
       setTheme: (theme: Theme) =>

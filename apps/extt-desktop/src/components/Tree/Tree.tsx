@@ -10,6 +10,30 @@ import {
   InboxInIcon,
 } from "@heroicons/react/outline";
 
+function comparePaths(a: string, b: string) {
+  if (a > b) {
+    return 1;
+  }
+  if (a < b) {
+    return -1;
+  }
+  return 0;
+}
+
+const Order: Record<string, number> = {
+  Inbox: -3,
+  Daily: -2,
+  Archive: -1,
+};
+
+function getOrder(e: Entry): number {
+  if (e.name && e.name in Order) {
+    return Order[e.name];
+  }
+
+  return 0;
+}
+
 export interface TreeProps {
   root?: boolean;
   entry: Entry;
@@ -32,7 +56,11 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
     [entry && entry.path]
   );
 
-  if (entry && entry.children) {
+  if (!entry) {
+    return null;
+  }
+
+  if (entry.children) {
     return (
       <>
         {!root && (
@@ -57,14 +85,31 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
         )}
         {(root || entry.expanded) && (
           <ul className={classNames(!root && "pl-4")}>
-            {entry.children.map((p) => {
-              const childEntry = entries[p] as Entry;
-              return (
-                <li key={childEntry.path}>
-                  <Tree entry={childEntry} />
-                </li>
-              );
-            })}
+            {entry.children
+              .map((p) => entries[p] as Entry)
+              .sort((a, b) => {
+                const orderA = getOrder(a);
+                const orderB = getOrder(b);
+
+                if (orderA && orderB) {
+                  return orderA - orderB;
+                }
+                if (orderA && !orderB) {
+                  return -1;
+                }
+                if (orderB && !orderA) {
+                  return 1;
+                }
+
+                return comparePaths(a.path, b.path);
+              })
+              .map((childEntry) => {
+                return (
+                  <li key={childEntry.path}>
+                    <Tree entry={childEntry} />
+                  </li>
+                );
+              })}
           </ul>
         )}
       </>
