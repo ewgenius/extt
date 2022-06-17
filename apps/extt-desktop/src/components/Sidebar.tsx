@@ -1,26 +1,21 @@
 import { useSelector } from "react-redux";
 import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { Scroller } from "#/components/Scroller";
-import { useAppDispatch } from "#/store";
-import { toggleSidebar } from "#/store/app/appReducer";
-import { sidebarOpenSelector } from "#/store/app/appSelectors";
-import {
-  workingFolderPathSelector,
-  workingFolderRootSelector,
-} from "#/store/workingFolder/workingFolderSelectors";
+import { workingFolderRootSelector } from "#/store/workingFolder/workingFolderSelectors";
 import { Tree } from "./Tree";
 import { Entry } from "#/store/workingFolder/workingFolderReducer";
+import { useAppStore } from "#/store/appStore";
 
 export const Sidebar = () => {
-  const dispatch = useAppDispatch();
-  const sidebarOpen = useSelector(sidebarOpenSelector);
+  const sidebarOpen = useAppStore((s) => s.sidebarOpen);
+  const toggle = useAppStore((s) => s.toggleSidebar);
+
   const root = useSelector(workingFolderRootSelector);
-  const onToggle = () => dispatch(toggleSidebar());
 
   const buttons = (
     <div className="absolute bottom-0 flex h-[32px] w-full px-2 py-1 backdrop-blur-lg">
       <button
-        onClick={onToggle}
+        onClick={toggle}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       >
         <MenuIcon className="h-4 w-4 text-current" />

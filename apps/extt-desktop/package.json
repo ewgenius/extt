@@ -24,7 +24,8 @@
     "slate-react": "^0.78.1",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store",
     "typed-redux-saga": "^1.5.0",
-    "vite-plugin-babel-macros": "^1.0.6"
+    "vite-plugin-babel-macros": "^1.0.6",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
