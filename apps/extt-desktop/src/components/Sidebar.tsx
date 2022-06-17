@@ -11,7 +11,7 @@ export const Sidebar = () => {
   const toggle = useApp((s) => s.toggleSidebar);
 
   const buttons = (
-    <div className="absolute bottom-0 flex h-[32px] w-full px-2 py-1 backdrop-blur-lg">
+    <div className="flex h-[32px] w-full px-2 py-1 backdrop-blur-lg">
       <button
         onClick={toggle}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
@@ -30,50 +30,11 @@ export const Sidebar = () => {
 
   return sidebarOpen ? (
     <div className="flex h-full max-h-full min-w-[220px] shrink-0 flex-col">
-      <div className="h-full">
-        <Scroller padded>
-          <div className="p-2 pb-[32px]">
-            <Tree root entry={root as Entry} />
-          </div>
-          {/* <div className="p-2 pb-[32px]">
-            {path && entries && (
-              <>
-                <ul className="mb-2">
-                  <TreeEntry
-                    root
-                    entry={{
-                      name: "/",
-                      path: path,
-                      children: entries.filter(
-                        ({ name }) =>
-                          name === "Inbox" ||
-                          name === "Archive" ||
-                          name === "Daily"
-                      ),
-                    }}
-                  />
-                </ul>
-
-                <ul>
-                  <TreeEntry
-                    root
-                    entry={{
-                      name: "/",
-                      path: path,
-                      children: entries.filter(
-                        ({ name }) =>
-                          name !== "Inbox" &&
-                          name !== "Archive" &&
-                          name !== "Daily"
-                      ),
-                    }}
-                  />
-                </ul>
-              </>
-            )}
-          </div> */}
-        </Scroller>
-      </div>
+      <Scroller padded>
+        <div className="p-2 pb-[32px]">
+          <Tree root entry={root as Entry} />
+        </div>
+      </Scroller>
 
       {buttons}
 

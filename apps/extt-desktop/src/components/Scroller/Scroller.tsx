@@ -8,11 +8,13 @@ const ThumbOffset = 6;
 
 export interface ScrollerProps {
   padded?: boolean;
+  className?: string;
 }
 
 export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
   children,
   padded,
+  className,
 }) => {
   const content = useRef<HTMLDivElement>(null);
   const contentWrapper = useRef<HTMLDivElement>(null);
@@ -71,7 +73,9 @@ export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
   }, []);
 
   return (
-    <div className="relative h-full w-full flex-grow">
+    <div
+      className={classNames("relative flex-grow overflow-hidden", className)}
+    >
       <div
         ref={contentWrapper}
         onScroll={onScoll}
