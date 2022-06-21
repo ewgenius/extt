@@ -114,7 +114,7 @@ const SubscribeForm = () => {
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen overflow-x-hidden flex-col">
+    <div className="flex min-h-screen flex-col">
       <Head>
         <title>Extt</title>
         <meta name="description" content="Extt - simple text editor app" />
