@@ -37,9 +37,10 @@ function getOrder(e: Entry): number {
 export interface TreeProps {
   root?: boolean;
   entry: Entry;
+  order?: 1 | -1;
 }
 
-export const Tree: FC<TreeProps> = ({ entry, root }) => {
+export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
   const entries = useWorkingFolder((s) => s.entries);
   const selected = useWorkingFolder((s) => s.selected);
   const toggleEntry = useWorkingFolder((s) => s.toggleEntry);
@@ -59,6 +60,8 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
   if (!entry) {
     return null;
   }
+
+  const isInsideDaily = entry.name !== "Daily" || entry.path.includes("Daily/");
 
   if (entry.children) {
     return (
@@ -92,21 +95,24 @@ export const Tree: FC<TreeProps> = ({ entry, root }) => {
                 const orderB = getOrder(b);
 
                 if (orderA && orderB) {
-                  return orderA - orderB;
+                  return (orderA - orderB) * order;
                 }
                 if (orderA && !orderB) {
-                  return -1;
+                  return -1 * order;
                 }
                 if (orderB && !orderA) {
-                  return 1;
+                  return 1 * order;
                 }
 
-                return comparePaths(a.path, b.path);
+                return comparePaths(a.path, b.path) * order;
               })
               .map((childEntry) => {
                 return (
                   <li key={childEntry.path}>
-                    <Tree entry={childEntry} />
+                    <Tree
+                      entry={childEntry}
+                      order={isInsideDaily ? -1 : order}
+                    />
                   </li>
                 );
               })}
