@@ -1,6 +1,6 @@
 import { fs } from "@tauri-apps/api";
 import create from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, PersistOptions } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { getStorage } from "#/lib/storage";
 
@@ -71,6 +71,18 @@ export type WorkingFolderState = {
   selectEntry: (key: string) => void;
 };
 
+const persistOptions: PersistOptions<
+  WorkingFolderState,
+  Pick<WorkingFolderState, "path" | "selected">
+> = {
+  name: "extt-working-folder",
+  getStorage,
+  partialize: (s) => ({
+    path: s.path,
+    selected: s.selected,
+  }),
+};
+
 export const useWorkingFolder = create<WorkingFolderState>()(
   persist(
     immer((set) => ({
@@ -113,9 +125,6 @@ export const useWorkingFolder = create<WorkingFolderState>()(
           s.selected = key;
         }),
     })),
-    {
-      name: "extt-working-folder",
-      getStorage,
-    }
+    persistOptions
   )
 );
