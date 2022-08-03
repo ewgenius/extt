@@ -17,11 +17,11 @@
     "marked": "^4.0.15",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "slate": "^0.78.0",
+    "slate": "^0.82.0",
     "slate-history": "^0.66.0",
-    "slate-react": "^0.78.1",
+    "slate-react": "^0.82.0",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store",
-    "zustand": "^4.0.0-rc.1"
+    "zustand": "^4.0.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
