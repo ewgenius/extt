@@ -23,6 +23,8 @@ _Ivag preved!_
 ![alt text](https://c.tenor.com/CHc0B6gKHqUAAAAj/deadserver.gif)
 `;
 
+useWorkingFolder.getState().initialize();
+
 export const App = () => {
   useTheme();
 

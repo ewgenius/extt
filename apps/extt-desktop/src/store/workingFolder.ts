@@ -65,6 +65,7 @@ export type WorkingFolderState = {
   entries: Record<string, Entry>;
   selected: string | null;
 
+  initialize: () => void;
   setPath: (path: string) => void;
   setEntries: (root: Entry, entries: Record<string, Entry>) => void;
   toggleEntry: (key: string) => void;
@@ -85,12 +86,20 @@ const persistOptions: PersistOptions<
 
 export const useWorkingFolder = create<WorkingFolderState>()(
   persist(
-    immer((set) => ({
+    immer((set, get) => ({
       initialized: false,
       path: null,
       root: null,
       entries: {},
       selected: null,
+
+      initialize: () => {
+        const { path, initialized, setPath } = get();
+
+        if (!initialized && path) {
+          setPath(path);
+        }
+      },
 
       setPath: async (path) => {
         set((s) => {
