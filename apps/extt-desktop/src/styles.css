@@ -6,16 +6,14 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 400;
-  src: local("IBM Plex Mono"), local("IBMPlexMono"),
-    url("/fonts/IBMPlexMono-Regular.otf") format("otf");
+  src: url("/fonts/IBMPlexMono-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 400;
-  src: local("JetBrains Mono"), local("JetBrains Mono"),
-    url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 
 .decorator::before {
