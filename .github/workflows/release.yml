@@ -27,6 +27,7 @@ jobs:
         id: prepare
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GH_RELEASE_PAT }}
           script: |
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
@@ -88,6 +89,7 @@ jobs:
         env:
           release_id: ${{ needs.prepare.outputs.release_id }}
         with:
+          github-token: ${{ secrets.GH_RELEASE_PAT }}
           script: |
             github.rest.repos.updateRelease({
               owner: context.repo.owner,
