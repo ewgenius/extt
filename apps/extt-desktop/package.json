@@ -20,6 +20,7 @@
     "slate": "^0.82.0",
     "slate-history": "^0.66.0",
     "slate-react": "^0.82.0",
+    "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store",
     "zustand": "^4.0.0"
   },

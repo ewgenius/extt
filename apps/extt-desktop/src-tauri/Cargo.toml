@@ -22,6 +22,9 @@ tauri = { version = "1.0.5", features = ["api-all"] }
 [dependencies.tauri-plugin-store]
 git = "https://github.com/tauri-apps/tauri-plugin-store"
 
+[dependencies.tauri-plugin-fs-watch]
+git = "https://github.com/tauri-apps/tauri-plugin-fs-watch"
+
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL

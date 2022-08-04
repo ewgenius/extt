@@ -1,4 +1,5 @@
 import { fs } from "@tauri-apps/api";
+import { watch } from "tauri-plugin-fs-watch-api";
 import create from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -64,8 +65,10 @@ export type WorkingFolderState = {
   root: Entry | null;
   entries: Record<string, Entry>;
   selected: string | null;
+  stopWatcher?: () => Promise<void>;
 
   initialize: () => void;
+  load: (path: string) => void;
   setPath: (path: string) => void;
   setEntries: (root: Entry, entries: Record<string, Entry>) => void;
   toggleEntry: (key: string) => void;
@@ -101,17 +104,46 @@ export const useWorkingFolder = create<WorkingFolderState>()(
         }
       },
 
-      setPath: async (path) => {
-        set((s) => {
-          s.path = path;
-        });
-
+      load: async (path: string) => {
         const { root, entries } = await loadPath(path);
 
         set((s) => {
           s.entries = entries;
           s.root = root;
           s.initialized = true;
+        });
+      },
+
+      setPath: async (path) => {
+        const { load, stopWatcher } = get();
+
+        set((s) => {
+          s.path = path;
+        });
+
+        if (stopWatcher) {
+          await stopWatcher();
+        }
+
+        await load(path);
+
+        const stopWatching = await watch(path, { recursive: true }, (event) => {
+          const { type } = event;
+          switch (type) {
+            case "Create":
+            case "Remove":
+            case "Rename":
+            case "NoticeRemove":
+              load(path);
+              break;
+
+            default:
+              break;
+          }
+        });
+
+        set((s) => {
+          s.stopWatcher = stopWatching;
         });
       },
 
