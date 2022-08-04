@@ -1,4 +1,3 @@
-import { CustomElement, CustomText } from "#/typings";
 import { Descendant, Text } from "slate";
 
 // Define a serializing function that takes a value and returns a string.
