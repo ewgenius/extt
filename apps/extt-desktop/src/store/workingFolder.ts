@@ -33,8 +33,7 @@ export async function loadPath(path: string) {
 
   function parse(fileEntry: fs.FileEntry, e: Record<string, Entry>) {
     const parsed = fileEntry.path.split("/");
-    const name = parsed[parsed.length - 1];
-    console.log(name);
+    const name = parsed[parsed.length - 1].toLowerCase();
     const entry: Entry = {
       path: fileEntry.path,
       name,

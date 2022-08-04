@@ -22,13 +22,14 @@ function comparePaths(a: string, b: string) {
 }
 
 const Order: Record<string, number> = {
-  Inbox: -3,
-  Daily: -2,
-  Archive: -1,
+  inbox: -3,
+  daily: -2,
+  archive: -1,
 };
 
 function getOrder(e: Entry): number {
-  if (e.name && e.name in Order) {
+  const name = e.name?.toLowerCase();
+  if (name && name in Order) {
     return Order[e.name];
   }
 
@@ -65,7 +66,6 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
   const isInsideDaily = entry.name !== "Daily" || entry.path.includes("Daily/");
 
   if (entry.type !== "File") {
-    console.log(entry.type);
     return (
       <>
         {!root && (
