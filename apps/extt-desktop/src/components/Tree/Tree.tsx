@@ -65,6 +65,7 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
   const isInsideDaily = entry.name !== "Daily" || entry.path.includes("Daily/");
 
   if (entry.type !== "File") {
+    console.log(entry.type);
     return (
       <>
         {!root && (

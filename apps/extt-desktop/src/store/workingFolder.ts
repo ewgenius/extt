@@ -12,7 +12,7 @@ export interface Entry {
   name: string;
   expanded: boolean;
   relativePath?: string;
-  type?: "Inbox" | "Daily" | "Archive" | "Folder" | "File";
+  type: "Inbox" | "Daily" | "Archive" | "Folder" | "File";
   children?: string[];
 }
 
@@ -24,6 +24,7 @@ export async function loadPath(path: string) {
   const root: Entry = {
     path,
     name: "/",
+    type: "Folder",
     children: [],
     expanded: true,
   };
@@ -33,15 +34,16 @@ export async function loadPath(path: string) {
   function parse(fileEntry: fs.FileEntry, e: Record<string, Entry>) {
     const parsed = fileEntry.path.split("/");
     const name = parsed[parsed.length - 1];
+    console.log(name);
     const entry: Entry = {
       path: fileEntry.path,
       name,
       type:
-        name === "Inbox"
+        name === "inbox"
           ? "Inbox"
-          : name === "Archive"
+          : name === "archive"
           ? "Archive"
-          : name === "Daily"
+          : name === "daily"
           ? "Daily"
           : name.endsWith("md")
           ? "File"
