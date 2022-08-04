@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - release
+    paths:
+      - 'apps/extt-desktop/**'
 
 defaults:
   run:
