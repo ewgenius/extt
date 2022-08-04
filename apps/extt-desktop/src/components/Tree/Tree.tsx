@@ -7,6 +7,7 @@ import {
   CalendarIcon,
   DocumentTextIcon,
   FolderIcon,
+  FolderOpenIcon,
   InboxInIcon,
 } from "@heroicons/react/outline";
 
@@ -63,7 +64,7 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
 
   const isInsideDaily = entry.name !== "Daily" || entry.path.includes("Daily/");
 
-  if (entry.children) {
+  if (entry.type !== "File") {
     return (
       <>
         {!root && (
@@ -74,19 +75,21 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
               "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
             )}
           >
-            {entry.name === "Inbox" ? (
+            {entry.type === "Inbox" ? (
               <InboxInIcon className="h-4 w-4 text-current" />
-            ) : entry.name === "Archive" ? (
+            ) : entry.type === "Archive" ? (
               <ArchiveIcon className="h-4 w-4 text-current" />
-            ) : entry.name === "Daily" || entry.path.includes("Daily/") ? (
+            ) : entry.type === "Daily" || entry.path.includes("Daily/") ? (
               <CalendarIcon className="h-4 w-4 text-current" />
+            ) : entry.expanded ? (
+              <FolderOpenIcon className="h-4 w-4 text-current" />
             ) : (
               <FolderIcon className="h-4 w-4 text-current" />
             )}
             <span>{entry.name}</span>
           </button>
         )}
-        {(root || entry.expanded) && (
+        {entry.children && (root || entry.expanded) && (
           <ul className={classNames(!root && "pl-4")}>
             {entry.children
               .map((p) => entries[p] as Entry)
