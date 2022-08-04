@@ -1,4 +1,4 @@
-name: "publish"
+name: "release"
 
 on:
   push:
@@ -6,7 +6,11 @@ on:
       - release
 
 jobs:
-  publish-tauri:
+  release:
+    defaults:
+      run:
+        working-directory: apps/extt-desktop
+
     strategy:
       fail-fast: false
       matrix:

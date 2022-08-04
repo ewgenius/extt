@@ -3,7 +3,11 @@ name: "test"
 on: [pull_request]
 
 jobs:
-  test-tauri:
+  test:
+    defaults:
+      run:
+        working-directory: apps/extt-desktop
+
     strategy:
       fail-fast: false
       matrix:
