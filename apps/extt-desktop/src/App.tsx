@@ -1,5 +1,6 @@
 import { styled, globalStyles } from "#/stitches.config";
 import { useStore } from "#/store";
+import { CommandMenu } from "#/components/CommandMenu";
 
 export const AppShell = styled("div", {
   width: "100vw",
@@ -13,6 +14,7 @@ export const App = () => {
 
   return (
     <AppShell>
+      <CommandMenu />
       <button onClick={() => setTheme("dark")}>dark</button>
       <button onClick={() => setTheme("light")}>light</button>
       <button onClick={() => setTheme("system")}>system</button>

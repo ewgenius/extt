@@ -1,13 +1,13 @@
 import { FileEntry } from "@tauri-apps/api/fs";
 import { useCallback, useState } from "react";
-import {
-  FolderIcon,
-  FolderOpenIcon,
-  DocumentTextIcon,
-  InboxIcon,
-  ArchiveIcon,
-  CalendarIcon,
-} from "@heroicons/react/outline";
+// import {
+//   FolderIcon,
+//   FolderOpenIcon,
+//   DocumentTextIcon,
+//   InboxIcon,
+//   ArchiveIcon,
+//   CalendarIcon,
+// } from "@heroicons/react/outline";
 import { classNames } from "#/utils/classNames";
 
 interface TreeEntryProps {
@@ -111,18 +111,24 @@ export function TreeEntry({ entry, root }: TreeEntryProps) {
         )} */}
         {entry.children ? (
           true ? (
-            <InboxIcon className="h-4 w-4 text-current" />
+            <div />
+            // <InboxIcon className="h-4 w-4 text-current" />
           ) : false ? (
-            <ArchiveIcon className="h-4 w-4 text-current" />
+            <div />
+            // <ArchiveIcon className="h-4 w-4 text-current" />
           ) : false ? (
-            <CalendarIcon className="h-4 w-4 text-current" />
+            <div />
+            // <CalendarIcon className="h-4 w-4 text-current" />
           ) : expanded ? (
-            <FolderOpenIcon className="h-4 w-4 text-current" />
+            <div />
+            // <FolderOpenIcon className="h-4 w-4 text-current" />
           ) : (
-            <FolderIcon className="h-4 w-4 text-current" />
+            <div />
+            // <FolderIcon className="h-4 w-4 text-current" />
           )
         ) : (
-          <DocumentTextIcon className="h-4 w-4 text-current" />
+          <div />
+          // <DocumentTextIcon className="h-4 w-4 text-current" />
         )}
         <span>{entry.name || entry.path}</span>
         {/* {isFolder && (

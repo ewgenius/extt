@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Portal } from "@headlessui/react";
+// import { Portal } from "@headlessui/react";
 import { createEditor, Descendant, Editor, Range, Transforms } from "slate";
 import {
   Slate,
@@ -64,94 +64,96 @@ export function SlateEditor({
 
   const editorPortalRoot = useRef<HTMLDivElement>(null);
 
-  return (
-    <Scroller>
-      <Portal.Group target={editorPortalRoot}>
-        <Slate
-          editor={editor}
-          value={value}
-          onChange={(value) => {
-            const isAstChange = editor.operations.some(
-              (op) => "set_selection" !== op.type
-            );
-            if (isAstChange) {
-              onSave(value);
-            }
-          }}
-        >
-          <Editable
-            className="container prose prose-stone relative mx-auto max-w-4xl select-text py-8 px-16 dark:prose-invert"
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            onBlur={(e) => {
-              console.log(e);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (e.shiftKey) {
-                  e.preventDefault();
-                  editor.insertText("\n");
-                } else {
-                  e.preventDefault();
-                  editor.insertNode({
-                    type: "paragraph",
-                    children: [{ text: "" }],
-                  });
-                }
-              }
+  return null;
 
-              // if (e.key === "/") {
-              //   console.log(e);
-              // }
+  // return (
+  //   <Scroller>
+  //     <Portal.Group target={editorPortalRoot}>
+  //       <Slate
+  //         editor={editor}
+  //         value={value}
+  //         onChange={(value) => {
+  //           const isAstChange = editor.operations.some(
+  //             (op) => "set_selection" !== op.type
+  //           );
+  //           if (isAstChange) {
+  //             onSave(value);
+  //           }
+  //         }}
+  //       >
+  //         <Editable
+  //           className="container prose prose-stone relative mx-auto max-w-4xl select-text py-8 px-16 dark:prose-invert"
+  //           renderElement={renderElement}
+  //           renderLeaf={renderLeaf}
+  //           onBlur={(e) => {
+  //             console.log(e);
+  //           }}
+  //           onKeyDown={(e) => {
+  //             if (e.key === "Enter") {
+  //               if (e.shiftKey) {
+  //                 e.preventDefault();
+  //                 editor.insertText("\n");
+  //               } else {
+  //                 e.preventDefault();
+  //                 editor.insertNode({
+  //                   type: "paragraph",
+  //                   children: [{ text: "" }],
+  //                 });
+  //               }
+  //             }
 
-              if (e.metaKey) {
-                if (e.key === "a") {
-                  Transforms.select(editor, {
-                    anchor: Editor.start(editor, []),
-                    focus: Editor.end(editor, []),
-                  });
-                }
-              }
+  //             // if (e.key === "/") {
+  //             //   console.log(e);
+  //             // }
 
-              if (e.key === "Escape") {
-                Transforms.deselect(editor);
-              }
+  //             if (e.metaKey) {
+  //               if (e.key === "a") {
+  //                 Transforms.select(editor, {
+  //                   anchor: Editor.start(editor, []),
+  //                   focus: Editor.end(editor, []),
+  //                 });
+  //               }
+  //             }
 
-              if (e.ctrlKey) {
-                switch (e.key) {
-                  case "`": {
-                    e.preventDefault();
-                    const [match] = Editor.nodes(editor, {
-                      match: (n) => (n as any).type === "code",
-                    });
-                    Transforms.setNodes(
-                      editor,
-                      { type: match ? null : "code" } as any,
-                      { match: (n) => Editor.isBlock(editor, n) }
-                    );
-                    break;
-                  }
+  //             if (e.key === "Escape") {
+  //               Transforms.deselect(editor);
+  //             }
 
-                  // case 'b': {
-                  //   e.preventDefault()
-                  //   Transforms.setNodes(
-                  //     editor,
-                  //     { bold: true },
-                  //     { match: n => Text.(n), split: true }
-                  //   )
-                  //   break
-                  // }
-                }
-              }
-            }}
-          />
-        </Slate>
-      </Portal.Group>
-      <div
-        ref={editorPortalRoot}
-        id="portal-root"
-        className="absolute top-0 left-0 w-full"
-      />
-    </Scroller>
-  );
+  //             if (e.ctrlKey) {
+  //               switch (e.key) {
+  //                 case "`": {
+  //                   e.preventDefault();
+  //                   const [match] = Editor.nodes(editor, {
+  //                     match: (n) => (n as any).type === "code",
+  //                   });
+  //                   Transforms.setNodes(
+  //                     editor,
+  //                     { type: match ? null : "code" } as any,
+  //                     { match: (n) => Editor.isBlock(editor, n) }
+  //                   );
+  //                   break;
+  //                 }
+
+  //                 // case 'b': {
+  //                 //   e.preventDefault()
+  //                 //   Transforms.setNodes(
+  //                 //     editor,
+  //                 //     { bold: true },
+  //                 //     { match: n => Text.(n), split: true }
+  //                 //   )
+  //                 //   break
+  //                 // }
+  //               }
+  //             }
+  //           }}
+  //         />
+  //       </Slate>
+  //     </Portal.Group>
+  //     <div
+  //       ref={editorPortalRoot}
+  //       id="portal-root"
+  //       className="absolute top-0 left-0 w-full"
+  //     />
+  //   </Scroller>
+  // );
 }

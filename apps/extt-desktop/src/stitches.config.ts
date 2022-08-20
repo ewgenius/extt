@@ -13,8 +13,34 @@ export const {
 } = createStitches({
   theme: {
     colors: {
-      background: "$primary1",
-      text: "$primary11",
+      bg1: "$primary1",
+      bg2: "$primary2",
+
+      bgNormal: "$primary3",
+      bgHover: "$primary4",
+      bgActive: "$primary5",
+
+      borderDefault: "$primary6",
+      borderActive: "$primary7",
+      borderHover: "$primary8",
+
+      solid1: "$primary9",
+      solid2: "$primary10",
+
+      text1: "$primary11",
+      text2: "$primary12",
+    },
+    space: {
+      1: "2px",
+      2: "4px",
+      3: "8px",
+      4: "16px",
+    },
+    radii: {
+      1: "2px",
+      2: "4px",
+      3: "8px",
+      4: "16px",
     },
   },
 });
@@ -65,8 +91,8 @@ export const globalStyles = globalCss({
   ],
   body: {
     fontFamily: "IBM Plex Mono",
-    backgroundColor: "$background",
-    color: "$text",
+    backgroundColor: "$bg1",
+    color: "$text1",
     transition: "color 0.3s, background-color 0.15s",
   },
 });
