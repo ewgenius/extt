@@ -1,16 +1,9 @@
-import * as SelectPrimitive from "@radix-ui/react-select";
-import * as colors from "@radix-ui/colors";
-import {
-  styled,
-  css,
-  globalStyles,
-  themes,
-  themeColors,
-} from "#/stitches.config";
+import { styled, globalStyles } from "#/stitches.config";
 import { useStore } from "#/store";
 import { CommandMenu } from "#/components/CommandMenu";
 import { Button } from "#/components/Button";
 import { Editor } from "#/components/Editor";
+import { ColorsSelector } from "#/components/ColorsSelector";
 import {
   SunIcon,
   MoonIcon,
@@ -66,14 +59,6 @@ const StatePreview = styled("div", {
   padding: "$3",
 });
 
-export const ColorButton = styled("button", {
-  border: "1px solid",
-  borderRadius: "50%",
-  width: 16,
-  height: 16,
-  cursor: "pointer",
-});
-
 export const App = () => {
   globalStyles();
 
@@ -119,17 +104,7 @@ export const App = () => {
 
           <Separator />
 
-          {themeColors.map((color) => {
-            return (
-              <ColorButton
-                onClick={() => setColor(color)}
-                style={{
-                  backgroundColor: (colors as any)[color][color + "12"],
-                  borderColor: (colors as any)[color][color + "11"],
-                }}
-              />
-            );
-          })}
+          <ColorsSelector />
         </Toolbar>
 
         <StatePreview>
