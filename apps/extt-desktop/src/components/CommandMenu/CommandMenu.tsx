@@ -30,6 +30,7 @@ const Content = styled("div", {
     borderColor: "$borderDefault",
     boxShadow: "0 0 1px 0px $$shadow",
     fontFamily: "inherit",
+    fontSize: 12,
   },
 });
 
@@ -46,22 +47,30 @@ const Input = styled(Command.Input, {
 });
 
 const List = styled(Command.List, {
-  padding: "$3",
+  padding: "$2",
+
+  "&>[cmdk-list-sizer]": {
+    display: "flex",
+    flexFlow: "column",
+    gap: "$2",
+  },
 });
 
 const Item = styled(Command.Item, {
-  padding: 8,
+  padding: "$3",
   color: "inherit",
   fontFamily: "inherit",
-  borderRadius: "$3",
+  borderRadius: "$2",
   cursor: "pointer",
 
-  "&:not([aria-disabled])&:hover": {
-    backgroundColor: "$bgHover",
-  },
+  "&:not([aria-disabled])": {
+    "&:hover": {
+      backgroundColor: "$bgHover",
+    },
 
-  "&:active": {
-    backgroundColor: "$bgActive",
+    "&:active": {
+      backgroundColor: "$bgActive",
+    },
   },
 
   "&[aria-disabled]": {
