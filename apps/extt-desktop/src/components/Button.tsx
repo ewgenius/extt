@@ -1,11 +1,18 @@
 import { styled } from "#/stitches.config";
 
 export const Button = styled("button", {
+  display: "flex",
+  gap: "$3",
+  alignItems: "center",
+  paddingTop: "$2",
+  paddingBottom: "$2",
+  paddingLeft: "$3",
+  paddingRight: "$3",
   border: "none",
-  padding: "$3",
   borderRadius: "$2",
   backgroundColor: "$bgNormal",
   color: "$text1",
+  fontFamily: "inherit",
 
   "&:not([disabled])": {
     cursor: "pointer",

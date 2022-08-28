@@ -2,7 +2,12 @@ import { styled, globalStyles } from "#/stitches.config";
 import { useStore } from "#/store";
 import { CommandMenu } from "#/components/CommandMenu";
 import { Button } from "#/components/Button";
-import { Editor } from "#/components/Editor";
+import {
+  SunIcon,
+  MoonIcon,
+  FolderOpenIcon,
+  DocumentPlusIcon,
+} from "#/components/icons";
 
 export const AppShell = styled("div", {
   width: "100vw",
@@ -40,12 +45,13 @@ export const App = () => {
             disabled={settings.theme === "light"}
             onClick={() => setTheme("light")}
           >
-            theme: light
+            <SunIcon /> theme: light
           </Button>
           <Button
             disabled={settings.theme === "dark"}
             onClick={() => setTheme("dark")}
           >
+            <MoonIcon />
             theme: dark
           </Button>
           <Button
@@ -57,7 +63,14 @@ export const App = () => {
 
           <Separator />
 
-          <Button onClick={openWorkspace}>open</Button>
+          <Button onClick={openWorkspace}>
+            <FolderOpenIcon />
+            open
+          </Button>
+          <Button onClick={openWorkspace}>
+            <DocumentPlusIcon />
+            new note
+          </Button>
         </Toolbar>
 
         <StatePreview>
