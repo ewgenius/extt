@@ -4,9 +4,9 @@ import { App } from "#/App";
 import { App as DevApp } from "#/dev/App";
 import { useStore } from "#/store";
 
-useStore.getState().init();
-
 if (window.hasOwnProperty("__TAURI__")) {
+  useStore.getState().init();
+
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <App />

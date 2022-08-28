@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Command } from "cmdk";
 import * as Popover from "@radix-ui/react-popover";
 import { styled } from "#/stitches.config";
+import { useStore } from "#/store";
 
 const Fade = styled("div", {
   position: "fixed",
@@ -13,7 +14,7 @@ const Fade = styled("div", {
 });
 
 const Content = styled("div", {
-  $$shadow: "$colors$bg1",
+  $$shadow: "$colors$solid1",
 
   "> div": {
     position: "fixed",
@@ -24,10 +25,10 @@ const Content = styled("div", {
     backgroundColor: "$bgNormal",
     display: "flex",
     flexFlow: "column",
-    borderRadius: "$2",
+    borderRadius: "$3",
     border: "1px solid",
     borderColor: "$borderDefault",
-    boxShadow: "0 0 4px 4px $$shadow",
+    boxShadow: "0 0 1px 0px $$shadow",
     fontFamily: "inherit",
   },
 });
@@ -53,17 +54,37 @@ const Item = styled(Command.Item, {
   color: "inherit",
   fontFamily: "inherit",
   borderRadius: "$3",
+  cursor: "pointer",
 
-  "&:hover": {
+  "&:not([aria-disabled])&:hover": {
     backgroundColor: "$bgHover",
+  },
+
+  "&:active": {
+    backgroundColor: "$bgActive",
+  },
+
+  "&[aria-disabled]": {
+    color: "$solid1",
+    cursor: "default",
   },
 });
 
 export const CommandMenu = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string>("");
+
+  const {
+    setTheme,
+    settings: { theme },
+  } = useStore();
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
+    inputRef?.current?.focus();
+
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && e.metaKey) {
         setOpen((open) => !open);
@@ -78,17 +99,30 @@ export const CommandMenu = () => {
   }, []);
 
   return (
-    <Popover.Root open={open} modal onOpenChange={setOpen}>
+    <Popover.Root modal open={open} onOpenChange={setOpen}>
       <Popover.Content>
         <Content>
-          <Command>
-            <Input />
+          <Command value={value} onValueChange={(v) => setValue(v)}>
+            <Input autoFocus ref={inputRef} />
             <List>
-              <Item>Apple 0</Item>
-              <Item>Apple 2</Item>
-              <Item>Apple 3</Item>
-              <Item>Apple 4</Item>
-              <Item>Apple 5</Item>
+              <Item
+                disabled={theme === "light"}
+                onSelect={() => setTheme("light")}
+              >
+                Theme: light
+              </Item>
+              <Item
+                disabled={theme === "dark"}
+                onSelect={() => setTheme("dark")}
+              >
+                Theme: dark
+              </Item>
+              <Item
+                disabled={theme === "system"}
+                onSelect={() => setTheme("system")}
+              >
+                Theme: system
+              </Item>
             </List>
           </Command>
         </Content>

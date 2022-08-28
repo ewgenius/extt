@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
+// import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
 import { fs, dialog } from "@tauri-apps/api";
 import { Sidebar } from "#/components/Sidebar";
 import { Editor } from "#/components/Editor";
@@ -97,7 +97,7 @@ export const App = () => {
             className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
             onClick={createFolderDialog}
           >
-            <FolderAddIcon className="h-4 w-4 text-current" />
+            {/* <FolderAddIcon className="h-4 w-4 text-current" /> */}
             Bootstrap notes folder
           </button>
           or
@@ -105,7 +105,7 @@ export const App = () => {
             className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
             onClick={openFolderDialog}
           >
-            <FolderOpenIcon className="h-4 w-4 text-current" />
+            {/* <FolderOpenIcon className="h-4 w-4 text-current" /> */}
             Select notes folder
           </button>
         </div>
