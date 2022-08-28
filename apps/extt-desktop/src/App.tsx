@@ -1,5 +1,5 @@
 import { styled, globalStyles } from "#/stitches.config";
-import { useStore } from "#/store";
+import { Entry, useStore } from "#/store";
 import { CommandMenu } from "#/components/CommandMenu";
 import { Button } from "#/components/Button";
 import { Editor } from "#/components/Editor";
@@ -10,19 +10,22 @@ import {
   FolderOpenIcon,
   DocumentPlusIcon,
   ComputerDesktopIcon,
+  FolderIcon,
 } from "#/components/icons";
 
 export const AppShell = styled("div", {
   width: "100vw",
   height: "100vh",
-  paddingTop: 43,
+  display: "flex",
+  flexFlow: "column",
+});
+
+export const Layout = styled("div", {
+  flexGrow: 1,
+  display: "flex",
 });
 
 const Toolbar = styled("div", {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
   backgroundColor: "$bg1",
   display: "flex",
   alignItems: "center",
@@ -58,6 +61,69 @@ const StatePreview = styled("div", {
   fontSize: 12,
   padding: "$3",
 });
+
+const Sidebar = styled("div", {
+  display: "flex",
+  flexFlow: "column",
+  borderRight: "1px solid",
+  borderRightColor: "$borderDefault",
+  padding: "$2",
+  minWidth: 320,
+});
+
+const TreeEntryComponent = styled("div", {
+  fontSize: 12,
+
+  "& > div": {
+    display: "flex",
+    gap: "$3",
+    alignContent: "center",
+    padding: "$2",
+  },
+
+  "& > ul": {
+    paddingLeft: "$4",
+
+    "&> li": {
+      listStyleType: "none",
+    },
+  },
+
+  variants: {
+    root: {
+      true: {
+        "& > ul": {
+          paddingLeft: 0,
+        },
+      },
+    },
+  },
+});
+
+const TreeEntry = ({ entry, root }: { entry: Entry; root?: boolean }) => {
+  const {
+    workspace: { entries },
+  } = useStore();
+  return (
+    <TreeEntryComponent>
+      {!root && (
+        <div>
+          <FolderIcon />
+          {entry.name}
+        </div>
+      )}
+      {entry.children && (
+        <ul>
+          {entry.children.map((child) => (
+            <li>
+              <TreeEntry entry={entries![child]} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </TreeEntryComponent>
+  );
+};
 
 export const App = () => {
   globalStyles();
@@ -107,11 +173,12 @@ export const App = () => {
           <ColorsSelector />
         </Toolbar>
 
-        <StatePreview>
-          <p>{JSON.stringify(settings)}</p>
-          <p>{JSON.stringify(workspace)}</p>
-        </StatePreview>
-        <Editor />
+        <Layout>
+          <Sidebar>
+            {workspace.root && <TreeEntry root entry={workspace.root} />}
+          </Sidebar>
+          <Editor />
+        </Layout>
       </AppShell>
       <CommandMenu />
     </>

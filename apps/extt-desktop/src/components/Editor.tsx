@@ -10,6 +10,8 @@ import { styled } from "#/stitches.config";
 
 const EditorContainer = styled("div", {
   padding: "$4",
+  maxWidth: 748,
+  margin: "0px auto",
 });
 
 const initialValue: Descendant[] = [

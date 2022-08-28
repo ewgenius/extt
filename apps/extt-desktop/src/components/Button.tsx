@@ -12,7 +12,7 @@ export const Button = styled("button", {
   borderColor: "$borderDefault",
   borderRadius: "$2",
   backgroundColor: "$bgNormal",
-  color: "$text1",
+  color: "inherit",
   fontFamily: "inherit",
 
   "&:not([disabled])": {

@@ -3,6 +3,7 @@ import { styled } from "#/stitches.config";
 import {
   SunIcon as SunIconUnstyled,
   MoonIcon as MoonIconUnstyled,
+  FolderIcon as FolderIconUnstyled,
   FolderOpenIcon as FolderOpenIconUnstyled,
   DocumentPlusIcon as DocumentPlusIconUnstyled,
   ComputerDesktopIcon as ComputerDesktopIconUnstyled,
@@ -38,3 +39,4 @@ export const MoonIcon = styledIcon(MoonIconUnstyled);
 export const FolderOpenIcon = styledIcon(FolderOpenIconUnstyled);
 export const DocumentPlusIcon = styledIcon(DocumentPlusIconUnstyled);
 export const ComputerDesktopIcon = styledIcon(ComputerDesktopIconUnstyled);
+export const FolderIcon = styledIcon(FolderIconUnstyled);

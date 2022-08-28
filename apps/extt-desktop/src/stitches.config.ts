@@ -111,7 +111,7 @@ export const globalStyles = globalCss({
   body: {
     fontFamily: "IBM Plex Mono",
     backgroundColor: "$bg1",
-    color: "$text1",
+    color: "$text2",
     transition: "color 0.3s, background-color 0.15s",
     overflow: "hidden",
   },

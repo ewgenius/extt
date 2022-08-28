@@ -13,11 +13,81 @@ export interface Settings {
   color: string;
 }
 
+export type EntryType = "Inbox" | "Daily" | "Archive" | "Folder" | "File";
+
+export interface Entry {
+  path: string;
+  name: string;
+  expanded: boolean;
+  relativePath?: string;
+  type: EntryType;
+  children?: string[];
+}
+
+export async function loadPath(path: string) {
+  const tree = await fs.readDir(path, {
+    recursive: true,
+  });
+
+  const root: Entry = {
+    path,
+    name: "/",
+    type: "Folder",
+    children: [],
+    expanded: true,
+  };
+
+  const entries: Record<string, Entry> = {};
+
+  function parse(fileEntry: fs.FileEntry, e: Record<string, Entry>) {
+    const parsed = fileEntry.path.split("/");
+    const name = parsed[parsed.length - 1].toLowerCase();
+    const entry: Entry = {
+      path: fileEntry.path,
+      name,
+      type:
+        name === "inbox"
+          ? "Inbox"
+          : name === "archive"
+          ? "Archive"
+          : name === "daily"
+          ? "Daily"
+          : name.endsWith("md")
+          ? "File"
+          : "Folder",
+      expanded: true,
+    };
+
+    if (fileEntry.children && fileEntry.children.length) {
+      entry.children = [];
+      fileEntry.children.forEach((child) => {
+        if (child.children || child.path.endsWith(".md")) {
+          entry.children?.push(child.path);
+          parse(child, e);
+        }
+      });
+    }
+
+    e[entry.path] = entry;
+  }
+
+  tree.forEach((fileEntry) => {
+    if (fileEntry.children || fileEntry.path.endsWith(".md")) {
+      root.children?.push(fileEntry.path);
+      parse(fileEntry, entries);
+    }
+  });
+
+  return { root, entries };
+}
+
 export interface Workspace {
   loaded: boolean;
   path: string | null;
   selectedPath: string | null;
   stopFsWatcher: (() => Promise<void>) | null;
+  root: Entry | null;
+  entries: Record<string, Entry> | null;
 }
 
 export interface State {
@@ -61,6 +131,8 @@ export const useStore = create<State>()(
         path: null,
         selectedPath: null,
         stopFsWatcher: null,
+        root: null,
+        entries: null,
       },
 
       init() {
@@ -158,14 +230,12 @@ export const useStore = create<State>()(
           return;
         }
 
-        const root = await fs.readDir(path, {
-          recursive: true,
-        });
-
-        console.log(root);
+        const { root, entries } = await loadPath(path);
 
         set((s) => {
           s.workspace.loaded = true;
+          s.workspace.root = root;
+          s.workspace.entries = entries;
         });
       },
 
