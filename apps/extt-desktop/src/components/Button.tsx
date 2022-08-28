@@ -8,7 +8,8 @@ export const Button = styled("button", {
   paddingBottom: "$2",
   paddingLeft: "$3",
   paddingRight: "$3",
-  border: "none",
+  border: "1px solid",
+  borderColor: "$borderDefault",
   borderRadius: "$2",
   backgroundColor: "$bgNormal",
   color: "$text1",
@@ -19,10 +20,12 @@ export const Button = styled("button", {
 
     "&:hover": {
       backgroundColor: "$bgHover",
+      borderColor: "$borderHover",
     },
 
     "&:active": {
       backgroundColor: "$bgActive",
+      borderColor: "$borderActive",
     },
   },
 

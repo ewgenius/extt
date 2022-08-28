@@ -1,5 +1,26 @@
 import { createStitches } from "@stitches/react";
+import * as colors from "@radix-ui/colors";
 import { mauve, mauveDark } from "@radix-ui/colors";
+
+function getPrimarySwatch(
+  key: string,
+  swatch: Record<string, string>
+): Record<string, string> {
+  return {
+    primary1: swatch[`${key}1`],
+    primary2: swatch[`${key}2`],
+    primary3: swatch[`${key}3`],
+    primary4: swatch[`${key}4`],
+    primary5: swatch[`${key}5`],
+    primary6: swatch[`${key}6`],
+    primary7: swatch[`${key}7`],
+    primary8: swatch[`${key}8`],
+    primary9: swatch[`${key}9`],
+    primary10: swatch[`${key}10`],
+    primary11: swatch[`${key}11`],
+    primary12: swatch[`${key}12`],
+  };
+}
 
 export const {
   styled,
@@ -47,37 +68,35 @@ export const {
 
 export const darkTheme = createTheme({
   colors: {
-    primary1: mauveDark.mauve1,
-    primary2: mauveDark.mauve2,
-    primary3: mauveDark.mauve3,
-    primary4: mauveDark.mauve4,
-    primary5: mauveDark.mauve5,
-    primary6: mauveDark.mauve6,
-    primary7: mauveDark.mauve7,
-    primary8: mauveDark.mauve8,
-    primary9: mauveDark.mauve9,
-    primary10: mauveDark.mauve10,
-    primary11: mauveDark.mauve11,
-    primary12: mauveDark.mauve12,
+    ...getPrimarySwatch("mauve", mauveDark),
   },
 });
 
 export const lightTheme = createTheme({
   colors: {
-    primary1: mauve.mauve1,
-    primary2: mauve.mauve2,
-    primary3: mauve.mauve3,
-    primary4: mauve.mauve4,
-    primary5: mauve.mauve5,
-    primary6: mauve.mauve6,
-    primary7: mauve.mauve7,
-    primary8: mauve.mauve8,
-    primary9: mauve.mauve9,
-    primary10: mauve.mauve10,
-    primary11: mauve.mauve11,
-    primary12: mauve.mauve12,
+    ...getPrimarySwatch("mauve", mauve),
   },
 });
+
+export const themeColors = Object.keys(colors).filter(
+  (c) => !c.endsWith("A") && !c.endsWith("Dark")
+);
+
+export const themes = themeColors.reduce<Record<string, any>>((acc, key) => {
+  return {
+    ...acc,
+    [key]: createTheme({
+      colors: {
+        ...getPrimarySwatch(key, (colors as any)[key]),
+      },
+    }),
+    [key + "Dark"]: createTheme({
+      colors: {
+        ...getPrimarySwatch(key, (colors as any)[key + "Dark"]),
+      },
+    }),
+  };
+}, {});
 
 export const globalStyles = globalCss({
   "*": { margin: 0, padding: 0 },
@@ -94,5 +113,10 @@ export const globalStyles = globalCss({
     backgroundColor: "$bg1",
     color: "$text1",
     transition: "color 0.3s, background-color 0.15s",
+    overflow: "hidden",
+  },
+  "input::placeholder": {
+    color: "inherit",
+    opacity: 0.5,
   },
 });

@@ -5,6 +5,7 @@ import {
   MoonIcon as MoonIconUnstyled,
   FolderOpenIcon as FolderOpenIconUnstyled,
   DocumentPlusIcon as DocumentPlusIconUnstyled,
+  ComputerDesktopIcon as ComputerDesktopIconUnstyled,
 } from "@heroicons/react/24/outline";
 
 function styledIcon(icon: ComponentType<any>) {
@@ -36,3 +37,4 @@ export const SunIcon = styledIcon(SunIconUnstyled);
 export const MoonIcon = styledIcon(MoonIconUnstyled);
 export const FolderOpenIcon = styledIcon(FolderOpenIconUnstyled);
 export const DocumentPlusIcon = styledIcon(DocumentPlusIconUnstyled);
+export const ComputerDesktopIcon = styledIcon(ComputerDesktopIconUnstyled);

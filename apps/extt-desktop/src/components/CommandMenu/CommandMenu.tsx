@@ -3,6 +3,7 @@ import { Command } from "cmdk";
 import * as Popover from "@radix-ui/react-popover";
 import { styled } from "#/stitches.config";
 import { useStore } from "#/store";
+import { SunIcon, MoonIcon, ComputerDesktopIcon } from "#/components/icons";
 
 const Fade = styled("div", {
   position: "fixed",
@@ -14,8 +15,6 @@ const Fade = styled("div", {
 });
 
 const Content = styled("div", {
-  $$shadow: "$colors$solid1",
-
   "> div": {
     position: "fixed",
     width: 640,
@@ -28,9 +27,13 @@ const Content = styled("div", {
     borderRadius: "$3",
     border: "1px solid",
     borderColor: "$borderDefault",
-    boxShadow: "0 0 1px 0px $$shadow",
+    boxShadow: `
+      0 2px 8px 0px rgba(0, 0, 0, 0.1),
+      0 4px 16px 0px rgba(0, 0, 0, 0.2)
+    `,
     fontFamily: "inherit",
-    fontSize: 12,
+    color: "inherit",
+    fontSize: 14,
   },
 });
 
@@ -62,6 +65,9 @@ const Item = styled(Command.Item, {
   fontFamily: "inherit",
   borderRadius: "$2",
   cursor: "pointer",
+  display: "flex",
+  gap: "$3",
+  alignItems: "center",
 
   "&:not([aria-disabled])": {
     "&:hover": {
@@ -112,25 +118,29 @@ export const CommandMenu = () => {
       <Popover.Content>
         <Content>
           <Command value={value} onValueChange={(v) => setValue(v)}>
-            <Input autoFocus ref={inputRef} />
+            <Input
+              autoFocus
+              ref={inputRef}
+              placeholder="Search for commands..."
+            />
             <List>
               <Item
                 disabled={theme === "light"}
                 onSelect={() => setTheme("light")}
               >
-                Theme: light
+                <SunIcon /> Theme: light
               </Item>
               <Item
                 disabled={theme === "dark"}
                 onSelect={() => setTheme("dark")}
               >
-                Theme: dark
+                <MoonIcon /> Theme: dark
               </Item>
               <Item
                 disabled={theme === "system"}
                 onSelect={() => setTheme("system")}
               >
-                Theme: system
+                <ComputerDesktopIcon /> Theme: system
               </Item>
             </List>
           </Command>

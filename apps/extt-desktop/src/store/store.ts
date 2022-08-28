@@ -4,12 +4,13 @@ import create from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { getStorage } from "#/lib/storage";
-import { darkTheme, lightTheme } from "#/stitches.config";
+import { darkTheme, lightTheme, themes } from "#/stitches.config";
 
 export type Theme = "light" | "dark" | "system";
 
 export interface Settings {
   theme: Theme;
+  color: string;
 }
 
 export interface Workspace {
@@ -26,6 +27,7 @@ export interface State {
   init: () => void;
 
   setTheme: (theme: Theme) => void;
+  setColor: (color: string) => void;
   onSystemThemeChange: (event: MediaQueryListEvent) => void;
   initWorkspace: (path: string) => Promise<void>;
   loadWorkspace: () => Promise<void>;
@@ -34,8 +36,10 @@ export interface State {
 
 const themeMatcher = window.matchMedia("(prefers-color-scheme:dark)");
 
-function applyTheme(isDark: boolean) {
-  document.documentElement.className = isDark ? darkTheme : lightTheme;
+function applyTheme(isDark: boolean, color: string) {
+  document.documentElement.className = isDark
+    ? themes[color + "Dark"]
+    : themes[color];
 }
 
 export const options: PersistOptions<State, State> = {
@@ -49,6 +53,7 @@ export const useStore = create<State>()(
     immer((set, get) => ({
       settings: {
         theme: "light" as Theme,
+        color: Object.keys(themes)[0],
       },
 
       workspace: {
@@ -68,9 +73,27 @@ export const useStore = create<State>()(
         }
       },
 
+      setColor(color) {
+        const {
+          settings: { theme },
+        } = get();
+
+        const isDark =
+          (theme === "system" && themeMatcher.matches) || theme === "dark";
+
+        applyTheme(isDark, color);
+
+        set((s) => {
+          s.settings.color = color;
+        });
+      },
+
       setTheme(theme) {
         set((s) => {
-          const { onSystemThemeChange } = get();
+          const {
+            onSystemThemeChange,
+            settings: { color },
+          } = get();
           s.settings.theme = theme;
 
           const isDark =
@@ -82,12 +105,15 @@ export const useStore = create<State>()(
             themeMatcher.removeEventListener("change", onSystemThemeChange);
           }
 
-          applyTheme(isDark);
+          applyTheme(isDark, color);
         });
       },
 
       onSystemThemeChange({ matches: isDark }) {
-        applyTheme(isDark);
+        const {
+          settings: { color },
+        } = get();
+        applyTheme(isDark, color);
       },
 
       async initWorkspace(path) {
