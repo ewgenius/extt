@@ -1,134 +1,186 @@
-import { useEffect } from "react";
-import { FolderAddIcon, FolderOpenIcon } from "@heroicons/react/outline";
-import { fs, dialog } from "@tauri-apps/api";
-import { Sidebar } from "#/components/Sidebar";
+import { styled, globalStyles } from "#/stitches.config";
+import { Entry, useStore } from "#/store";
+import { CommandMenu } from "#/components/CommandMenu";
+import { Button } from "#/components/Button";
 import { Editor } from "#/components/Editor";
-import { useWorkingFolder } from "#/store/workingFolder";
-import { useTheme } from "#/hooks/useTheme";
+import { ColorsSelector } from "#/components/ColorsSelector";
+import {
+  SunIcon,
+  MoonIcon,
+  FolderOpenIcon,
+  DocumentPlusIcon,
+  ComputerDesktopIcon,
+  FolderIcon,
+} from "#/components/icons";
 
-const welcomeTemplate = `# Welcome to Extt!
+export const AppShell = styled("div", {
+  width: "100vw",
+  height: "100vh",
+  display: "flex",
+  flexFlow: "column",
+});
 
-## What it can do?
+export const Layout = styled("div", {
+  flexGrow: 1,
+  display: "flex",
+});
 
-> to be done...
+const Toolbar = styled("div", {
+  backgroundColor: "$bg1",
+  display: "flex",
+  alignItems: "center",
+  gap: "$3",
+  padding: "$3",
+  borderBottom: "1px solid",
+  borderBottomColor: "$borderDefault",
+});
 
-\`\`\`scala
+const ButtonGroup = styled("div", {
+  display: "flex",
 
-Monada([]>=:)
+  "> :not(:first-child)": {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
 
-\`\`\`
+    // borderLeft: "1px solid",
+    // borderLeftColor: "$borderDefault",
+  },
 
-_Ivag preved!_
+  "> :not(:last-child)": {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+});
 
-![alt text](https://c.tenor.com/CHc0B6gKHqUAAAAj/deadserver.gif)
-`;
+const Separator = styled("div", {
+  borderLeft: "1px solid",
+  borderLeftColor: "$borderDefault",
+});
 
-useWorkingFolder.getState().initialize();
+const StatePreview = styled("div", {
+  fontSize: 12,
+  padding: "$3",
+});
+
+const Sidebar = styled("div", {
+  display: "flex",
+  flexFlow: "column",
+  borderRight: "1px solid",
+  borderRightColor: "$borderDefault",
+  padding: "$2",
+  minWidth: 320,
+});
+
+const TreeEntryComponent = styled("div", {
+  fontSize: 12,
+
+  "& > div": {
+    display: "flex",
+    gap: "$3",
+    alignContent: "center",
+    padding: "$2",
+  },
+
+  "& > ul": {
+    paddingLeft: "$4",
+
+    "&> li": {
+      listStyleType: "none",
+    },
+  },
+
+  variants: {
+    root: {
+      true: {
+        "& > ul": {
+          paddingLeft: 0,
+        },
+      },
+    },
+  },
+});
+
+const TreeEntry = ({ entry, root }: { entry: Entry; root?: boolean }) => {
+  const {
+    workspace: { entries },
+  } = useStore();
+  return (
+    <TreeEntryComponent>
+      {!root && (
+        <div>
+          <FolderIcon />
+          {entry.name}
+        </div>
+      )}
+      {entry.children && (
+        <ul>
+          {entry.children.map((child) => (
+            <li>
+              <TreeEntry entry={entries![child]} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </TreeEntryComponent>
+  );
+};
 
 export const App = () => {
-  useTheme();
+  globalStyles();
 
-  const path = useWorkingFolder((s) => s.path);
-  const selectedEntry = useWorkingFolder((s) =>
-    s.selected ? s.entries[s.selected] : null
-  );
-
-  const setPath = useWorkingFolder((s) => s.setPath);
-
-  const openFolderDialog = async () => {
-    const p = await dialog.open({
-      directory: true,
-    });
-
-    if (p) {
-      // setSelectedEntry(null);
-      // setSelectedFilePath(null);
-      setPath(p as string);
-    }
-  };
-
-  const createFolderDialog = async () => {
-    const p = await dialog.save();
-
-    if (p) {
-      await fs.createDir(p);
-      await Promise.all([
-        fs.createDir(`${p}/Inbox`),
-        fs.createDir(`${p}/Daily`),
-        fs.createDir(`${p}/Archive`),
-      ]);
-
-      await fs.writeFile({
-        path: `${p}/Inbox/welcome.md`,
-        contents: welcomeTemplate,
-      });
-      await fs.writeFile({
-        path: `${p}/Daily/welcome.md`,
-        contents: welcomeTemplate,
-      });
-
-      // selectEntry({
-      //   path: `${p}/Inbox/welcome.md`,
-      // });
-      setPath(p as string);
-    }
-  };
-
-  // const createNewNote = useCallback(async () => {}, [path]);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey && e.key === "o") {
-        openFolderDialog();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, []);
-
-  if (!path || path === null) {
-    return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center overflow-hidden">
-        <div className="flex items-center gap-4">
-          <button
-            className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
-            onClick={createFolderDialog}
-          >
-            <FolderAddIcon className="h-4 w-4 text-current" />
-            Bootstrap notes folder
-          </button>
-          or
-          <button
-            className="flex items-center gap-2 rounded-lg border border-stone-300 p-2 text-xs dark:border-stone-700"
-            onClick={openFolderDialog}
-          >
-            <FolderOpenIcon className="h-4 w-4 text-current" />
-            Select notes folder
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const { setTheme, setColor, settings, openWorkspace, workspace } = useStore();
 
   return (
-    <div className="flex h-screen w-screen select-none flex-row overflow-hidden">
-      <Sidebar />
+    <>
+      <AppShell>
+        <Toolbar>
+          <ButtonGroup>
+            <Button
+              disabled={settings.theme === "light"}
+              onClick={() => setTheme("light")}
+            >
+              <SunIcon /> theme: light
+            </Button>
+            <Button
+              disabled={settings.theme === "dark"}
+              onClick={() => setTheme("dark")}
+            >
+              <MoonIcon />
+              theme: dark
+            </Button>
+            <Button
+              disabled={settings.theme === "system"}
+              onClick={() => setTheme("system")}
+            >
+              <ComputerDesktopIcon />
+              theme: system
+            </Button>
+          </ButtonGroup>
 
-      <div className="relative flex h-full flex-grow flex-col">
-        {selectedEntry ? (
+          <Separator />
+
+          <Button onClick={openWorkspace}>
+            <FolderOpenIcon />
+            open
+          </Button>
+          <Button onClick={openWorkspace}>
+            <DocumentPlusIcon />
+            new note
+          </Button>
+
+          <Separator />
+
+          <ColorsSelector />
+        </Toolbar>
+
+        <Layout>
+          <Sidebar>
+            {workspace.root && <TreeEntry root entry={workspace.root} />}
+          </Sidebar>
           <Editor />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center">
-            {/* <button className="p-2 border border-stone-300 dark:border-stone-700 rounded-lg flex gap-2 items-center text-xs">
-                <DocumentAddIcon className="w-4 h-4 text-current" />
-                <span>Create New Note</span>
-              </button> */}
-          </div>
-        )}
-      </div>
-    </div>
+        </Layout>
+      </AppShell>
+      <CommandMenu />
+    </>
   );
 };

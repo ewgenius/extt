@@ -2,14 +2,14 @@ import { FC, useCallback } from "react";
 import { useWorkingFolder } from "#/store/workingFolder";
 import { Entry } from "#/store/workingFolder";
 import { classNames } from "#/utils/classNames";
-import {
-  ArchiveIcon,
-  CalendarIcon,
-  DocumentTextIcon,
-  FolderIcon,
-  FolderOpenIcon,
-  InboxInIcon,
-} from "@heroicons/react/outline";
+// import {
+//   ArchiveIcon,
+//   CalendarIcon,
+//   DocumentTextIcon,
+//   FolderIcon,
+//   FolderOpenIcon,
+//   InboxInIcon,
+// } from "@heroicons/react/outline";
 
 function comparePaths(a: string, b: string) {
   if (a > b) {
@@ -77,15 +77,20 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
             )}
           >
             {entry.type === "Inbox" ? (
-              <InboxInIcon className="h-4 w-4 text-current" />
-            ) : entry.type === "Archive" ? (
-              <ArchiveIcon className="h-4 w-4 text-current" />
-            ) : entry.type === "Daily" || entry.path.includes("Daily/") ? (
-              <CalendarIcon className="h-4 w-4 text-current" />
-            ) : entry.expanded ? (
-              <FolderOpenIcon className="h-4 w-4 text-current" />
+              <div />
+            ) : // <InboxInIcon className="h-4 w-4 text-current" />
+            entry.type === "Archive" ? (
+              <div />
+            ) : // <ArchiveIcon className="h-4 w-4 text-current" />
+            entry.type === "Daily" || entry.path.includes("Daily/") ? (
+              <div />
+            ) : // <CalendarIcon className="h-4 w-4 text-current" />
+            entry.expanded ? (
+              <div />
             ) : (
-              <FolderIcon className="h-4 w-4 text-current" />
+              // <FolderOpenIcon className="h-4 w-4 text-current" />
+              <div />
+              // <FolderIcon className="h-4 w-4 text-current" />
             )}
             <span>{entry.name}</span>
           </button>
@@ -136,7 +141,7 @@ export const Tree: FC<TreeProps> = ({ entry, root, order = 1 }) => {
           : "text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       )}
     >
-      <DocumentTextIcon className="h-4 w-4 text-current" />
+      {/* <DocumentTextIcon className="h-4 w-4 text-current" /> */}
       <span>{entry && entry.name}</span>
     </button>
   );

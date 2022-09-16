@@ -1,4 +1,4 @@
-import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
+// import { MenuIcon, HomeIcon } from "@heroicons/react/outline";
 import { Scroller } from "#/components/Scroller";
 import { Tree } from "./Tree";
 import { Entry } from "#/store/workingFolder";
@@ -16,14 +16,14 @@ export const Sidebar = () => {
         onClick={toggle}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       >
-        <MenuIcon className="h-4 w-4 text-current" />
+        {/* <MenuIcon className="h-4 w-4 text-current" /> */}
       </button>
 
       <button
         // onClick={goHome}
         className="p-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 hover:dark:text-stone-100"
       >
-        <HomeIcon className="h-4 w-4 text-current" />
+        {/* <HomeIcon className="h-4 w-4 text-current" /> */}
       </button>
     </div>
   );

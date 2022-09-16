@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { RenderElementProps } from "slate-react";
-import { Menu, Portal } from "@headlessui/react";
-import { MenuIcon, ViewListIcon } from "@heroicons/react/outline";
+// import { Menu, Portal } from "@headlessui/react";
+// import { MenuIcon, ViewListIcon } from "@heroicons/react/outline";
 
 function CommandMenu() {
   const button = useRef<HTMLButtonElement>(null);
@@ -20,7 +20,7 @@ function CommandMenu() {
 
   return (
     <div className="absolute -left-10 top-0 z-10 select-none">
-      <Menu>
+      {/* <Menu>
         {() => (
           <>
             <Menu.Button
@@ -88,7 +88,7 @@ function CommandMenu() {
             </Portal>
           </>
         )}
-      </Menu>
+      </Menu> */}
     </div>
   );
 }
