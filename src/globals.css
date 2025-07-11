@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+@import '@radix-ui/colors/gray.css';
+@import '@radix-ui/colors/gray-dark.css';
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/blue-dark.css';
+
+html,
+body,
+#root {
+    @apply w-full h-full overflow-hidden;
+}
+
+@theme {
+    --color-base-1: var(--base-1);
+    --color-base-2: var(--base-2);
+    --color-base-3: var(--gray-3);
+    --color-base-4: var(--gray-4);
+    --color-base-5: var(--gray-5);
+    --color-base-6: var(--gray-6);
+    --color-base-7: var(--gray-7);
+    --color-base-8: var(--gray-8);
+    --color-base-9: var(--gray-9);
+    --color-base-10: var(--gray-10);
+    --color-base-11: var(--gray-11);
+    --color-base-12: var(--gray-12);
+
+    --color-blue-1: var(--blue-1);
+    --color-blue-2: var(--blue-2);
+    --color-blue-3: var(--blue-3);
+    --color-blue-4: var(--blue-4);
+    --color-blue-5: var(--blue-5);
+    --color-blue-6: var(--blue-6);
+    --color-blue-7: var(--blue-7);
+    --color-blue-8: var(--blue-8);
+    --color-blue-9: var(--blue-9);
+    --color-blue-10: var(--blue-10);
+    --color-blue-11: var(--blue-11);
+    --color-blue-12: var(--blue-12);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--base-6);
+  }
+
+  body {
+    background-color: var(--base-1);
+    color: var(--base-12);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :disabled {
+    cursor: default;
+  }
+}
