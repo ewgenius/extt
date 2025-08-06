@@ -38,7 +38,13 @@ const data = {
   tree: [
     "instructions.md",
     "README.md",
-    ["fitness and meal plan", ["instructions.md"]],
+    ["folder 1", "doc.md"],
+    [
+      "folder 2",
+      "doc.md",
+      "doc2.md",
+      ["folder 3", "doc.md", "doc2.md", "doc3.md", "doc4.md", "doc5.md"],
+    ],
   ],
 };
 
@@ -75,6 +81,7 @@ function Tree({ item }: { item: string | any[] }) {
       <SidebarMenuButton
         isActive={name === "button.tsx"}
         className="data-[active=true]:bg-transparent"
+        size="sm"
       >
         {name === "instructions.md" ? <FileQuestionMark /> : <FileText />}
         {name}
@@ -84,12 +91,9 @@ function Tree({ item }: { item: string | any[] }) {
 
   return (
     <SidebarMenuItem>
-      <Collapsible
-        className="group/collapsible [&[data-state=open]>button>svg:first-child]:hidden [&[data-state=closed]>button>svg:last-child]:hidden"
-        defaultOpen={name === "components" || name === "ui"}
-      >
+      <Collapsible className="group/collapsible [&[data-state=open]>button>svg:first-child]:hidden [&[data-state=closed]>button>svg:last-child]:hidden">
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
+          <SidebarMenuButton size="sm">
             <Folder />
             <FolderOpen />
             {name}
