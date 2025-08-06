@@ -3,7 +3,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-  SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Textarea } from "./components/ui/textarea";
@@ -22,7 +21,6 @@ export function RightSidebar({
           <Textarea className="resize-none" />
         </div>
       </SidebarContent>
-      <SidebarRail />
     </Sidebar>
   );
 }

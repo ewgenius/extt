@@ -1,6 +1,6 @@
 import { AppSidebar } from "./AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
-import { RightSidebar } from "./RightSidebar";
+// import { RightSidebar } from "./RightSidebar";
 import { Tiptap } from "./Tiptap";
 
 export const App = () => {
@@ -12,7 +12,7 @@ export const App = () => {
         <main className="relative w-full h-full">
           <SidebarTrigger className="absolute left-2 top-2" />
           <Tiptap />
-          <SidebarProvider
+          {/*<SidebarProvider
             style={
               {
                 "--sidebar-width": "24rem",
@@ -21,7 +21,7 @@ export const App = () => {
             }
           >
             <RightSidebar variant="floating" side="right" />
-          </SidebarProvider>
+          </SidebarProvider>*/}
         </main>
       </SidebarProvider>
     </div>

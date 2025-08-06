@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
+import { Button } from "./components/ui/button";
 
 // define your extension array
 const extensions = [StarterKit, Typography];
@@ -18,25 +19,37 @@ export const Tiptap = () => {
   return (
     <div className="container mx-auto max-w-7xl text-base">
       <EditorContent
-        className="w-full h-full p-8 !outline-0 prose prose-sm"
+        className="w-full h-full p-8 !outline-0 prose prose-sm dark:prose-invert"
         editor={editor}
       />
       <FloatingMenu
         editor={editor}
-        className="rounded-md text-xs p-1 flex items-center gap-1 bg-white shadow-sm"
+        className="rounded-lg text-xs p-1 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
       >
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
       </FloatingMenu>
 
       <BubbleMenu
         editor={editor}
-        className="rounded-md text-xs p-1 flex items-center gap-1 bg-white shadow-sm"
+        className="rounded-lg text-xs p-1 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
       >
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
-        <button className="border border-gray-200 p-1 rounded-sm">test</button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
+        <Button variant="outline" size="sm">
+          test
+        </Button>
       </BubbleMenu>
     </div>
   );
