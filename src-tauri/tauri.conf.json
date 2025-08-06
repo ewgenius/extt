@@ -12,9 +12,22 @@
   "app": {
     "windows": [
       {
+        "zoomHotkeysEnabled": true,
         "title": "extt",
-        "width": 800,
-        "height": 600
+        "label": "main",
+        "width": 1024,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "hiddenTitle": true,
+        "transparent": true,
+        "trafficLightPosition": {
+          "x": 12,
+          "y": 17
+        },
+        "decorations": true,
+        "titleBarStyle": "Overlay"
       }
     ],
     "security": {

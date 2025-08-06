@@ -17,9 +17,9 @@ export const Tiptap = () => {
   });
 
   return (
-    <div className="container mx-auto max-w-7xl text-base">
+    <div className="container mx-auto max-w-6xl text-base">
       <EditorContent
-        className="w-full h-full p-8 !outline-0 prose prose-sm dark:prose-invert"
+        className="w-full h-full p-4 pt-0 !outline-0 prose prose-sm dark:prose-invert"
         editor={editor}
       />
       <FloatingMenu

@@ -11,12 +11,12 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 // This is sample data.
@@ -45,9 +45,14 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
+      <div
+        data-tauri-drag-region
+        className="h-10 min-h-10 flex flex-row-reverse items-center p-2"
+      >
+        <SidebarTrigger />
+      </div>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Notes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {data.tree.map((item, index) => (
