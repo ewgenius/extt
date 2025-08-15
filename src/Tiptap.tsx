@@ -24,30 +24,30 @@ export const Tiptap = () => {
       />
       <FloatingMenu
         editor={editor}
-        className="rounded-lg text-xs p-1 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
+        className="rounded-lg text-xs p-2 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
       >
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
       </FloatingMenu>
 
       <BubbleMenu
         editor={editor}
-        className="rounded-lg text-xs p-1 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
+        className="rounded-lg text-xs p-2 flex items-center gap-1 bg-popover text-popover-foreground border shadow-md"
       >
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="xs" variant="outline">
           test
         </Button>
       </BubbleMenu>

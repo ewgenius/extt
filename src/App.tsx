@@ -1,56 +1,33 @@
-import { AppSidebar } from "./AppSidebar";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-// import { RightSidebar } from "./RightSidebar";
+import { Button } from "./components/ui/button";
 import { Tiptap } from "./Tiptap";
 
 export const App = () => {
   return (
-    <div className="w-full h-full">
-      <SidebarProvider>
-        <AppSidebar />
-        <main className="relative w-full h-svh select-none flex flex-col">
-          <AppTitlebar />
-          <div className="grow overflow-y-auto">
-            <Tiptap />
+    <div className="h-full w-full flex flex-row items-stretch overflow-hidden">
+      <div className="bg-base-2 h-full w-64 border-r flex flex-col">
+        <div
+          className="h-10 min-h-10 p-2 pt-0 flex items-center gap-1 text-sm shrink-0"
+          data-tauri-drag-region
+        />
+        <div className="p-3 pt-0">
+          sidebar
+          <div>
+            <Button size="xs">button</Button>
           </div>
-          {/*<SidebarProvider
-            style={
-              {
-                "--sidebar-width": "24rem",
-                "--sidebar-width-mobile": "20rem",
-              } as any
-            }
-          >
-            <RightSidebar variant="floating" side="right" />
-          </SidebarProvider>*/}
-        </main>
-      </SidebarProvider>
-    </div>
-  );
-};
+          <div>
+            <Button>button</Button>
+          </div>
+          <div>
+            <Button size="md">button</Button>
+          </div>
+        </div>
+      </div>
 
-const AppTitlebar = () => {
-  const { state } = useSidebar();
-
-  return (
-    <div
-      className={cn(
-        "h-10 min-h-10 p-2 flex items-center gap-1 text-sm shrink-0",
-        state === "expanded" ? "pl-2" : "pl-18",
-      )}
-      data-tauri-drag-region
-    >
-      <SidebarTrigger
-        className={cn(
-          "transition-opacity duration-150",
-          state === "expanded" ? "opacity-0" : "delay-300",
-        )}
-      />
+      <div className="grow h-full flex flex-col relative p-0.5">
+        <div className="grow flex flex-col overflow-y-auto">
+          <Tiptap />
+        </div>
+      </div>
     </div>
   );
 };

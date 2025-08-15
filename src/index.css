@@ -4,163 +4,133 @@
 @plugin "@tailwindcss/typography";
 
 /* radix colors */
-@import '@radix-ui/colors/gray.css';
-@import '@radix-ui/colors/gray-dark.css';
-@import '@radix-ui/colors/indigo.css';
-@import '@radix-ui/colors/indigo-dark.css';
-@import '@radix-ui/colors/red.css';
-@import '@radix-ui/colors/red-dark.css';
-@import '@radix-ui/colors/green.css';
-@import '@radix-ui/colors/green-dark.css';
-@import '@radix-ui/colors/amber.css';
-@import '@radix-ui/colors/amber-dark.css';
-@import '@radix-ui/colors/blue.css';
-@import '@radix-ui/colors/blue-dark.css';
-@import '@radix-ui/colors/orange.css';
-@import '@radix-ui/colors/orange-dark.css';
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/white-alpha.css";
+@import "@radix-ui/colors/sand.css";
+@import "@radix-ui/colors/sand-dark.css";
+@import "@radix-ui/colors/indigo.css";
+@import "@radix-ui/colors/indigo-dark.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/red-dark.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/green-dark.css";
+@import "@radix-ui/colors/amber.css";
+@import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/blue.css";
+@import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/orange.css";
+@import "@radix-ui/colors/orange-dark.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
     --font-plex: "IBM Plex Mono", sans-serif;
 
-    --color-gray-0: var(--base-0);
-    --color-gray-1: var(--base-1);
-    --color-gray-2: var(--base-2);
-    --color-gray-3: var(--gray-3);
-    --color-gray-4: var(--gray-4);
-    --color-gray-5: var(--gray-5);
-    --color-gray-6: var(--gray-6);
-    --color-gray-7: var(--gray-7);
-    --color-gray-8: var(--gray-8);
-    --color-gray-9: var(--gray-9);
-    --color-gray-10: var(--gray-10);
-    --color-gray-11: var(--gray-11);
-    --color-gray-12: var(--gray-12);
-}
+    /*
+        1. App background
+        2. Subtle background
 
-@theme inline {
-    --radius-sm: calc(var(--radius) - 4px);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) + 4px);
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-primary: var(--primary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-secondary: var(--secondary);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-destructive: var(--destructive);
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-    --color-sidebar: var(--sidebar);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-ring: var(--sidebar-ring);
-}
+        3. UI element background
+        4. Hovered UI element background
+        5. Active / Selected UI element background
 
-:root {
-    --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.21 0.006 285.885);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
-    --accent: oklch(0.967 0.001 286.375);
-    --accent-foreground: oklch(0.21 0.006 285.885);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
-    --ring: oklch(0.705 0.015 286.067);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.21 0.006 285.885);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-    --sidebar-border: oklch(0.92 0.004 286.32);
-    --sidebar-ring: oklch(0.705 0.015 286.067);
-}
+        6. Subtle borders and separators
+        7. UI element border and focus rings
+        8. Hovered UI element border
 
-.dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.92 0.004 286.32);
-    --primary-foreground: oklch(0.21 0.006 285.885);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0.016 285.938);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.552 0.016 285.938);
+        9. Solid backgrounds
+        10. Hovered solid backgrounds
+
+        11. Low-contrast text
+        12. High-contrast text
+    */
+
+    --color-base-1: var(--sand-1);
+    --color-base-2: var(--sand-2);
+    --color-base-3: var(--sand-3);
+    --color-base-4: var(--sand-4);
+    --color-base-5: var(--sand-5);
+    --color-base-6: var(--sand-6);
+    --color-base-7: var(--sand-7);
+    --color-base-8: var(--sand-8);
+    --color-base-9: var(--sand-9);
+    --color-base-10: var(--sand-10);
+    --color-base-11: var(--sand-11);
+    --color-base-12: var(--sand-12);
+
+    --color-black-a1: var(--black-a1);
+    --color-black-a2: var(--black-a2);
+    --color-black-a3: var(--black-a3);
+    --color-black-a4: var(--black-a4);
+    --color-black-a5: var(--black-a5);
+    --color-black-a6: var(--black-a6);
+    --color-black-a7: var(--black-a7);
+    --color-black-a8: var(--black-a8);
+    --color-black-a9: var(--black-a9);
+    --color-black-a10: var(--black-a10);
+    --color-black-a11: var(--black-a11);
+    --color-black-a12: var(--black-a12);
+
+    --color-white-a1: var(--white-a1);
+    --color-white-a2: var(--white-a2);
+    --color-white-a3: var(--white-a3);
+    --color-white-a4: var(--white-a4);
+    --color-white-a5: var(--white-a5);
+    --color-white-a6: var(--white-a6);
+    --color-white-a7: var(--white-a7);
+    --color-white-a8: var(--white-a8);
+    --color-white-a9: var(--white-a9);
+    --color-white-a10: var(--white-a10);
+    --color-white-a11: var(--white-a11);
+    --color-white-a12: var(--white-a12);
+
+    --color-red-1: var(--red-1);
+    --color-red-2: var(--red-2);
+    --color-red-3: var(--red-3);
+    --color-red-4: var(--red-4);
+    --color-red-5: var(--red-5);
+    --color-red-6: var(--red-6);
+    --color-red-7: var(--red-7);
+    --color-red-8: var(--red-8);
+    --color-red-9: var(--red-9);
+    --color-red-10: var(--red-10);
+    --color-red-11: var(--red-11);
+    --color-red-12: var(--red-12);
+
+    --color-green-1: var(--green-1);
+    --color-green-2: var(--green-2);
+    --color-green-3: var(--green-3);
+    --color-green-4: var(--green-4);
+    --color-green-5: var(--green-5);
+    --color-green-6: var(--green-6);
+    --color-green-7: var(--green-7);
+    --color-green-8: var(--green-8);
+    --color-green-9: var(--green-9);
+    --color-green-10: var(--green-10);
+    --color-green-11: var(--green-11);
+    --color-green-12: var(--green-12);
+
+    --color-amber-1: var(--amber-1);
+    --color-amber-2: var(--amber-2);
+    --color-amber-3: var(--amber-3);
+    --color-amber-4: var(--amber-4);
+    --color-amber-5: var(--amber-5);
+    --color-amber-6: var(--amber-6);
+    --color-amber-7: var(--amber-7);
+    --color-amber-8: var(--amber-8);
+    --color-amber-9: var(--amber-9);
+    --color-amber-10: var(--amber-10);
+    --color-amber-11: var(--amber-11);
+    --color-amber-12: var(--amber-12);
 }
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-base-6;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-base-1 text-base-12 text-sm;
     }
-/*
-    :not(.tiptap):not(.tiptap *),
-    :not(a),
-    :not(input):not(textarea),
-    :not(input):not(textarea)::after,
-    :not(input):not(textarea)::before {
-        @apply select-none cursor-default;
-    }*/
 
     .tiptap,
     .tiptap > div {
