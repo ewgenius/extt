@@ -17,7 +17,7 @@ export const Tiptap = () => {
   });
 
   return (
-    <div className="container mx-auto max-w-6xl text-base">
+    <div className="container mx-auto max-w-6xl text-base w-full h-full">
       <EditorContent
         className="w-full h-full p-4 pt-0 !outline-0 prose prose-sm dark:prose-invert"
         editor={editor}

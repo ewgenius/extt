@@ -50,7 +50,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className="select-none">
       <div
         data-tauri-drag-region
         className="h-10 min-h-10 flex flex-row-reverse items-center p-2"
