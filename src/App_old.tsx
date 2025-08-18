@@ -1,4 +1,4 @@
-import { AppSidebar } from "./AppSidebar";
+// import { AppSidebar } from "./AppSidebar";
 import {
   SidebarProvider,
   SidebarTrigger,
@@ -12,7 +12,7 @@ export const App = () => {
   return (
     <div className="w-full h-full">
       <SidebarProvider>
-        <AppSidebar />
+        {/*<AppSidebar />*/}
         <main className="relative w-full h-svh select-none flex flex-col">
           <AppTitlebar />
           <div className="grow overflow-y-auto">
