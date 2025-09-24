@@ -1,6 +1,6 @@
-[package]
-name = "extt"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
+[workspace]
+members = [
+    "crates/extt",
+    "crates/lib",
+]
+resolver = "2"
