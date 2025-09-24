@@ -1,6 +1,11 @@
 [workspace]
+resolver = "2"
 members = [
     "crates/extt",
     "crates/lib",
 ]
-resolver = "2"
+default-members = ["crates/extt"]
+
+[workspace.package]
+publish = false
+edition = "2024"
