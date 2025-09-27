@@ -8,5 +8,7 @@ name = "extt"
 path = "src/main.rs"
 
 [dependencies]
-lib = { path = "../lib" }
+anyhow.workspace = true
 gpui = { git = "https://github.com/zed-industries/zed" }
+lib = { path = "../lib" }
+llama-cpp-2 = { git = "https://github.com/utilityai/llama-cpp-rs" }

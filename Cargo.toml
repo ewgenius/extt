@@ -9,3 +9,6 @@ default-members = ["crates/extt"]
 [workspace.package]
 publish = false
 edition = "2024"
+
+[workspace.dependencies]
+anyhow = "1.0.86"
