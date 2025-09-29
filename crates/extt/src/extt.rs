@@ -1,5 +1,12 @@
 use gpui::{App, Context, FontWeight, SharedString, Window, div, prelude::*, rgb, svg};
 
+use gpui_component::{
+    ActiveTheme, Disableable as _, Icon, IconName, Selectable as _, Sizable as _, Theme,
+    button::{Button, ButtonCustomVariant, ButtonGroup, ButtonVariants as _, DropdownButton},
+    checkbox::Checkbox,
+    h_flex, v_flex,
+};
+
 use crate::colors::BASE;
 
 fn sidebar_item(path: &str) -> impl IntoElement {
@@ -16,7 +23,7 @@ fn sidebar_item(path: &str) -> impl IntoElement {
         .active(|this| this.bg(BASE.shade(5)))
         .child(svg().text_color(BASE.shade(11)).size_4().path(concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/assets/icons/folder.svg"
+            "/assets/icons/file.svg"
         )))
         .child(path.to_string())
 }
@@ -66,6 +73,7 @@ impl Render for AppWindow {
                         env!("CARGO_MANIFEST_DIR"),
                         "/assets/icons/folder.svg"
                     )))
+                    .child(Button::new("test").label("test"))
                     .child(div().child("/Users/evgenii/Developer/BitBroz/EXTT/extt/crates/extt/assets/icons/folder.svg"))
                     .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
                     .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
