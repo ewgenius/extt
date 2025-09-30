@@ -1,4 +1,5 @@
 mod colors;
+mod config;
 mod extt;
 
 use std::{fs, path::PathBuf};
@@ -9,6 +10,7 @@ use gpui::{
     WindowOptions, actions, point, prelude::*, px,
 };
 
+use crate::config::ExttConfig;
 use crate::extt::AppWindow;
 
 actions!(window, [Quit]);
@@ -40,7 +42,23 @@ impl AssetSource for Assets {
     }
 }
 
+fn load() -> ExttConfig {
+    let config: ExttConfig = match confy::load("com.hexymora.extt", None) {
+        Ok(config) => config,
+        Err(e) => {
+            eprintln!("Failed to load config: {}", e);
+            ExttConfig::default()
+        }
+    };
+
+    dbg!(&config);
+
+    return config;
+}
+
 fn main() {
+    load();
+
     Application::new()
         .with_assets(Assets {
             base: PathBuf::from(env!("CARGO_MANIFEST_DIR")),

@@ -1,11 +1,11 @@
 use gpui::{App, Context, FontWeight, SharedString, Window, div, prelude::*, rgb, svg};
 
-use gpui_component::{
-    ActiveTheme, Disableable as _, Icon, IconName, Selectable as _, Sizable as _, Theme,
-    button::{Button, ButtonCustomVariant, ButtonGroup, ButtonVariants as _, DropdownButton},
-    checkbox::Checkbox,
-    h_flex, v_flex,
-};
+// use gpui_component::{
+//     ActiveTheme, Disableable as _, Icon, IconName, Selectable as _, Sizable as _, Theme,
+//     button::{Button, ButtonCustomVariant, ButtonGroup, ButtonVariants as _, DropdownButton},
+//     checkbox::Checkbox,
+//     h_flex, v_flex,
+// };
 
 use crate::colors::BASE;
 
@@ -73,7 +73,7 @@ impl Render for AppWindow {
                         env!("CARGO_MANIFEST_DIR"),
                         "/assets/icons/folder.svg"
                     )))
-                    .child(Button::new("test").label("test"))
+                    // .child(Button::new("test").label("test"))
                     .child(div().child("/Users/evgenii/Developer/BitBroz/EXTT/extt/crates/extt/assets/icons/folder.svg"))
                     .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
                     .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
