@@ -6,8 +6,8 @@ use std::{fs, path::PathBuf};
 
 use anyhow::Result;
 use gpui::{
-    App, Application, AssetSource, KeyBinding, SharedString, TitlebarOptions, WindowKind,
-    WindowOptions, actions, point, prelude::*, px,
+    actions, point, prelude::*, px, App, Application, AssetSource, KeyBinding, SharedString,
+    TitlebarOptions, WindowKind, WindowOptions,
 };
 
 use crate::config::ExttConfig;
