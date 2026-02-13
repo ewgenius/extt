@@ -8,10 +8,37 @@ use gpui::{App, Context, FontWeight, SharedString, Window, div, prelude::*, rgb,
 // };
 
 use crate::colors::BASE;
+use extt_core::{Vault, Document};
+use extt_settings::Settings;
+use std::path::PathBuf;
+use gpui::*;
+// use gpui_component::input::Input;
 
-fn sidebar_item(path: &str) -> impl IntoElement {
+pub struct Workspace {
+    pub vault: Vault,
+    pub settings: Settings,
+    pub active_document: Option<Document>,
+}
+
+impl Workspace {
+    pub fn open_document(&mut self, path: PathBuf, cx: &mut Context<Self>) {
+        if let Ok(doc) = Document::load(path) {
+            self.active_document = Some(doc);
+            cx.notify();
+        } else {
+            eprintln!("Failed to load document");
+        }
+    }
+}
+
+fn sidebar_item(path: PathBuf, workspace: &Entity<Workspace>) -> impl IntoElement {
+    let _path_clone = path.clone();
+    let _workspace_clone = workspace.clone();
+    
+    let file_name = path.file_name().unwrap_or_default().to_str().unwrap_or("unknown").to_string();
+
     div()
-        .id(SharedString::from(path.to_string()))
+        .id(SharedString::from(file_name.clone()))
         .flex()
         .gap_2()
         .px_3()
@@ -25,13 +52,27 @@ fn sidebar_item(path: &str) -> impl IntoElement {
             env!("CARGO_MANIFEST_DIR"),
             "/assets/icons/file.svg"
         )))
-        .child(path.to_string())
+        .child(file_name)
+        .on_click(move |_, _, cx| {
+             let path = path_clone.clone();
+             workspace_clone.update(cx, |workspace, cx| {
+                 workspace.open_document(path, cx);
+             });
+        })
 }
 
-pub struct AppWindow {}
+pub struct AppWindow {
+    workspace: Entity<Workspace>,
+}
+
+impl AppWindow {
+    pub fn new(workspace: Entity<Workspace>) -> Self {
+        Self { workspace }
+    }
+}
 
 impl Render for AppWindow {
-    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         div()
             .flex()
             .justify_start()
@@ -53,13 +94,14 @@ impl Render for AppWindow {
                     .w_48()
                     .border_r_1()
                     .border_color(BASE.shade(4))
-                    .child(sidebar_item("root"))
-                    .child(sidebar_item("my-note-1.md"))
-                    .child(sidebar_item("my-note-2.md"))
-                    .child(sidebar_item("my-note-3.md"))
-                    .child(sidebar_item("my-note-4.md"))
-                    .child(sidebar_item("my-note-5.md"))
-                    .child(sidebar_item("my-note-6.md"))
+                    .children(
+                        {
+                            let files = self.workspace.read(cx).vault.files().to_vec();
+                            files.into_iter().map(|path| {
+                                sidebar_item(path, &self.workspace)
+                            })
+                        }
+                    )
             )
             .child(
                 div()
@@ -69,21 +111,14 @@ impl Render for AppWindow {
                     .items_start()
                     .gap_2()
                     .p_4()
-                    .child(div().child(concat!(
-                        env!("CARGO_MANIFEST_DIR"),
-                        "/assets/icons/folder.svg"
-                    )))
-                    // .child(Button::new("test").label("test"))
-                    .child(div().child("/Users/evgenii/Developer/BitBroz/EXTT/extt/crates/extt/assets/icons/folder.svg"))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
-                    .child(div().child("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
+                    .child(
+                        if let Some(doc) = &self.workspace.read(cx).active_document {
+                            let content = doc.content.clone();
+                            div().child(content)
+                        } else {
+                             div().child("Select a file to view")
+                        }
+                    )
             )
             .child(
                 div()

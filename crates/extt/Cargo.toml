@@ -10,9 +10,11 @@ path = "src/main.rs"
 [dependencies]
 anyhow.workspace = true
 confy = "1.0.0"
-# gpui = { git = "https://github.com/zed-industries/zed" }
 gpui = "0.2.2"
+# gpui = { git = "https://github.com/zed-industries/zed" }
 # gpui-component = { git = "https://github.com/longbridge/gpui-component.git" }
-lib = { path = "../lib" }
+# lib = { path = "../lib" }
 llama-cpp-2 = { git = "https://github.com/utilityai/llama-cpp-rs" }
 serde = { version = "1.0.228", features = ["derive"] }
+extt-core = { path = "../extt-core" }
+extt-settings = { path = "../extt-settings" }

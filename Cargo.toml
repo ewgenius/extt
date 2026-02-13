@@ -2,7 +2,8 @@
 resolver = "2"
 members = [
     "crates/extt",
-    "crates/lib",
+    "crates/extt-core",
+    "crates/extt-settings",
 ]
 default-members = ["crates/extt"]
 

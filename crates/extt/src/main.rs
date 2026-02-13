@@ -1,5 +1,5 @@
 mod colors;
-mod config;
+// mod config;
 mod extt;
 
 use std::{fs, path::PathBuf};
@@ -10,7 +10,7 @@ use gpui::{
     TitlebarOptions, WindowKind, WindowOptions,
 };
 
-use crate::config::ExttConfig;
+use extt_settings::Settings;
 use crate::extt::AppWindow;
 
 actions!(window, [Quit]);
@@ -42,12 +42,12 @@ impl AssetSource for Assets {
     }
 }
 
-fn load() -> ExttConfig {
-    let config: ExttConfig = match confy::load("com.hexymora.extt", None) {
+fn load() -> Settings {
+    let config = match Settings::load() {
         Ok(config) => config,
         Err(e) => {
             eprintln!("Failed to load config: {}", e);
-            ExttConfig::default()
+            Settings::default()
         }
     };
 
@@ -57,13 +57,13 @@ fn load() -> ExttConfig {
 }
 
 fn main() {
-    load();
+    let settings = load();
 
     Application::new()
         .with_assets(Assets {
             base: PathBuf::from(env!("CARGO_MANIFEST_DIR")),
         })
-        .run(|cx: &mut App| {
+        .run(move |cx: &mut App| {
             cx.open_window(
                 WindowOptions {
                     window_bounds: None,
@@ -80,7 +80,16 @@ fn main() {
                     }),
                     ..Default::default()
                 },
-                |_window, cx| cx.new(|_cx| AppWindow {}),
+                move |_window, cx| {
+                    let vault = extt_core::Vault::new(&settings.vault_path);
+                    let workspace = cx.new(|_cx| crate::extt::Workspace {
+                        vault,
+                        settings: settings.clone(),
+                        active_document: None,
+                    });
+                    
+                    cx.new(|_cx| AppWindow::new(workspace))
+                },
             )
             .unwrap();
 
