@@ -1,10 +1,10 @@
 [package]
-name = "extt"
+name = "extt-app"
 version = "0.1.0"
 edition.workspace = true
 
 [[bin]]
-name = "extt"
+name = "extt-app"
 path = "src/main.rs"
 
 [dependencies]

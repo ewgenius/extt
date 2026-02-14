@@ -1,11 +1,12 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/extt",
+    "crates/extt-app",
+    "crates/extt-cli",
     "crates/extt-core",
     "crates/extt-settings",
 ]
-default-members = ["crates/extt"]
+default-members = ["crates/extt-cli"]
 
 [workspace.package]
 publish = false
