@@ -243,7 +243,7 @@ impl Store {
 }
 
 #[cfg(test)]
-mod tests {
+mod store_path_tests {
     use super::*;
     use std::path::Path;
 
