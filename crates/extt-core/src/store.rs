@@ -255,6 +255,65 @@ mod tests {
         assert!(note.content.contains("content1"));
         assert_eq!(note.metadata.title.as_deref(), Some("Note 1"));
 
+        // Test Search
+        let results = store.search("Note 1")?;
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].title.as_deref(), Some("Note 1"));
+
+        let results = store.search("content1")?;
+         // Search currently only searches title/path, not content (based on implementation).
+        assert_eq!(results.len(), 0); // Expected fail if search was full-text, but current impl is title/path only.
+
+        let results = store.search("note1")?;
+        assert_eq!(results.len(), 1);
+
+        // Test Update
+        store.update(Path::new("note1.md"), Some("updated content"), None)?;
+        let note = store.get(Path::new("note1.md"))?;
+        assert!(note.content.contains("updated content"));
+        assert_eq!(note.metadata.title.as_deref(), Some("Note 1")); // Title preserved
+
+        // Test Move
+        store.move_note(Path::new("note1.md"), Path::new("renamed.md"))?;
+        assert!(!notes_dir.join("note1.md").exists());
+        assert!(notes_dir.join("renamed.md").exists());
+
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 1);
+        assert_eq!(notes[0].path, Path::new("renamed.md"));
+
+        // Test Delete
+        store.delete(Path::new("renamed.md"))?;
+        assert!(!notes_dir.join("renamed.md").exists());
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 0);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_sync() -> Result<()> {
+        let dir = tempdir()?;
+        let db_path = dir.path().join("test.db");
+        let notes_dir = dir.path().join("notes");
+        fs::create_dir(&notes_dir)?;
+
+        // Create file manually
+        fs::write(notes_dir.join("manual.md"), "---\ntitle: Manual Note\n---\nBody")?;
+
+        let mut store = Store::new(notes_dir.clone(), db_path)?;
+
+        // Initial list should be empty or untracked until sync?
+        // Store::new does NOT auto-sync.
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 0);
+
+        store.sync()?;
+
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 1);
+        assert_eq!(notes[0].title.as_deref(), Some("Manual Note"));
+
         Ok(())
     }
 }
