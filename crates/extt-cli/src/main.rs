@@ -153,6 +153,9 @@ fn main() -> Result<()> {
             println!("Notes Dir: {}", settings.notes_dir.display());
             println!("DB Path: {}", settings.db_path.display());
         }
+        Commands::Version => {
+            println!("extt-cli {}", env!("CARGO_PKG_VERSION"));
+        }
     }
 
     Ok(())

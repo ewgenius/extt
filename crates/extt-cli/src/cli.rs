@@ -63,4 +63,6 @@ pub enum Commands {
     Init,
     /// Verify config
     CheckConfig,
+    /// Helper to see version
+    Version,
 }
