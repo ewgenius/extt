@@ -68,3 +68,14 @@ pub enum Commands {
     /// Upgrade extt to the latest version
     Upgrade,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use clap::CommandFactory;
+
+    #[test]
+    fn verify_cli() {
+        Cli::command().debug_assert();
+    }
+}
