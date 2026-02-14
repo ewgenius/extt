@@ -97,7 +97,7 @@ impl Store {
     }
 
     pub fn get(&self, relative_path: &Path) -> Result<Note> {
-        let path = self.root_dir.join(relative_path);
+        let path = self.secure_join(relative_path)?;
         let content = fs::read_to_string(&path)?;
         let matter = Matter::<YAML>::new();
         let parsed = matter.parse(&content);
@@ -114,7 +114,7 @@ impl Store {
     }
 
     pub fn create(&mut self, relative_path: &Path, content: &str, metadata: Option<Metadata>) -> Result<()> {
-        let path = self.root_dir.join(relative_path);
+        let path = self.secure_join(relative_path)?;
         if let Some(parent) = path.parent() {
             fs::create_dir_all(parent)?;
         }
@@ -181,7 +181,7 @@ impl Store {
              file_content.push_str("---\n");
              file_content.push_str(&note.content);
              
-             fs::write(self.root_dir.join(relative_path), file_content)?;
+             fs::write(self.secure_join(relative_path)?, file_content)?;
          }
          
          if let Some(_t) = title {
@@ -194,7 +194,7 @@ impl Store {
     }
 
     pub fn delete(&mut self, relative_path: &Path) -> Result<()> {
-        let path = self.root_dir.join(relative_path);
+        let path = self.secure_join(relative_path)?;
         if path.exists() {
             fs::remove_file(path)?;
         }
@@ -203,8 +203,8 @@ impl Store {
     }
     
     pub fn move_note(&mut self, from: &Path, to: &Path) -> Result<()> {
-        let from_path = self.root_dir.join(from);
-        let to_path = self.root_dir.join(to);
+        let from_path = self.secure_join(from)?;
+        let to_path = self.secure_join(to)?;
         
         if let Some(parent) = to_path.parent() {
             fs::create_dir_all(parent)?;
@@ -218,6 +218,60 @@ impl Store {
         )?;
         Ok(())
     }
+
+    fn secure_join(&self, relative_path: &Path) -> Result<PathBuf> {
+        if relative_path.is_absolute() {
+            return Err(anyhow::anyhow!("Absolute paths are not allowed"));
+        }
+
+        let mut depth = 0;
+        for component in relative_path.components() {
+            match component {
+                std::path::Component::Normal(_) => depth += 1,
+                std::path::Component::ParentDir => {
+                    depth -= 1;
+                    if depth < 0 {
+                        return Err(anyhow::anyhow!("Path traversal detected"));
+                    }
+                }
+                std::path::Component::CurDir => {}
+                std::path::Component::RootDir | std::path::Component::Prefix(_) => {
+                    return Err(anyhow::anyhow!("Absolute paths or prefixes are not allowed"));
+                }
+            }
+        }
+
+        Ok(self.root_dir.join(relative_path))
+    }
+}
+
+#[cfg(test)]
+mod store_path_tests {
+    use super::*;
+    use std::path::Path;
+
+    #[test]
+    fn test_secure_join() {
+        let conn = rusqlite::Connection::open_in_memory().unwrap();
+        let store = Store {
+            conn,
+            root_dir: PathBuf::from("/notes"),
+        };
+
+        // Valid paths
+        assert!(store.secure_join(Path::new("note.md")).is_ok());
+        assert!(store.secure_join(Path::new("sub/note.md")).is_ok());
+        assert!(store.secure_join(Path::new("./note.md")).is_ok());
+
+        // Invalid paths (traversal)
+        assert!(store.secure_join(Path::new("../etc/passwd")).is_err());
+        assert!(store.secure_join(Path::new("sub/../../etc/passwd")).is_err());
+        assert!(store.secure_join(Path::new("sub/..")).is_ok());
+        assert!(store.secure_join(Path::new("sub/../..")).is_err());
+
+        // Absolute paths
+        assert!(store.secure_join(Path::new("/etc/passwd")).is_err());
+    }
 }
 
 #[cfg(test)]
@@ -225,6 +279,7 @@ mod tests {
     use super::*;
     use tempfile::tempdir;
     use std::fs;
+    use std::env;
 
     #[test]
     fn test_store_workflow() -> Result<()> {
@@ -315,5 +370,71 @@ mod tests {
         assert_eq!(notes[0].title.as_deref(), Some("Manual Note"));
 
         Ok(())
+    }
+
+    fn setup_temp_dir(suffix: &str) -> PathBuf {
+        let mut temp_dir = env::temp_dir();
+        temp_dir.push(format!("extt_test_{}_{}", std::process::id(), suffix));
+        if temp_dir.exists() {
+            let _ = fs::remove_dir_all(&temp_dir);
+        }
+        fs::create_dir_all(&temp_dir).unwrap();
+        temp_dir
+    }
+
+    #[test]
+    fn test_store_new_creates_parent_dir() {
+        let temp_dir = setup_temp_dir("parent_dir");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("subdir/extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        assert!(!db_path.parent().unwrap().exists());
+
+        let store = Store::new(root_dir, db_path.clone()).expect("Failed to create store");
+
+        assert!(db_path.parent().unwrap().exists());
+        assert!(db_path.exists());
+        drop(store);
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_store_new_opens_existing_db() {
+        let temp_dir = setup_temp_dir("existing_db");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        {
+            let _store = Store::new(root_dir.clone(), db_path.clone()).unwrap();
+        }
+
+        assert!(db_path.exists());
+
+        let store_result = Store::new(root_dir, db_path);
+        assert!(store_result.is_ok());
+
+        drop(store_result.unwrap());
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_store_new_creates_table() {
+        let temp_dir = setup_temp_dir("creates_table");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        let store = Store::new(root_dir, db_path).unwrap();
+
+        {
+            let mut stmt = store.conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='notes'").unwrap();
+            let exists = stmt.exists([]).unwrap();
+            assert!(exists);
+        }
+
+        drop(store);
+        let _ = fs::remove_dir_all(&temp_dir);
     }
 }
