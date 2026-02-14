@@ -19,3 +19,4 @@ serde = { version = "1.0.228", features = ["derive"] }
 extt-core = { path = "../extt-core" }
 extt-settings = { path = "../extt-settings" }
 clap = { version = "4.5.58", features = ["derive"] }
+self_update = "0.42.0"
