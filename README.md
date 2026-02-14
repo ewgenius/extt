@@ -12,6 +12,18 @@ A powerful, Rust-based notes application designed for the terminal and AI agents
 
 ## Installation
 
+### Automatic (Recommended)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ewgenius/extt/main/install.sh | sh
+```
+
+### Manual
+
+Download the latest binary for your platform from the [Releases](https://github.com/ewgenius/extt/releases) page.
+
+### From Source
+
 Ensure you have Rust and Cargo installed.
 
 ```bash
