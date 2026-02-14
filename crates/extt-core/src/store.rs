@@ -125,12 +125,12 @@ impl Store {
         // Let's keep it simple: Write file -> Update DB.
         
         let mut file_content = String::new();
-         if let Some(meta) = metadata {
+         if let Some(ref meta) = metadata {
             // Primitive YAML serialization for now, or use serde_yaml if we add it.
              // gray_matter doesn't support writing back easily without extra crates.
             // We'll omit advanced metadata writing for this step or add serde_yaml.
             file_content.push_str("---\n");
-            if let Some(title) = meta.title {
+            if let Some(ref title) = meta.title {
                  file_content.push_str(&format!("title: {}\n", title));
             }
              file_content.push_str("---\n");
@@ -139,7 +139,10 @@ impl Store {
 
         fs::write(&path, file_content)?;
         
-        let title = path.file_stem().map(|s| s.to_string_lossy().to_string());
+        let title = metadata.as_ref()
+            .and_then(|m| m.title.clone())
+            .or_else(|| path.file_stem().map(|s| s.to_string_lossy().to_string()));
+
         self.conn.execute(
             "INSERT OR REPLACE INTO notes (path, title) VALUES (?1, ?2)",
              params![relative_path.to_string_lossy(), title],
@@ -213,6 +216,104 @@ impl Store {
             "UPDATE notes SET path = ?1 WHERE path = ?2",
             params![to.to_string_lossy(), from.to_string_lossy()]
         )?;
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use tempfile::tempdir;
+    use std::fs;
+
+    #[test]
+    fn test_store_workflow() -> Result<()> {
+        let dir = tempdir()?;
+        let db_path = dir.path().join("test.db");
+        let notes_dir = dir.path().join("notes");
+        fs::create_dir(&notes_dir)?;
+
+        let mut store = Store::new(notes_dir.clone(), db_path)?;
+
+        // Test Create
+        store.create(Path::new("note1.md"), "content1", Some(Metadata {
+            title: Some("Note 1".to_string()),
+            tags: None,
+            created_at: None,
+            updated_at: None,
+            extra: Default::default(),
+        }))?;
+
+        // Test List
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 1);
+        assert_eq!(notes[0].title.as_deref(), Some("Note 1"));
+        assert_eq!(notes[0].path, Path::new("note1.md"));
+
+        // Test Get
+        let note = store.get(Path::new("note1.md"))?;
+        assert!(note.content.contains("content1"));
+        assert_eq!(note.metadata.title.as_deref(), Some("Note 1"));
+
+        // Test Search
+        let results = store.search("Note 1")?;
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].title.as_deref(), Some("Note 1"));
+
+        let results = store.search("content1")?;
+         // Search currently only searches title/path, not content (based on implementation).
+        assert_eq!(results.len(), 0); // Expected fail if search was full-text, but current impl is title/path only.
+
+        let results = store.search("note1")?;
+        assert_eq!(results.len(), 1);
+
+        // Test Update
+        store.update(Path::new("note1.md"), Some("updated content"), None)?;
+        let note = store.get(Path::new("note1.md"))?;
+        assert!(note.content.contains("updated content"));
+        assert_eq!(note.metadata.title.as_deref(), Some("Note 1")); // Title preserved
+
+        // Test Move
+        store.move_note(Path::new("note1.md"), Path::new("renamed.md"))?;
+        assert!(!notes_dir.join("note1.md").exists());
+        assert!(notes_dir.join("renamed.md").exists());
+
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 1);
+        assert_eq!(notes[0].path, Path::new("renamed.md"));
+
+        // Test Delete
+        store.delete(Path::new("renamed.md"))?;
+        assert!(!notes_dir.join("renamed.md").exists());
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 0);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_sync() -> Result<()> {
+        let dir = tempdir()?;
+        let db_path = dir.path().join("test.db");
+        let notes_dir = dir.path().join("notes");
+        fs::create_dir(&notes_dir)?;
+
+        // Create file manually
+        fs::write(notes_dir.join("manual.md"), "---\ntitle: Manual Note\n---\nBody")?;
+
+        let mut store = Store::new(notes_dir.clone(), db_path)?;
+
+        // Initial list should be empty or untracked until sync?
+        // Store::new does NOT auto-sync.
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 0);
+
+        store.sync()?;
+
+        let notes = store.list()?;
+        assert_eq!(notes.len(), 1);
+        assert_eq!(notes[0].title.as_deref(), Some("Manual Note"));
+
         Ok(())
     }
 }
