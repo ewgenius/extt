@@ -31,6 +31,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Verify Version
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" != "refs/tags/"* ]]; then
+            echo "Not a tag ref, skipping version check."
+            exit 0
+          fi
+          
+          # Extract version from tag (e.g., refs/tags/v0.1.0 -> 0.1.0)
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          
+          # Extract version from crates/extt/Cargo.toml
+          CARGO_VERSION=$(grep '^version =' crates/extt/Cargo.toml | head -n 1 | cut -d '"' -f 2)
+          
+          echo "Tag Version: $TAG_VERSION"
+          echo "Cargo Version: $CARGO_VERSION"
+          
+          if [ "$TAG_VERSION" != "$CARGO_VERSION" ]; then
+            echo "::error::Version mismatch! Tag: $TAG_VERSION, Cargo: $CARGO_VERSION"
+            exit 1
+          fi
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
