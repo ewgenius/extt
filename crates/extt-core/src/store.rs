@@ -216,3 +216,74 @@ impl Store {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::env;
+    use std::fs;
+
+    fn setup_temp_dir(suffix: &str) -> PathBuf {
+        let mut temp_dir = env::temp_dir();
+        temp_dir.push(format!("extt_test_{}_{}", std::process::id(), suffix));
+        if temp_dir.exists() {
+            let _ = fs::remove_dir_all(&temp_dir);
+        }
+        fs::create_dir_all(&temp_dir).unwrap();
+        temp_dir
+    }
+
+    #[test]
+    fn test_store_new_creates_parent_dir() {
+        let temp_dir = setup_temp_dir("parent_dir");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("subdir/extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        assert!(!db_path.parent().unwrap().exists());
+
+        let store = Store::new(root_dir, db_path.clone()).expect("Failed to create store");
+
+        assert!(db_path.parent().unwrap().exists());
+        assert!(db_path.exists());
+        drop(store);
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_store_new_opens_existing_db() {
+        let temp_dir = setup_temp_dir("existing_db");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        {
+            let _store = Store::new(root_dir.clone(), db_path.clone()).unwrap();
+        }
+
+        assert!(db_path.exists());
+
+        let store_result = Store::new(root_dir, db_path);
+        assert!(store_result.is_ok());
+
+        drop(store_result.unwrap());
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_store_new_creates_table() {
+        let temp_dir = setup_temp_dir("creates_table");
+        let root_dir = temp_dir.join("notes");
+        let db_path = temp_dir.join("extt.db");
+        fs::create_dir_all(&root_dir).unwrap();
+
+        let store = Store::new(root_dir, db_path).unwrap();
+
+        let mut stmt = store.conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='notes'").unwrap();
+        let exists = stmt.exists([]).unwrap();
+        assert!(exists);
+
+        drop(store);
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+}
