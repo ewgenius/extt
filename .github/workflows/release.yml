@@ -42,8 +42,8 @@ jobs:
           # Extract version from tag (e.g., refs/tags/v0.1.0 -> 0.1.0)
           TAG_VERSION=${GITHUB_REF#refs/tags/v}
           
-          # Extract version from crates/extt/Cargo.toml
-          CARGO_VERSION=$(grep '^version =' crates/extt/Cargo.toml | head -n 1 | cut -d '"' -f 2)
+          # Extract version from crates/extt-cli/Cargo.toml
+          CARGO_VERSION=$(grep '^version =' crates/extt-cli/Cargo.toml | head -n 1 | cut -d '"' -f 2)
           
           echo "Tag Version: $TAG_VERSION"
           echo "Cargo Version: $CARGO_VERSION"
@@ -59,7 +59,7 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Build binary
-        run: cargo build --release --locked --target ${{ matrix.target }} --bin extt
+        run: cargo build --release --locked --target ${{ matrix.target }} -p extt-cli
 
       - name: Prepare asset
         run: |
