@@ -65,4 +65,6 @@ pub enum Commands {
     CheckConfig,
     /// Helper to see version
     Version,
+    /// Upgrade extt to the latest version
+    Upgrade,
 }

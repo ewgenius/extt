@@ -156,7 +156,33 @@ fn main() -> Result<()> {
         Commands::Version => {
             println!("extt-cli {}", env!("CARGO_PKG_VERSION"));
         }
+        Commands::Upgrade => {
+            let target = get_target()?;
+            let status = self_update::backends::github::Update::configure()
+                .repo_owner("ewgenius")
+                .repo_name("extt")
+                .bin_name("extt")
+                .target(&target)
+                .show_download_progress(true)
+                .no_confirm(true)
+                .current_version(env!("CARGO_PKG_VERSION"))
+                .build()?
+                .update()?;
+            println!("Update status: `{}`!", status.version());
+        }
     }
 
     Ok(())
+}
+
+fn get_target() -> Result<String> {
+    let os = std::env::consts::OS;
+    let arch = std::env::consts::ARCH;
+
+    match (os, arch) {
+        ("linux", "x86_64") => Ok("linux-amd64".to_string()),
+        ("macos", "x86_64") => Ok("darwin-amd64".to_string()),
+        ("macos", "aarch64") => Ok("darwin-arm64".to_string()),
+        _ => anyhow::bail!("Unsupported OS/Arch: {}/{}", os, arch),
+    }
 }
