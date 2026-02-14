@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
-gpui = { version = "0.2.2", default-features = false }
+# gpui = { version = "0.2.2", default-features = false }
 confy = "0.6"
 anyhow = "1.0"
+dirs = "6.0.0"

@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
-use anyhow::Result;
+
 
 #[derive(Debug, Clone)]
 pub struct Vault {

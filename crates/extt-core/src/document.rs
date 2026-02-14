@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use gray_matter::Matter;
 use gray_matter::engine::YAML;
-use serde::Deserialize;
+
 use anyhow::{Result, Context};
 use std::fs;
 
