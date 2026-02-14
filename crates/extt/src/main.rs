@@ -1,6 +1,7 @@
 mod colors;
 // mod config;
 mod extt;
+mod editor;
 
 use std::{fs, path::PathBuf};
 
@@ -86,6 +87,7 @@ fn main() {
                         vault,
                         settings: settings.clone(),
                         active_document: None,
+                        active_editor: None,
                     });
                     
                     cx.new(|_cx| AppWindow::new(workspace))

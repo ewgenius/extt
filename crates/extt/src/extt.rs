@@ -14,10 +14,13 @@ use std::path::PathBuf;
 use gpui::*;
 // use gpui_component::input::Input;
 
+use crate::editor::Editor;
+
 pub struct Workspace {
     pub vault: Vault,
     pub settings: Settings,
     pub active_document: Option<Document>,
+    pub active_editor: Option<Entity<Editor>>,
 }
 
 impl Workspace {
@@ -29,11 +32,16 @@ impl Workspace {
             eprintln!("Failed to load document");
         }
     }
+
+    pub fn set_active_editor(&mut self, editor: Entity<Editor>, cx: &mut Context<Self>) {
+        self.active_editor = Some(editor);
+        cx.notify();
+    }
 }
 
 fn sidebar_item(path: PathBuf, workspace: &Entity<Workspace>) -> impl IntoElement {
-    let _path_clone = path.clone();
-    let _workspace_clone = workspace.clone();
+    let path_clone = path.clone();
+    let workspace_clone = workspace.clone();
     
     let file_name = path.file_name().unwrap_or_default().to_str().unwrap_or("unknown").to_string();
 
@@ -58,6 +66,14 @@ fn sidebar_item(path: PathBuf, workspace: &Entity<Workspace>) -> impl IntoElemen
              workspace_clone.update(cx, |workspace, cx| {
                  workspace.open_document(path, cx);
              });
+             
+             if let Some(doc) = workspace_clone.read(cx).active_document.clone() {
+                 let content = doc.content.clone();
+                 let editor = cx.new(|cx| Editor::new(content, cx));
+                 workspace_clone.update(cx, |workspace, cx| {
+                     workspace.set_active_editor(editor, cx);
+                 });
+             }
         })
 }
 
@@ -112,9 +128,8 @@ impl Render for AppWindow {
                     .gap_2()
                     .p_4()
                     .child(
-                        if let Some(doc) = &self.workspace.read(cx).active_document {
-                            let content = doc.content.clone();
-                            div().child(content)
+                        if let Some(editor) = &self.workspace.read(cx).active_editor {
+                            div().size_full().child(editor.clone())
                         } else {
                              div().child("Select a file to view")
                         }
