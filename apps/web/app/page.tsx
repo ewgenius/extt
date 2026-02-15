@@ -9,8 +9,12 @@ export default function Home() {
       <div className="mb-8">
         <ExttLogo />
       </div>
-      <p className="mb-8 max-w-md text-gray-500">
+      <h1 className="mb-4 text-2xl font-bold">Extt - Notetaking for Humans and Agents</h1>
+      <p className="mb-4 max-w-md text-gray-500">
         A fast, simple, and agent-ready terminal notes application for managing markdown files.
+      </p>
+      <p className="mb-8 text-sm font-semibold text-blue-500">
+        Desktop app is coming soon.
       </p>
       <div className="flex items-center rounded bg-gray-200 pl-4 pr-2 py-2 font-mono text-sm">
         <code>{installCmd}</code>

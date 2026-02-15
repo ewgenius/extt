@@ -12,7 +12,7 @@ The project is a Cargo workspace with two members:
 
 ### `crates/extt`
 
-- **`main.rs`**: 
+- **`main.rs`**:
     - Entry point of the application.
     - Loads configuration using the `confy` crate.
     - Configures and opens the main window using GPUI.

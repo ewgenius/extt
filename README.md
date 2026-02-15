@@ -1,6 +1,8 @@
-# extt
+# Extt - Notetaking for Humans and Agents
 
-A terminal notes application for managing markdown files. Fast, simple, and agent-ready.
+A fast, simple, and agent-ready terminal notes application for managing markdown files.
+
+**Note: Desktop app is coming soon.**
 
 ## Installation
 
@@ -19,8 +21,17 @@ Download the latest binary for your platform from the [Releases](https://github.
 Ensure you have Rust and Cargo installed.
 
 ```bash
-cargo install --path crates/extt
+cargo install --path crates/extt-cli
 ```
+
+## Project Structure
+
+This repository is a monorepo containing:
+
+- `crates/extt-cli`: The command-line interface tool (`extt`).
+- `crates/extt-core`: Core logic and storage engine.
+- `crates/extt-app`: Upcoming desktop application.
+- `apps/web`: Next.js web application.
 
 ## Configuration
 
@@ -57,4 +68,10 @@ extt delete "My Note"
 
 # Sync index
 extt sync
+
+# Check version
+extt version
+
+# Upgrade to latest version
+extt upgrade
 ```
