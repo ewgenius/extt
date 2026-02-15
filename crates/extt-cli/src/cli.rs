@@ -11,18 +11,22 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Commands {
     /// List notes in configured folder
+    #[command(visible_alias = "ls")]
     List,
     /// Search notes by name or content
+    #[command(visible_alias = "s")]
     Search {
         query: String,
     },
     /// Create a new note
+    #[command(visible_alias = "n")]
     New {
         title: String,
         #[arg(long, short)]
         body: Option<String>,
     },
     /// Read a note
+    #[command(visible_alias = "r")]
     Read {
         name: String,
         /// Show last N lines
@@ -39,6 +43,7 @@ pub enum Commands {
         to: Option<usize>,
     },
     /// Update a note
+    #[command(visible_alias = "u")]
     Update {
         name: String,
         #[arg(long)]
@@ -49,23 +54,30 @@ pub enum Commands {
         // For now sticking to full body update as primary.
     },
     /// Delete a note
+    #[command(visible_alias = "d")]
     Delete {
         name: String,
     },
     /// Move a note
+    #[command(visible_alias = "mv")]
     Move {
         from: String,
         to: String,
     },
     /// Sync database
+    #[command(visible_alias = "sy")]
     Sync,
     /// Initialize the configuration
+    #[command(visible_alias = "i")]
     Init,
     /// Verify config
+    #[command(visible_alias = "conf")]
     CheckConfig,
     /// Helper to see version
+    #[command(visible_alias = "v")]
     Version,
     /// Upgrade extt to the latest version
+    #[command(visible_alias = "up")]
     Upgrade,
 }
 
