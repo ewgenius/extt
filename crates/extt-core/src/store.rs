@@ -373,7 +373,7 @@ mod tests {
 }
 
 #[cfg(test)]
-mod tests {
+mod initialization_tests {
     use super::*;
     use std::env;
     use std::fs;
@@ -438,7 +438,7 @@ mod tests {
         let exists = stmt.exists([]).unwrap();
         assert!(exists);
 
-        drop(store);
+        drop(stmt); drop(store);
         let _ = fs::remove_dir_all(&temp_dir);
     }
 }
