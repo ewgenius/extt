@@ -125,15 +125,11 @@ impl Store {
         // Let's keep it simple: Write file -> Update DB.
 
         let mut file_content = String::new();
-         if let Some(ref meta) = metadata {
-            // Primitive YAML serialization for now, or use serde_yaml if we add it.
-             // gray_matter doesn't support writing back easily without extra crates.
-            // We'll omit advanced metadata writing for this step or add serde_yaml.
+        if let Some(ref meta) = metadata {
+            let yaml = serde_yaml::to_string(meta)?;
             file_content.push_str("---\n");
-            if let Some(ref title) = meta.title {
-                 file_content.push_str(&format!("title: {}\n", title));
-            }
-             file_content.push_str("---\n");
+            file_content.push_str(&yaml);
+            file_content.push_str("---\n");
         }
         file_content.push_str(content);
 
@@ -174,10 +170,9 @@ impl Store {
              // Simulating:
              let mut file_content = String::new();
              file_content.push_str("---\n");
-              // Re-serialize existing metadata
-              if let Some(t) = note.metadata.title {
-                  file_content.push_str(&format!("title: {}\n", t));
-              }
+             // Re-serialize existing metadata
+             let yaml = serde_yaml::to_string(&note.metadata)?;
+             file_content.push_str(&yaml);
              file_content.push_str("---\n");
              file_content.push_str(&note.content);
              
@@ -436,5 +431,40 @@ mod tests {
 
         drop(store);
         let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_store_create_serialization() -> Result<()> {
+        let dir = tempdir()?;
+        let db_path = dir.path().join("test.db");
+        let notes_dir = dir.path().join("notes");
+        fs::create_dir(&notes_dir)?;
+
+        let mut store = Store::new(notes_dir.clone(), db_path)?;
+
+        let metadata = Metadata {
+            title: Some("My Title".to_string()),
+            tags: Some(vec!["tag1".to_string(), "tag2".to_string()]),
+            created_at: None,
+            updated_at: None,
+            extra: Default::default(),
+        };
+
+        store.create(Path::new("note.md"), "Content", Some(metadata))?;
+
+        let content = fs::read_to_string(notes_dir.join("note.md"))?;
+
+        // Check for YAML frontmatter
+        assert!(content.contains("---"));
+        assert!(content.contains("title: My Title"));
+        assert!(content.contains("tags:"));
+        assert!(content.contains("- tag1"));
+        assert!(content.contains("- tag2"));
+        // Ensure None fields are skipped
+        assert!(!content.contains("created_at:"));
+        assert!(!content.contains("updated_at:"));
+        assert!(!content.contains("null"));
+
+        Ok(())
     }
 }
