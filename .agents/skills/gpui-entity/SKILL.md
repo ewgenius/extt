@@ -8,7 +8,6 @@ description: Entity management and state handling in GPUI. Use when working with
 An `Entity<T>` is a handle to state of type `T`, providing safe access and updates.
 
 **Key Methods:**
-
 - `entity.read(cx)` → `&T` - Read-only access
 - `entity.read_with(cx, |state, cx| ...)` → `R` - Read with closure
 - `entity.update(cx, |state, cx| ...)` → `R` - Mutable update
@@ -16,7 +15,6 @@ An `Entity<T>` is a handle to state of type `T`, providing safe access and updat
 - `entity.entity_id()` → `EntityId` - Unique identifier
 
 **Entity Types:**
-
 - **`Entity<T>`**: Strong reference (increases ref count)
 - **`WeakEntity<T>`**: Weak reference (doesn't prevent cleanup, returns `Result`)
 
@@ -146,14 +144,12 @@ entity1.update(cx, |_, cx| {
 ## Reference Documentation
 
 ### Complete API Documentation
-
 - **Entity API**: See [api-reference.md](references/api-reference.md)
   - Entity types, methods, lifecycle
   - Context methods, async operations
   - Error handling, type conversions
 
 ### Implementation Guides
-
 - **Patterns**: See [patterns.md](references/patterns.md)
   - Model-view separation, state management
   - Cross-entity communication, async operations

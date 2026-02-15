@@ -10,8 +10,7 @@ export default function Home() {
         <ExttLogo />
       </div>
       <p className="mb-8 max-w-md text-gray-500">
-        A fast, simple, and agent-ready terminal notes application for managing
-        markdown files.
+        A fast, simple, and agent-ready terminal notes application for managing markdown files.
       </p>
       <div className="flex items-center rounded bg-gray-200 pl-4 pr-2 py-2 font-mono text-sm">
         <code>{installCmd}</code>

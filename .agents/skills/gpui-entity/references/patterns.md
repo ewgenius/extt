@@ -565,15 +565,15 @@ impl Drop for FileHandle {
 
 ## Pattern Selection Guide
 
-| Need                                 | Pattern                    | Complexity  |
-| ------------------------------------ | -------------------------- | ----------- |
-| Component with internal state        | Stateful Components        | Low         |
-| State shared by multiple components  | Shared State               | Low         |
-| Coordinate events between components | Event Coordination         | Medium      |
-| Handle async data fetching           | Async State Management     | Medium      |
-| Parent-child component hierarchy     | Parent-Child Relationships | Medium      |
-| React to state changes               | Observer Pattern           | Medium      |
-| Handle custom events                 | Event Subscription         | Medium-High |
-| Manage external resources            | Resource Management        | High        |
+| Need | Pattern | Complexity |
+|------|---------|------------|
+| Component with internal state | Stateful Components | Low |
+| State shared by multiple components | Shared State | Low |
+| Coordinate events between components | Event Coordination | Medium |
+| Handle async data fetching | Async State Management | Medium |
+| Parent-child component hierarchy | Parent-Child Relationships | Medium |
+| React to state changes | Observer Pattern | Medium |
+| Handle custom events | Event Subscription | Medium-High |
+| Manage external resources | Resource Management | High |
 
 Choose the simplest pattern that meets your requirements. Combine patterns as needed for complex scenarios.

@@ -8,7 +8,6 @@ description: Layout and styling in GPUI. Use when styling components, layout sys
 GPUI provides CSS-like styling with Rust type safety.
 
 **Key Concepts:**
-
 - Flexbox layout system
 - Styled trait for chaining styles
 - Size units: `px()`, `rems()`, `relative()`

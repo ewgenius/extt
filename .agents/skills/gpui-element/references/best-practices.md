@@ -39,7 +39,6 @@ type RequestLayoutState = TextElementState;
 ```
 
 **Benefits:**
-
 - Clear documentation of state structure
 - Easy to extend
 - Type-safe access
@@ -55,7 +54,6 @@ paint
 ```
 
 **Don't:**
-
 - Store state in the element struct that should be in associated types
 - Try to mutate element state in paint phase (use `cx.notify()` to schedule re-render)
 - Pass mutable references across phase boundaries
@@ -195,7 +193,6 @@ fn paint(&mut self, .., window: &mut Window, cx: &mut App) {
 ```
 
 **Don't forget:**
-
 - Check `phase.bubble()` or `phase.capture()` as appropriate
 - Check hitbox hover state or bounds
 - Call `cx.stop_propagation()` if you handle the event
@@ -247,7 +244,6 @@ window.set_cursor_style(CursorStyle::ResizeLeftRight, &hitbox);
 ```
 
 **Desktop vs Web Convention:**
-
 - Desktop apps: Use `Arrow` for buttons
 - Web apps: Use `PointingHand` for links only
 

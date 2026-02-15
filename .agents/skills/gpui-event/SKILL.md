@@ -8,7 +8,6 @@ description: Event handling and subscriptions in GPUI. Use when implementing eve
 GPUI provides event system for component coordination:
 
 **Event Mechanisms:**
-
 - **Custom Events**: Define and emit type-safe events
 - **Observations**: React to entity state changes
 - **Subscriptions**: Listen to events from other entities
