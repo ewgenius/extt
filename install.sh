@@ -31,19 +31,29 @@ ASSET_NAME="${BINARY}-${ASSET_SUFFIX}"
 INSTALL_DIR="$HOME/.local/bin"
 mkdir -p "$INSTALL_DIR"
 
-echo "Detected $OS $ARCH. Downloading $ASSET_NAME..."
+# Allow optional tag argument
+VERSION_TAG="$1"
 
-# Fetch latest release tag
-LATEST_TAG=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+if [ -z "$VERSION_TAG" ]; then
+    echo "Fetching latest release tag..."
+    VERSION_TAG=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-if [ -z "$LATEST_TAG" ]; then
-    echo "Failed to fetch latest release tag."
-    exit 1
+    if [ -z "$VERSION_TAG" ]; then
+        echo "Failed to fetch latest release tag."
+        exit 1
+    fi
+else
+    echo "Using specified tag: $VERSION_TAG"
 fi
 
-DOWNLOAD_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/$ASSET_NAME"
+echo "Detected $OS $ARCH. Downloading $ASSET_NAME (version: $VERSION_TAG)..."
 
-curl -L -o "$INSTALL_DIR/$BINARY" "$DOWNLOAD_URL"
+DOWNLOAD_URL="https://github.com/$REPO/releases/download/$VERSION_TAG/$ASSET_NAME"
+
+if ! curl -fL -o "$INSTALL_DIR/$BINARY" "$DOWNLOAD_URL"; then
+    echo "Download failed for $DOWNLOAD_URL"
+    exit 1
+fi
 chmod +x "$INSTALL_DIR/$BINARY"
 
 echo "Successfully installed extt to $INSTALL_DIR/$BINARY"
