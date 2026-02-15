@@ -1,0 +1,161 @@
+name: E2E Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version tag to install (e.g., v0.1.0)'
+        required: false
+        type: string
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install extt
+        run: |
+          TAG="${{ inputs.tag }}"
+          if [ -n "$TAG" ]; then
+            echo "Installing specific tag: $TAG"
+            ./install.sh "$TAG"
+          else
+            echo "Installing latest release..."
+            ./install.sh
+          fi
+
+          # Add install dir to PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Verify Installation
+        run: |
+          extt --version
+
+      - name: Initialize
+        run: |
+          extt init
+          # Verify config created
+          if [ ! -f "$HOME/.config/extt/config.toml" ]; then
+            echo "Config file not created!"
+            exit 1
+          fi
+
+      - name: Create Note
+        run: |
+          extt new "My Note" --body "Hello World"
+
+          # Verify file exists
+          if [ ! -f "$HOME/Notes/My Note.md" ]; then
+            echo "Note file 'My Note.md' not created!"
+            exit 1
+          fi
+
+          # Verify content
+          if ! grep -q "Hello World" "$HOME/Notes/My Note.md"; then
+            echo "Content not found in file!"
+            exit 1
+          fi
+
+      - name: List Notes
+        run: |
+          OUTPUT=$(extt list)
+          echo "$OUTPUT"
+          if ! echo "$OUTPUT" | grep -q "My Note.md"; then
+            echo "List command failed to show My Note.md"
+            exit 1
+          fi
+
+      - name: Read Note
+        run: |
+          OUTPUT=$(extt read "My Note")
+          echo "$OUTPUT"
+          if ! echo "$OUTPUT" | grep -q "Hello World"; then
+            echo "Read command failed to show content"
+            exit 1
+          fi
+
+      - name: Update Note (Body)
+        run: |
+          extt update "My Note" --body "Updated Content"
+
+          # Verify content update
+          OUTPUT=$(extt read "My Note")
+          if ! echo "$OUTPUT" | grep -q "Updated Content"; then
+            echo "Update command failed"
+            exit 1
+          fi
+
+      - name: Move Note (Rename)
+        run: |
+          extt move "My Note" "Renamed Note"
+
+          # Verify old file gone
+          if [ -f "$HOME/Notes/My Note.md" ]; then
+             echo "Old file still exists"
+             exit 1
+          fi
+
+          # Verify new file exists
+          if [ ! -f "$HOME/Notes/Renamed Note.md" ]; then
+             echo "New file not created"
+             exit 1
+          fi
+
+          # Verify list shows new name
+          OUTPUT=$(extt list)
+          if ! echo "$OUTPUT" | grep -q "Renamed Note.md"; then
+             echo "List failed to show renamed note"
+             exit 1
+          fi
+
+      - name: Edit Tags (Manual + Sync)
+        run: |
+          # Create a file manually with tags to simulate editing
+          cat <<EOF > "$HOME/Notes/Tagged.md"
+          ---
+          title: Tagged Note
+          tags: [test-tag]
+          ---
+          Tagged Content
+          EOF
+
+          # Run Sync
+          extt sync
+
+          # Verify it appears in list
+          OUTPUT=$(extt list)
+          if ! echo "$OUTPUT" | grep -q "Tagged.md"; then
+             echo "Sync failed to pick up manual file"
+             exit 1
+          fi
+
+          # Verify search finds it by title (which requires reading frontmatter)
+          OUTPUT=$(extt search "Tagged Note")
+          if ! echo "$OUTPUT" | grep -q "Tagged Note"; then
+             echo "Search failed to find manual note by title"
+             exit 1
+          fi
+
+      - name: Delete Note
+        run: |
+          extt delete "Renamed Note"
+
+          # Verify file gone
+          if [ -f "$HOME/Notes/Renamed Note.md" ]; then
+             echo "File still exists after delete"
+             exit 1
+          fi
+
+          # Verify list doesn't show it
+          OUTPUT=$(extt list)
+          if echo "$OUTPUT" | grep -q "Renamed Note.md"; then
+             echo "List still shows deleted note"
+             exit 1
+          fi
