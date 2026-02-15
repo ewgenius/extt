@@ -12,7 +12,6 @@ notify = "6.1"
 thiserror = "1.0"
 serde_json = "1.0"
 rusqlite = { version = "0.38.0", features = ["bundled"] }
-serde_yaml = "0.9.34"
 
 [dev-dependencies]
 tempfile = "3"
