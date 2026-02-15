@@ -11,11 +11,13 @@ on:
     workflows: ["Release"]
     types:
       - completed
+  pull_request:
+    branches: ["main"]
 
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,13 +25,9 @@ jobs:
       - name: Install extt
         run: |
           TAG="${{ inputs.tag }}"
-          if [ -n "$TAG" ]; then
-            echo "Installing specific tag: $TAG"
-            ./install.sh "$TAG"
-          else
-            echo "Installing latest release..."
-            ./install.sh
-          fi
+          # Simulate "curl | sh" behavior using local file
+          # This ensures we test the PR's version of the script while mimicking the pipe execution method.
+          cat install.sh | sh -s -- "$TAG"
 
           # Add install dir to PATH
           echo "$HOME/.local/bin" >> $GITHUB_PATH
