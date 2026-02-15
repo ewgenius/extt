@@ -49,11 +49,13 @@ pub trait Element: 'static + IntoElement {
 Data passed from `request_layout` to `prepaint` and `paint` phases.
 
 **Usage:**
+
 - Store layout calculations (styled text, child layout IDs)
 - Cache expensive computations
 - Pass child state between phases
 
 **Examples:**
+
 ```rust
 // Simple: no state needed
 type RequestLayoutState = ();
@@ -78,11 +80,13 @@ type RequestLayoutState = MyLayoutState;
 Data passed from `prepaint` to `paint` phase.
 
 **Usage:**
+
 - Store hitboxes for interaction
 - Cache visual bounds
 - Store prepaint results
 
 **Examples:**
+
 ```rust
 // Simple: just a hitbox
 type PrepaintState = Hitbox;
@@ -134,20 +138,24 @@ fn source_location(&self) -> Option<&'static std::panic::Location<'static>> {
 Calculates sizes and positions for the element tree.
 
 **Parameters:**
+
 - `global_id`: Global element identifier (optional)
 - `inspector_id`: Inspector element identifier (optional)
 - `window`: Mutable window reference
 - `cx`: Mutable app context
 
 **Returns:**
+
 - `(LayoutId, Self::RequestLayoutState)`: Layout ID and state for next phases
 
 **Responsibilities:**
+
 1. Calculate child layouts by calling `child.request_layout()`
 2. Create own layout using `window.request_layout()`
 3. Return layout ID and state to pass to next phases
 
 **Example:**
+
 ```rust
 fn request_layout(
     &mut self,
@@ -184,6 +192,7 @@ fn request_layout(
 Prepares for painting by creating hitboxes and computing final bounds.
 
 **Parameters:**
+
 - `global_id`: Global element identifier (optional)
 - `inspector_id`: Inspector element identifier (optional)
 - `bounds`: Final bounds calculated by layout engine
@@ -192,15 +201,18 @@ Prepares for painting by creating hitboxes and computing final bounds.
 - `cx`: Mutable app context
 
 **Returns:**
+
 - `Self::PrepaintState`: State for paint phase
 
 **Responsibilities:**
+
 1. Compute final child bounds based on layout bounds
 2. Call `child.prepaint()` for all children
 3. Create hitboxes using `window.insert_hitbox()`
 4. Return state for paint phase
 
 **Example:**
+
 ```rust
 fn prepaint(
     &mut self,
@@ -237,6 +249,7 @@ fn prepaint(
 Renders the element and handles interactions.
 
 **Parameters:**
+
 - `global_id`: Global element identifier (optional)
 - `inspector_id`: Inspector element identifier (optional)
 - `bounds`: Final bounds for rendering
@@ -246,11 +259,13 @@ Renders the element and handles interactions.
 - `cx`: Mutable app context
 
 **Responsibilities:**
+
 1. Paint children first (bottom to top)
 2. Paint own content (backgrounds, borders, etc.)
 3. Set up interactions (mouse events, cursor styles)
 
 **Example:**
+
 ```rust
 fn paint(
     &mut self,
@@ -321,6 +336,7 @@ div()
 ### Global and Inspector IDs
 
 Both are optional identifiers used for debugging and inspection:
+
 - `global_id`: Unique identifier across entire app
 - `inspector_id`: Identifier for dev tools/inspector
 
@@ -437,6 +453,7 @@ window.on_mouse_event(move |event: &ScrollWheelEvent, phase, window, cx| {
 ### Event Phase
 
 Events go through two phases:
+
 - **Capture**: Top-down (parent → child)
 - **Bubble**: Bottom-up (child → parent)
 

@@ -498,12 +498,12 @@ impl ScrollableElement {
 
 ## Pattern Selection Guide
 
-| Need | Pattern | Complexity |
-|------|---------|------------|
-| Display styled text | Text Rendering | Low |
-| Layout multiple children | Container | Low-Medium |
-| Handle clicks/hovers | Interactive | Medium |
-| Complex multi-part UI | Composite | Medium-High |
-| Large content with scrolling | Scrollable | High |
+| Need                         | Pattern        | Complexity  |
+| ---------------------------- | -------------- | ----------- |
+| Display styled text          | Text Rendering | Low         |
+| Layout multiple children     | Container      | Low-Medium  |
+| Handle clicks/hovers         | Interactive    | Medium      |
+| Complex multi-part UI        | Composite      | Medium-High |
+| Large content with scrolling | Scrollable     | High        |
 
 Choose the simplest pattern that meets your requirements, then extend as needed.

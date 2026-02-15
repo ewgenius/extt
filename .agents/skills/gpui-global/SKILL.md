@@ -186,12 +186,14 @@ let user_entity = cx.new(|_| UserState { ... });
 ## When to Use
 
 **Use Globals for:**
+
 - App-wide configuration
 - Feature flags
 - Shared services (HTTP client, logger)
 - Read-only reference data
 
 **Use Entities for:**
+
 - Component-specific state
 - State that changes frequently
 - State that needs notifications

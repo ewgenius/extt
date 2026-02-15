@@ -8,6 +8,7 @@ description: Context management in GPUI including App, Window, and AsyncApp. Use
 GPUI uses different context types for different scenarios:
 
 **Context Types:**
+
 - **`App`**: Global app state, entity creation
 - **`Window`**: Window-specific operations, painting, layout
 - **`Context<T>`**: Entity-specific context for component `T`

@@ -6,6 +6,7 @@ description: Implementing custom elements using GPUI's low-level Element API (vs
 ## When to Use
 
 Use the low-level `Element` trait when:
+
 - Need fine-grained control over layout calculation
 - Building complex, performance-critical components
 - Implementing custom layout algorithms (masonry, circular, etc.)
@@ -101,11 +102,13 @@ State flows in one direction through associated types, passed as mutable referen
 ## Reference Documentation
 
 ### Complete API Documentation
+
 - **Element Trait API**: See [api-reference.md](references/api-reference.md)
   - Associated types, methods, parameters, return values
   - Hitbox system, event handling, cursor styles
 
 ### Implementation Guides
+
 - **Examples**: See [examples.md](references/examples.md)
   - Simple text element with highlighting
   - Interactive element with selection

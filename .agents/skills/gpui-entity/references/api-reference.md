@@ -9,6 +9,7 @@ Complete API documentation for GPUI's entity system.
 A strong reference to state of type `T`.
 
 **Methods:**
+
 - `entity_id()` → `EntityId` - Returns unique identifier
 - `downgrade()` → `WeakEntity<T>` - Creates weak reference
 - `read(cx)` → `&T` - Immutable access to state
@@ -17,6 +18,7 @@ A strong reference to state of type `T`.
 - `update_in(cx, |state, window, cx| ...)` → `R` - Update with `Window` access (requires `AsyncWindowContext` or `VisualTestContext`)
 
 **Important Notes:**
+
 - Trying to update an entity while it's already being updated will panic
 - Within closures, use the inner `cx` provided to avoid multiple borrow issues
 - With async contexts, return values are wrapped in `anyhow::Result`
@@ -26,12 +28,14 @@ A strong reference to state of type `T`.
 A weak reference to state of type `T`.
 
 **Methods:**
+
 - `upgrade()` → `Option<Entity<T>>` - Convert to strong reference if still alive
 - `read_with(cx, |state, cx| ...)` → `Result<R>` - Read if entity exists
 - `update(cx, |state, cx| ...)` → `Result<R>` - Update if entity exists
 - `update_in(cx, |state, window, cx| ...)` → `Result<R>` - Update with window if entity exists
 
 **Use Cases:**
+
 - Avoid circular dependencies between entities
 - Store references in closures/callbacks without preventing cleanup
 - Optional relationships between components
@@ -60,6 +64,7 @@ let entity = cx.new(|cx| MyState {
 ```
 
 **Parameters:**
+
 - `cx: &mut App` or other context type
 - Closure receiving `&mut Context<T>` returning initial state `T`
 
@@ -111,6 +116,7 @@ my_entity.update(cx, |state, cx| {
 ```
 
 **Available Operations:**
+
 - `cx.notify()` - Trigger re-render
 - `cx.entity()` - Get current entity
 - `cx.emit(event)` - Emit event
@@ -247,6 +253,7 @@ Entities are automatically disposed when all strong references are dropped.
 ```
 
 **Memory Leak Prevention:**
+
 - Use `WeakEntity` in closures/callbacks
 - Use `WeakEntity` for parent-child relationships
 - Avoid circular strong references
@@ -265,6 +272,7 @@ if entity1.entity_id() == entity2.entity_id() {
 ```
 
 **Use Cases:**
+
 - Debugging and logging
 - Entity comparison without borrowing
 - Hash maps keyed by entity

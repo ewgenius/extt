@@ -8,6 +8,7 @@ description: Focus management and keyboard navigation in GPUI. Use when handling
 GPUI's focus system enables keyboard navigation and focus management.
 
 **Key Concepts:**
+
 - **FocusHandle**: Reference to focusable element
 - **Focus tracking**: Current focused element
 - **Keyboard navigation**: Tab/Shift-Tab between elements

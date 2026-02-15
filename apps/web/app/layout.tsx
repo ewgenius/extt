@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-
 const sans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -48,7 +47,6 @@ export default function RootLayout({
 
       <body
         className={`${sans.variable} ${mono.variable} antialised font-sans bg-gray-100 text-gray-800`}
-
       >
         {children}
       </body>
