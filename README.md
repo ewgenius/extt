@@ -1,6 +1,6 @@
 # Extt - Notetaking for Humans and Agents
 
-A fast, simple, and agent-ready terminal notes application for managing markdown files.
+A fast, simple, and agent-ready notes application for managing markdown files.
 
 **Note: Desktop app is coming soon.**
 

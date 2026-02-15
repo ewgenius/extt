@@ -1,7 +1,7 @@
 # Product Definition: Extt - Notetaking for Humans and Agents
 
 ## Initial Concept
-Extt is envisioned as a fast, simple, and agent-ready terminal notes application designed for managing markdown files. It aims to evolve with upcoming desktop and web applications.
+Extt is envisioned as a fast, simple, and agent-ready notes application designed for managing markdown files. It aims to evolve with upcoming desktop and web applications.
 
 ## Target Users
 The primary target users for Extt are individuals who engage in writing, encompassing a broad audience including:

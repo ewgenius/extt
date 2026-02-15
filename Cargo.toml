@@ -10,7 +10,7 @@ default-members = ["crates/extt-cli"]
 
 [workspace.package]
 publish = false
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 edition = "2024"
 
 [workspace.dependencies]

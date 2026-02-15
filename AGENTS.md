@@ -2,7 +2,7 @@
 
 ## Using extt with AI Agents
 
-`extt` is a fast, simple, and agent-ready terminal notes application. It provides a structured and deterministic interface for interacting with the notes system, making it an ideal tool for AI agents.
+`extt` is a fast, simple, and agent-ready notes application. It provides a structured and deterministic interface for interacting with the notes system, making it an ideal tool for AI agents.
 
 ## Core Principles for Agents
 

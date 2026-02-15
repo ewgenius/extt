@@ -11,7 +11,7 @@ export default function Home() {
       </div>
       <h1 className="mb-4 text-2xl font-bold">Extt - Notetaking for Humans and Agents</h1>
       <p className="mb-4 max-w-md text-gray-500">
-        A fast, simple, and agent-ready terminal notes application for managing markdown files.
+        A fast, simple, and agent-ready notes application for managing markdown files.
       </p>
       <p className="mb-8 text-sm font-semibold text-blue-500">
         Desktop app is coming soon.
