@@ -358,7 +358,7 @@ dependencies = [
 
 [[package]]
 name = "extt-app"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 dependencies = [
  "anyhow",
  "clap",
@@ -370,7 +370,7 @@ dependencies = [
 
 [[package]]
 name = "extt-cli"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 dependencies = [
  "anyhow",
  "clap",
@@ -383,7 +383,7 @@ dependencies = [
 
 [[package]]
 name = "extt-core"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 dependencies = [
  "anyhow",
  "gray_matter",
@@ -399,7 +399,7 @@ dependencies = [
 
 [[package]]
 name = "extt-settings"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 dependencies = [
  "anyhow",
  "confy 0.6.1",
